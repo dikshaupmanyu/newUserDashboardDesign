@@ -1,0 +1,429 @@
+  <%- include partials/innerheader %>
+<!-- Page Content Start -->
+<div class="app_main">
+                  
+   <%- include partials/innersidebar %>
+
+<div class="app_content">
+  <div class="dsbrd_container">
+    <div class="package_wrapper">
+      <div class="package_head">
+        <h2>My Services</h2>
+        <%- include partials/serviceslist %>
+        </div>
+      </div>
+      <!-- <div class="package_boxes">
+        <div class="row">
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="pckg_bx">
+              <h2>15 <span>Total Services</span></h2>
+              <img src="images/package1.png" alt="images">
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="pckg_bx">
+              <h2>565 <span>Total Subscribers</span></h2>
+              <img src="images/package2.png" alt="images">
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="pckg_bx">
+              <h2>$4,000 <span>Upcoming Renewal</span></h2>
+              <img src="images/package3.png" alt="images">
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="package_items_area">
+        <p id="serviceMeans"></p><br>
+        <div class="package_items_in" id="newsletterServices">
+          <h2>Newsletter</h2>
+        </div>
+        <div class="package_items_in" id="1-1chatservcie">
+          <h2>1-on-1 Chat Session</h2>
+        </div>
+        <div class="package_items_in" id="videoServices">
+          <h2>Video Channel Subscription</h2>
+        </div>
+        <div class="package_items_in" id="livechatservice">
+          <h2>Live Chat</h2>
+        </div>
+        <div class="package_items_in" id="mentorPhoneServices">
+          <h2>Call-in Phone Group</h2>
+        </div>
+        <div class="package_items_in" id="webinarServices">
+          <h2>Webinar</h2>
+        </div>
+        <div class="package_items_in" id="bookServices">
+          <h2>Book Sale</h2>
+        </div>
+        <div class="package_items_in" id="classServices">
+          <h2>Investing Class</h2>
+        </div>
+      </div>
+
+               <div class="modal welcome_modal" tabindex="-1" id="welcomeModal">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="welcome_modal_top">
+                          <h2>This is how you make money with TradeTips!</h2>
+                         <!--  <img src="images/welcome-bird.png" alt="images"> -->
+                        </div>
+                        <div class="welcome_modal_btm">
+                         <!--  <h3>Below is your "list of services" screen. Services are any methods that you use to sell your investing advice to others, (such as running a newsletter, posting subscriber only videos, holding virtual classes, etc.). Any investing advice service you have can be posted to the app here, which will then appear on TradeTips as your own storefront.You set your own prices, and you are in control of what your customers see and when.</h3> -->
+                          <h3>1. Click on "Create New Service" & choose your service(s).</h3> 
+                          <h3>2 Enter details, subscription schedule, and price.</h3>
+                          <h3>3. Choose an image for your service and publish</h3>
+                          <p>Your published services storefront will appear on your TradeTips app profile for sharing and promoting what you do. We handle all the customer billing and make sure you get paid directly for your signups.</p>
+                          <button class="btn cmn_btn btn_primary" data-dismiss="modal">Lets get Started</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- Page Content Start -->
+
+  <%- include partials/innerfooter %>
+
+  <script type="text/javascript">
+
+  $(function(){
+  $("input[name='onlynumbers']").on('input', function (e) {
+      $(this).val($(this).val().replace(/[^0-9]/g, ''));
+    });
+  });
+
+  var sData = localStorage.getItem('allTokenData');
+
+  var storageData= JSON.parse(sData);
+ 
+  var tokens = storageData.tokendata;
+  
+  var userids = storageData.uid;
+
+   $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+               data: {
+                  mentorId: userids,
+                },   
+            success: function(data) {
+
+               const dataResult = data;
+                 // alert(dataResult.length);
+                 if(dataResult.length == 0){
+                  $('#welcomeModal').modal('show');
+                  document.getElementById('serviceMeans').innerHTML="You currently have no services created. <a data-toggle='modal' data-target='#welcomeModal' style='color:blue;'>What is a service?</a>";
+                 } else {
+                   // alert(dataResult.length);
+                    document.getElementById('serviceMeans').innerHTML='You have ' + dataResult.length +  ' service created. <a data-toggle="modal" data-target="#welcomeModal" style="color:blue;">What is a service?</a>';
+                 }
+
+              }
+
+            });
+    
+
+            $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  mentorId: userids,
+                },
+            success: function(data) {
+
+               const dataResult = data;
+                  let newtip = [];
+                  for(var i=0; i< dataResult.length; i++) if(dataResult[i].serviceTypeId == "54619720-63dc-4287-bb68-adabedf01f0b"){
+
+                 
+                     // $.ajax({
+                     //  url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getserviceSubscriptionPlanImageByToken?imagetoken='+ dataResult[i].imageDetails,
+                     //  type: 'GET',
+                     //  // Fetch the stored token from localStorage and set in the header
+                     //  headers: {"Authorization": 'Bearer '+ tokens },
+                     //  success: function(datanew){
+                     //    // alert(datanew);
+                     //    $('#my_image'+ dataResult[i].id).attr('src', datanew);
+                     //  }
+                     // });
+                   
+                   
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=Newsletter">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span><a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+
+                   // newtip.push(dataResult[i]);
+                  }
+                   $("#newsletterServices").append(newtip);
+                 
+
+              }
+
+            });
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+            $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  mentorId: userids,
+                },
+            success: function(data) {
+
+               const dataResult = data;
+                  let newtip = [];
+                  for(var i=0; i< dataResult.length; i++) if(dataResult[i].serviceTypeId == "b5d735b0-92ef-45d3-8f6e-e7adc7d9a8a8"){
+
+                  // alert(dataResult[i].serviceTypeId);
+                   
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img  src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=1-1Chat">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+
+                   // newtip.push(dataResult[i]);
+                  }
+                   $("#1-1chatservcie").append(newtip);
+                 
+
+              }
+
+            });
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+            $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  mentorId: userids,
+                },
+            success: function(data) {
+
+               const dataResult = data;
+                  let newtip = [];
+                  for(var i=0; i< dataResult.length; i++) if(dataResult[i].serviceTypeId == "b9259b4f-4529-4aaa-b223-95d711ecb969"){
+
+                  // alert(dataResult[i].serviceTypeId);
+                   
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img  src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=VideoSubscription">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+
+                   // newtip.push(dataResult[i]);
+                  }
+                   $("#videoServices").append(newtip);
+                 
+
+              }
+
+            });
+
+   //////////////////////////////////////////////////////////////////////////////////////////
+
+
+           $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  mentorId: userids,
+                },
+            success: function(data) {
+
+               const dataResult = data;
+                  let newtip = [];
+                  for(var i=0; i< dataResult.length; i++) if(dataResult[i].serviceTypeId == "668b8486-64dd-43b7-9d24-563944009ebe"){
+
+                  // alert(dataResult[i].serviceTypeId);
+                   
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=LiveChat">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+
+                   // newtip.push(dataResult[i]);
+                  }
+                   $("#livechatservice").append(newtip);
+                 
+
+              }
+
+            });
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  mentorId: userids,
+                },
+            success: function(data) {
+
+               const dataResult = data;
+                  let newtip = [];
+                  for(var i=0; i< dataResult.length; i++) if(dataResult[i].serviceTypeId == "0f27f77e-1277-426d-83fa-192ae12165ba"){
+
+                  // alert(dataResult[i].serviceTypeId);
+                   
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=MentorPhoneGroup">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+
+                   // newtip.push(dataResult[i]);
+                  }
+                   $("#mentorPhoneServices").append(newtip);
+                 
+
+              }
+
+            });
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+   $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  mentorId: userids,
+                },
+            success: function(data) {
+
+               const dataResult = data;
+                  let newtip = [];
+                  for(var i=0; i< dataResult.length; i++) if(dataResult[i].serviceTypeId == "6faa1011-33a7-4b71-b001-e20cebdaed22"){
+
+                  // alert(dataResult[i].serviceTypeId);
+                   
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=Webinar">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+
+                   // newtip.push(dataResult[i]);
+                  }
+                   $("#webinarServices").append(newtip);
+                 
+
+              }
+
+            });
+
+   /////////////////////////////////////////////////////////////////////////////////////////////
+
+    $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  mentorId: userids,
+                },
+            success: function(data) {
+
+               const dataResult = data;
+                  let newtip = [];
+                  for(var i=0; i< dataResult.length; i++) if(dataResult[i].serviceTypeId == "b098c61a-e451-4df7-a5d5-6ad88e096c3b"){
+
+                  // alert(dataResult[i].serviceTypeId);
+                   
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=Books">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+
+                   // newtip.push(dataResult[i]);
+                  }
+                   $("#bookServices").append(newtip);
+                 
+
+              }
+
+            });
+
+
+   /////////////////////////////////////////////////////////////////////////////////////////////
+
+    $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  mentorId: userids,
+                },
+            success: function(data) {
+
+               const dataResult = data;
+                  let newtip = [];
+                  for(var i=0; i< dataResult.length; i++) if(dataResult[i].serviceTypeId == "479a3b69-ed95-43c9-984a-593f1e519dc0"){
+
+                  // alert(dataResult[i].serviceTypeId);
+                   
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=Class">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+
+                   // newtip.push(dataResult[i]);
+                  }
+                   $("#classServices").append(newtip);
+                 
+
+              }
+
+            });
+
+
+function DeleteService(e) {
+ 
+  var formdata = {serviceSubscriptionPlanId : e};
+
+  var result = confirm("Are you sure you want to Delete?");
+  
+  if(result){
+
+    $.ajax({
+        type: 'POST',
+        url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/deleteServiceSubscriptionPlanById',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        data: formdata,
+      success: function(data) {
+
+        alert("Delete data Sucessfully !!");
+        window.location.reload();
+
+        }
+
+      });
+
+  } else {
+
+       window.location.reload();
+
+    }
+
+
+  }
+
+    
+  </script>
+
+      

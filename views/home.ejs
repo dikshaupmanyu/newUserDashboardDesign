@@ -1,0 +1,790 @@
+
+           <%- include partials/header %>
+
+
+<div class="container-fluid">
+  <div class="row content">
+
+    <div class="col-sm-3 sidenav">
+        <br>
+        <a href="#"><img src="images/logo.png" alt="images"></a>
+        <br>
+        <h4 id="loginvals"></h4>
+        <ul class="nav nav-pills flex-column">
+          <li class="active"><a href="/home">Dashboard</a></li>
+          <li><a href="/tip">Make a Tip</a></li>
+          <li><a href="/room">Chat</a></li>
+          <li><a href="#" onclick="myFunction()">Logout</a></li>
+        </ul><br>
+        
+    </div>
+
+
+    <div class="col-sm-5" style="height: auto;">
+      <br>
+ 
+      <div id="demo">
+        
+      </div>
+
+
+    </div>
+
+    <div class="col-sm-4">
+      <br>
+      <form method="POST" id="data">
+       <div class="input-group">
+        <input type="text" class="form-control" name="stockName[]" placeholder="Search Stock.." id="stockName">
+        <span class="input-group-btn">
+          
+          <input class="btn btn-primary" type="submit" value="ADD">
+        </span>
+       </div>
+      </form>
+
+      <br>
+      <div class="card heading" style="background: rgb(38, 59, 102); color: white; border: none;">
+        <table>
+          <td class="nname">Company Name</td>
+          <td>Price</td>
+          <td>Change</td>
+        </table>
+      </div>
+      <br>
+      <div id="demos">
+        
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+ <!--   <%- include partials/footer %> -->
+
+
+<script type="text/javascript">
+  var sData = localStorage.getItem('allTokenData');
+  var storageData= JSON.parse(sData);
+ 
+  var tokens = storageData.tokendata;
+  //alert(tokens);
+
+  $("form#data").submit(function(e) {
+    e.preventDefault();    
+    // alert(JSON.stringify(e));
+     var multi = $("#stockName").val();
+     // alert(multi);
+
+    // var formDatass = new FormData(this);
+
+    // alert(formDatass);
+
+    // $.ajax({
+    //     url: "https://apis.tradetipsapp.com/api/stockDetail/addMultipleStock",
+    //     headers: {
+    //       Authorization: 'Bearer '+ tokens,
+    //        },
+    //     type: 'POST',
+    //     data: JSON.stringify({"stocks":multi}),
+    //     success: function (data) {
+    //         alert(data)
+    //     },
+    //     cache: false,
+    //     contentType: false,
+    //     processData: false
+    // });
+});
+
+  var userName = storageData.uname;
+
+  //alert(userName);
+
+  var formdata = {  offset: 0, limit: 1000000};
+
+//   $(window).scroll(function () {
+//     // End of the document reached?
+//     if ($(document).height() - $(this).height() == $(this).scrollTop()) {
+//   
+
+  $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/tip/getAllTipFeaturePaginationForUser',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        data: formdata,
+      success: function(data) {
+       var datak = JSON.stringify(data);
+       var dataResult = JSON.parse(datak); 
+       // console.log(dataResult);
+       var text = "" ;
+       var len = dataResult.length;
+       // console.log(len);
+       var stockVal = [];
+       var tipId = [];
+       var tipPrice = [];
+
+       for (i= 0; i< len; i ++) {
+
+                stockVal.push(dataResult[i].tip.stockName);  
+                tipId.push(dataResult[i].tip.id);   
+                tipPrice.push(dataResult[i].tip.createTipPrice);
+
+
+
+             var date = new Date(dataResult[i].tip.modifiedOn);
+             var options = {year: "numeric", month: "long", day: "numeric"};
+
+             var newdate = date.toGMTString('en-US', options);  
+
+
+             const stripped = newdate.replace(/GMT/g, 'NYT');
+            // console.log(stripped);
+
+             // var userdataPin = dataResult[i].userPinStatus;
+
+           
+
+             text += '<div><p style="color: white; text-align: end;" id="tipDetailDate' + dataResult[i].tip.id + '">'+ stripped +'</p><div  id="tipDetailDivPart' + dataResult[i].tip.id + '"><div class="card text-white mb-3 testtoo"><div><div><div class="card-header"><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" data-toggle="modal" data-target="#exampleModals' + dataResult[i].tip.id + '" style="margin: 0px; padding: 0px;"><li><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="pic" width="50" height="50" class="rounded-circle">&nbsp;&nbsp;<span>' + dataResult[i].tip.appUser.userName + '</span></li><li class="suggestion' + dataResult[i].tip.id + '">' + (dataResult[i].tip.stockSuggestion == "Buy" ? '<span class="Buy">BUY</span>' : '<span class="Sell">SELL</span>') +'</li></ul><div class="modal fade bs-example-modal-xl custom-modal" id="exampleModals' + dataResult[i].tip.id + '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"><div class="modal-dialog modal-xl" role="document"><div class="modal-content modal-xl" id="datamodel"><div class="card-header modal-xl"><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" style="margin: 0px; padding: 0px;"><li><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="pic" width="50" height="50" class="rounded-circle">&nbsp;&nbsp;<span>' + dataResult[i].tip.appUser.userName + '</span></li><li class="suggestion">' + (dataResult[i].tip.stockSuggestion == "Buy" ? '<span class="Buy">BUY</span>' : '<span class="Sell">SELL</span>') +'</li></ul></div><div class="modal-body modal-xl"><div class="card-header" style="background: white; border: none;"><div class="row"><div class="col-md-6"><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" style="margin: 0px; padding: 0px;"><li><h5 style="color: black;">' + dataResult[i].tip.stockName + '</h5><span id="skComnyName'+ dataResult[i].tip.id +'"></span></li><li>CURRENT PRICE<br><h6 class="hclass" id="flatestPrice' + dataResult[i].tip.id + '"><span>$</span></h6></li></ul><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" style="margin: 0px; padding: 0px;"><li id="newEntryval' + dataResult[i].tip.id + '">ENTRY<br><h6 style="color: black;" id="entrydata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h6></li><li>EXIT<br><h6 style="color: black;" id="exitdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</h6></li><li>STOP<br><h6 style="color: black;" id="stopdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h6></li><li class="tip">AT TIME OF TIP<br><h6 class="hclass" id="stockkTipPrice' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</h6></li></ul><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" style="margin: 0px; padding: 0px;"><li style="width: 65%;"><h6>'+ dataResult[i].tip.comment +'</h6></li><li>CHANGE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><p id="changeVals' + dataResult[i].tip.id + '"></p></li></ul><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" style="margin: 0px; padding: 0px;"><li><img src="white.jpg" alt="pic" width="250" height="150" class="img-responsive"></li></ul></div><div class="col-md-6"><ul class="list-group" style="overflow-y: scroll; height: 300px;"><div id="tiploaded' + dataResult[i].tip.id + '"></div></ul><form id="addCommentForm" onSubmit="return false"><input type="hidden" name="id" value="' + dataResult[i].tip.id + '" id="loadedId"><input type="hidden" name="userId" id="currntIdUser" value="' + dataResult[i].tip.appUser.id + '"><input type="hidden" name="status" value="Pending"><textarea class="form-control" id="commentDetails" name="commentDetails" placeholder="Enter Comment"></textarea><br><input type="submit" class="btn btn-primary" value="Add" onclick="addComment(this.id)" id="' + dataResult[i].tip.id + '"></form></div></div></div></div><div class="modal-footer modal-xl"><button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div></div></div><div class="card-body" style="padding: 4px;"><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" data-toggle="modal" data-target="#exampleModals' + dataResult[i].tip.id + '" style="margin: 0px; padding: 0px;"><li><h5 style="color: black;">'+ dataResult[i].tip.stockName +'</h5><span id="skComnyNames'+ dataResult[i].tip.id +'"></span></li><li>CURRENT PRICE<br><h6 class="hclass" id="flatestPrices' + dataResult[i].tip.id + '"><span>$</span></h6></li></ul><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" data-toggle="modal" data-target="#exampleModals' + dataResult[i].tip.id + '" style="margin: 0px; padding: 0px;"><li>ENTRY<br><h6 style="color: black;" id="entrydatas' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h6></li><li>EXIT<br><h6 style="color: black;" id="exitdatas' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</h6></li><li>STOP<br><h6 style="color: black;" id="stopdatas' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h6></li><li class="tip">AT TIME OF TIP<br><h6 class="hclass"><span>$</span>'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</h6></li></ul><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" data-toggle="modal" data-target="#exampleModals' + dataResult[i].tip.id + '" style="margin: 0px; padding: 0px;"><li style="width: 65%;"><h6>'+ dataResult[i].tip.comment +'</h6></li><li>CHANGE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><p id="changeValsfront' + dataResult[i].tip.id + '"></p></li></ul><ul class="list-unstyled d-flex justify-content-between font-small text-muted mb-0" style="margin: 0px; padding: 0px;"><li data-toggle="modal" data-target="#exampleModals' + dataResult[i].tip.id + '"><img src="/comment.jpeg" class="image-responsive" height="18" width="20" style="cursor: pointer;">&nbsp;<span>' + dataResult[i].commentCount + '</span></li><li><a onclick="pinFunction(this.id)" id="' + dataResult[i].tip.id + '" style="color: #000;"><p id="StatusPin' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p><img id="imgstatus' + dataResult[i].tip.id + '" src="#" style="height: 15px; cursor: pointer;"/>&nbsp;<span id="textval' + dataResult[i].tip.id + '">' + dataResult[i].pinCount + '</span></a></li><li><a onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '" style="color: #000;"><p id="StatusLike' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p><img id="imgLikestatus' + dataResult[i].tip.id + '" src="#" style="height: 15px; cursor: pointer;"/>&nbsp;<span id="textvalLike' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span></a></li><li data-toggle="modal" data-target="#exampleModalInfo' + dataResult[i].tip.id + '"><img src="/info.jpeg" style="height: 15px; cursor: pointer;"></li><div class="modal fade" id="exampleModalInfo' + dataResult[i].tip.id + '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-body"><li style="text-align: center; border: 1px solid rgba(0, 0, 0, 0.48); color: rgba(0, 123, 255, 0.77); height: 50px; padding-top: 5px;"><img src="/IMG-20200819-WA0007.jpg" class="img-responsive" width="12"> Share Tip<button type="button" class="btn btn-primary" onclick="copyClipboard(this.id)" id="' + dataResult[i].tip.id + '">Copy to Clipboard</button></li><input type="text" value="'+ dataResult[i].tip.stockName +' Current price: $5.99 Suggested entry:  $'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +' exit: $'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +' stop: $'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +' Stock tip by ' + dataResult[i].tip.appUser.userName + ' on TradeTips. Download at TradeTipsApp.com" id="divClipboard' + dataResult[i].tip.id + '"><li style="color: red; text-align: center; border: 1px solid rgba(0, 0, 0, 0.48); height: 50px; padding-top: 12px;"><a href="#" data-toggle="modal" data-target="#myModaldelte' + dataResult[i].tip.id + '"><svg class="svg-inline--fa fa-trash fa-w-14" style="height: 20px;" aria-hidden="true" data-prefix="fa" data-icon="trash" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M0 84V56c0-13.3 10.7-24 24-24h112l9.4-18.7c4-8.2 12.3-13.3 21.4-13.3h114.3c9.1 0 17.4 5.1 21.5 13.3L312 32h112c13.3 0 24 10.7 24 24v28c0 6.6-5.4 12-12 12H12C5.4 96 0 90.6 0 84zm415.2 56.7L394.8 467c-1.6 25.3-22.6 45-47.9 45H101.1c-25.3 0-46.3-19.7-47.9-45L32.8 140.7c-.4-6.9 5.1-12.7 12-12.7h358.5c6.8 0 12.3 5.8 11.9 12.7z"></path></svg></a> Remove Tip</li><div id="myModaldelte' + dataResult[i].tip.id + '" class="modal fade" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button></div><div class="modal-body"><center><h4><b>Remove Tip</b></h4></center><br/><center><h6><b>It will be gone forever</b></h6></center><br/></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteTip(this.id)" id="' + dataResult[i].tip.id + '">Ok</button><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div></div><li style="text-align: center; border: 1px solid rgba(0, 0, 0, 0.48); color: rgba(0, 123, 255, 0.77); height: 50px; padding-top: 12px;" data-dismiss="modal"> Cancel</li></div></div></div></div></ul></div></div></div></div></div><br>';
+
+               // if(dataResult[i].userPinStatus === "false"){ 
+               //    '<p style="color:white">True</p>' 
+               //  } else { 
+               //    '<p  style="color:white">False</p>'
+               //  }
+
+
+                myTacos(dataResult[i].tip.id);
+
+
+               function myTacos(primaryKey){
+
+
+                $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ dataResult[i].tip.stockName , function(d) {
+
+                          var count = Object.keys(d).length;
+
+                          Object.keys(d).map((keyName, key) => {
+
+                          
+                              $("#skComnyName"+primaryKey).text("$"+d[keyName].quote.companyName);
+                              $("#skComnyNames"+primaryKey).text("$"+d[keyName].quote.companyName);
+                              $("#flatestPrice"+primaryKey).text("$"+d[keyName].quote.latestPrice);
+                              $("#flatestPrices"+primaryKey).text("$"+d[keyName].quote.latestPrice);
+                              $("#flatestPrices"+primaryKey).text("$"+d[keyName].quote.latestPrice);
+
+
+
+                            var stockkkentry = $("#entrydata"+ primaryKey).text();
+                            // alert(stockkkentry);
+                            var stockkkexit = $("#exitdata"+ primaryKey).text();
+                            //alert(stockkkexit);
+                            var stockkkstop = $("#stopdata"+ primaryKey).text();
+                            //alert(stockkkstop);
+                            var stockkkPricess= $("#stockkTipPrice"+ primaryKey).text();
+                            // alert(stockkkPricess);
+                            // alert(stockkkPricess.replace("$",""));
+                           
+                            var newwdata = $("#flatestPrices"+ primaryKey).text();
+                            // alert(newwdata);
+                            // alert(newwdata.replace("$",""));
+
+                            var suggestionslist = $(".suggestion"+ primaryKey).text();
+                            // alert(suggestionslist);
+
+                            /////////////////////////////////////////////////////////////////
+
+                            var userdataPin = $("#StatusPin"+ primaryKey).text();
+
+                            
+                              if(userdataPin == "true"){
+                                   // alert("true");
+
+                                    $("#imgstatus"+ primaryKey).attr("src","savetip.png");
+
+
+                               }else{
+                                  // alert("false");
+
+                                    $("#imgstatus"+ primaryKey).attr("src","show.jpeg");
+
+
+                               }
+
+                               ////////////////////////////////////////////////////////////////////
+
+                               var userdataLike = $("#StatusLike"+ primaryKey).text();
+
+                            
+                              if(userdataLike == "true"){
+                                   // alert("true");
+
+                                    $("#imgLikestatus"+ primaryKey).attr("src","unnamed.png");
+
+
+                               }else{
+                                  // alert("false");
+
+                                    $("#imgLikestatus"+ primaryKey).attr("src","like.jpeg");
+
+
+                               }
+
+
+
+                            //////////////////////////change value////////////////////////////
+
+
+                             const minusValues = newwdata.replace("$","") - stockkkPricess.replace("$","");
+                             const values = Number(minusValues).toFixed(2);
+                             // alert(values);
+
+                             if(values > 0){
+
+                              $("#changeVals"+ primaryKey).html('<h6 class="hclass green"><span>$</span>' +values + '</h6>');
+                              $("#changeValsfront"+ primaryKey).html('<h6 class="hclass green"><span>$</span>' +values + '</h6>');
+
+                             }else{
+
+                              $("#changeVals"+ primaryKey).html('<h6 class="hclass red"><span>$</span>' +values + '</h6>');
+                              $("#changeValsfront"+ primaryKey).html('<h6 class="hclass red"><span>$</span>' +values + '</h6>');
+
+                             }
+
+                             /////////////////////////entry data/////////////////////////
+
+                            if(stockkkentry.replace("$","") <= newwdata.replace("$","") &&  suggestionslist == "BUY"){
+
+
+                              $("#entrydata"+ primaryKey).css("color" , "green");
+                              $("#entrydatas"+ primaryKey).css("color" , "green");
+
+                            
+                            } else if(stockkkentry.replace("$","") >= newwdata.replace("$","") && suggestionslist == "SELL"){
+
+
+                                $("#entrydata"+ primaryKey).css("color" , "green");
+                                $("#entrydatas"+ primaryKey).css("color" , "green");
+
+                            }else{
+
+
+                                 $("#entrydata"+ primaryKey).css("color" , "black");
+                                 $("#entrydatas"+ primaryKey).css("color" , "black");
+
+                            }
+
+
+                            //////////////////exit data/////////////////////////////////////////
+
+
+                             
+                              if(stockkkentry.replace("$","") <= newwdata.replace("$","") &&  suggestionslist == "BUY"){
+
+
+                              $("#exitdata"+ primaryKey).css("color" , "green");
+                              $("#exitdatas"+ primaryKey).css("color" , "green");
+
+                            
+                            } else if(stockkkentry.replace("$","") >= newwdata.replace("$","") && suggestionslist == "SELL"){
+
+
+                                $("#exitdata"+ primaryKey).css("color" , "green");
+                                $("#exitdatas"+ primaryKey).css("color" , "green");
+
+                            }else{
+
+
+                                 $("#exitdata"+ primaryKey).css("color" , "black");
+                                 $("#exitdatas"+ primaryKey).css("color" , "black");
+
+                            }
+
+
+
+                            /////////////////////stop data//////////////////////////////  
+
+                             if(suggestionslist == "BUY" && newwdata.replace("$","") < stockkkPricess.replace("$","") && newwdata.replace("$","") <=  stockkkstop.replace("$","")){
+
+
+                              $("#stopdata"+ primaryKey).css("color" , "red");
+                              $("#stopdatas"+ primaryKey).css("color" , "red");
+
+                            
+                            } else if(suggestionslist == "SELL" && stockkkPricess.replace("$","") < newwdata.replace("$","") && newwdata.replace("$","") >=  stockkkstop.replace("$","")){
+
+
+                                $("#stopdata"+ primaryKey).css("color" , "black");
+                                $("#stopdatas"+ primaryKey).css("color" , "black");
+
+                            }else{
+
+
+                                 $("#stopdata"+ primaryKey).css("color" , "black");
+                                 $("#stopdatas"+ primaryKey).css("color" , "black");
+
+                            }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+                       $.ajax({
+                              type: 'POST',
+                              url: 'https://apis.tradetipsapp.com/api/comment/getCommentsByTipIdPagination',
+                              headers: {
+                                Authorization: 'Bearer '+ tokens,
+                                 },
+                              data: {
+                                  tipId: primaryKey,
+                                  limit: 100,
+                                  offset: 0,
+                                },
+                            success: function(data) {
+
+                               const dataResult = data;
+                                  let newtip = [];
+                                  for(var i=0; i< dataResult.length; i++){
+                                   
+                                  newtip += '<li class="list-group-item"><div class="row"><div class="col-xs-2 col-md-2"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].appUser.id + '" alt="pic" width="50" height="50" class="rounded-circle"></div><div class="col-xs-9 col-md-9"><div style="color: blue;">' + dataResult[i].appUser.userName + '</div><div class="comment-text" style="color: black;">' + dataResult[i].commentDetails + '</div></div><div class="col-xs-1 col-md-1"><input type="hidden" name="secondId" id="secondId" value="3fe22d6e-6fbf-4e18-8e99-2866d2814925"><input type="hidden" name="fristid" id="fristid" value="1d277791-653c-4886-8e45-7a6870127ca2"><a><img src="flag.png" width="20" height="20"></a></div></div></li>';
+
+                                   // newtip.push(dataResult[i]);
+                                  }
+                                   $("#tiploaded"+primaryKey).append(newtip);
+                                 
+
+                              }
+
+                            });
+
+
+
+                          });
+
+                            
+                          
+
+                  
+
+                   });
+         
+
+                
+
+                }
+
+
+             
+
+          
+        }
+
+              
+               $("#demo").append(text);
+               
+
+
+                 // console.log(stockVal);
+               //console.log(tipId);
+
+               
+
+       }
+       
+  });
+
+//   }
+
+// }); 
+
+
+ $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/stockDetail/getAllStockOfUserByUserName?userName='+ userName,
+        headers: {
+          Authorization: 'Bearer '+ tokens ,
+        },
+        data: formdata,
+      success: function(datas) {
+       var dataks = JSON.stringify(datas);
+       var dataResults = JSON.parse(dataks); 
+       // console.log(dataResults);
+       var texts = "" ;
+       
+       var lens = dataResults.length;
+
+          if(dataResults.length > 0){
+
+
+               let deletdata = [];
+
+                let users = [];
+                for(var i= dataResults.length - 1; i >= 0 ; i--){
+
+                    users.push(dataResults[i].stockSymbol); 
+                    deletdata.push(dataResults[i].id);                   
+
+                // $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ dataResults[i].stockSymbol , function(r) {
+                //   console.log(r);
+                //   console.log(users);
+                //   // console.log(users[0]);
+                //   // console.log("dataa is " + r["FB"].quote);
+                //   // console.log(r["FB"].quote.latestPrice);
+
+                // //     stocklist: dataResult[this.state.item.tip.stockName].quote,
+                // // tipLatestprice : dataResult[this.state.item.tip.stockName].quote.latestPrice
+             
+                // }); 
+                }
+
+                // console.log("value is" + users);
+
+                  
+
+                 
+                $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ users , function(r) {
+                   // console.log(r);
+
+                    // console.log("stockid is " + deletdata);
+
+                   for (k= 0; k< users.length; k ++) {
+
+                    // console.log(deletdata[k]);
+
+                    // console.log(r[users[k]].quote.latestPrice);
+
+                    // tipLatestprice = r[users[k]].quote.latestPrice;
+                    // compny = r[users[k]].quote.companyName);
+                    // symbols.push(r[users[k]].quote.symbol);
+
+                    texts += '<div class="card"><div class="table-responsive"><table class="table main"><thead><tr><td>'+ r[users[k]].quote.symbol +'</td><td></td><td><a style="margin-left: 80px; cursor: pointer;" href="#" onclick=" deleteStock()"><img src="delete.jpg" width="20" height="20"></a></td></tr></thead><tbody><tr><td class="tableone">'+ r[users[k]].quote.companyName +'</td><td class="tabletwo"><span>$</span>'+ parseFloat(r[users[k]].quote.latestPrice).toFixed(2) +'</td>'+ (r[users[k]].quote.change > 0 ? '<td class="tablethree green"><span>'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span><svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-arrow-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/><path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8 3.707 5.354 6.354a.5.5 0 1 1-.708-.708l3-3z"/></svg></td>': '<td class="tablefour red"><span>'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span><svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-arrow-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.646 9.646a.5.5 0 0 1 .708 0L8 12.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/><path fill-rule="evenodd" d="M8 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/></svg>') +'</td></tr></tbody></table></div></div> <br>';
+
+                   }
+
+    
+                   $("#demos").append(texts);  
+
+                }); 
+
+                  
+
+              } 
+
+            
+            
+          
+      
+       }
+       
+  });
+
+function deleteStock(e) {
+  alert("hii");
+  alert(e);
+}
+
+  // $("#formoid").submit(function(event){
+
+  // }
+
+
+function addComment(){
+
+      // var formdata = $('#addCommentForm').serialize();
+
+     // alert(formdata);
+     
+     var tipId = $("#loadedId").val();
+     // alert(tipId);
+     var commentDetails = $("#commentDetails").val();
+     // alert(commentDetails);
+     var userId = $("#currntIdUser").val();
+     // alert(userId);
+     var status = "Pending";
+     // alert(status);
+
+     var datass = {tipId: tipId,
+        commentDetails: commentDetails,
+        status: status,
+        userid: userId};
+
+
+    $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/comment/addCommentOnTip',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        data: datass,
+      success: function(datass) {
+
+        alert(JSON.stringify(datass));
+
+        alert(datass.tipId);
+
+        $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/comment/getCommentsByTipIdPagination',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        data: {
+            tipId: datass.tipId,
+            limit: 100,
+            offset: 0,
+          },
+      success: function(data) {
+
+         const dataResult = data;
+            // alert(dataResult.length);
+            var lens = dataResult.length;
+            alert(lens);
+            var finalVal = parseInt(lens) - 1 ;
+            alert(finalVal);
+            alert(dataResult[finalVal].commentDetails);
+             
+            newtip += '<li class="list-group-item"><div class="row"><div class="col-xs-2 col-md-2"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[finalVal].appUser.id + '" alt="pic" width="50" height="50" class="rounded-circle"></div><div class="col-xs-9 col-md-9"><div style="color: blue;">' + dataResult[finalVal].appUser.userName + '</div><div class="comment-text" style="color: black;">' + dataResult[finalVal].commentDetails + '</div></div><div class="col-xs-1 col-md-1"><input type="hidden" name="secondId" id="secondId" value="3fe22d6e-6fbf-4e18-8e99-2866d2814925"><input type="hidden" name="fristid" id="fristid" value="1d277791-653c-4886-8e45-7a6870127ca2"><a><img src="flag.png" width="20" height="20"></a></div></div></li>';
+
+             // newtip.push(dataResult[i]);
+            
+             $("#tiploaded" +datass.tipId).append(newtip);
+           
+
+        }
+
+      });
+     
+        // var valss = parseInt(imgCount) - 1;
+
+        // $("#textvalLike"+e).text(valss);
+
+        // $("#StatusLike"+ e).text("false");
+
+        // $("#imgLikestatus"+e).attr("src","like.jpeg");
+
+
+        }
+
+      });
+
+}
+
+function pinFunction(e) {
+ 
+  var formdata = {tipId : e};
+
+  var imgCount = $("#textval"+ e).text();
+
+  var userdataPin = $("#StatusPin"+ e).text();
+
+  if(userdataPin == "true"){
+
+    $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/tipFeature/tipUnPinForUser',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        data: formdata,
+      success: function(data) {
+     
+        var valss = parseInt(imgCount) - 1;
+
+        $("#textval"+e).text(valss);
+
+        $("#StatusPin"+ e).text("false");
+
+        $("#imgstatus"+e).attr("src","show.jpeg");
+
+
+        }
+
+      });
+
+  }else{
+    $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/tipFeature/tipPinForUser',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        data: formdata,
+      success: function(data) {
+      
+        var valss = parseInt(imgCount) + 1;
+
+        $("#textval"+e).text(valss);
+
+        $("#StatusPin"+ e).text("true");
+
+
+        $("#imgstatus"+e).attr("src","savetip.png");
+
+
+        }
+
+      });
+  }
+
+
+  
+
+
+  // $.ajax({
+  //       type: 'POST',
+  //       url: 'https://apis.tradetipsapp.com/api/tipFeature/tipPinForUser',
+  //       headers: {
+  //         Authorization: 'Bearer '+ tokens,
+  //          },
+  //       data: formdata,
+  //     success: function(data) {
+  //     // alert(data);
+  //      var datak = JSON.stringify(data);
+  //      var dataResult = JSON.parse(datak); 
+  //      // alert(dataResult.isPin);
+  //       alert("Done");
+
+  //       }
+
+  //     });
+
+}
+
+function likeFunction(e) {
+ 
+  var formdata = {tipId : e};
+
+  var imgCount = $("#textvalLike"+ e).text();
+
+  var userdataPin = $("#StatusLike"+ e).text();
+
+  if(userdataPin == "true"){
+
+    $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/tipFeature/tipUnLikeForUser',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        data: formdata,
+      success: function(data) {
+     
+        var valss = parseInt(imgCount) - 1;
+
+        $("#textvalLike"+e).text(valss);
+
+        $("#StatusLike"+ e).text("false");
+
+        $("#imgLikestatus"+e).attr("src","like.jpeg");
+
+
+        }
+
+      });
+
+  }else{
+    $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/tipFeature/tipLikeForUser',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        data: formdata,
+      success: function(data) {
+      
+        var valss = parseInt(imgCount) + 1;
+
+        $("#textvalLike"+e).text(valss);
+
+        $("#StatusLike"+ e).text("true");
+
+
+        $("#imgLikestatus"+e).attr("src","unnamed.png");
+
+
+        }
+
+      });
+  }
+
+
+  
+
+
+  // $.ajax({
+  //       type: 'POST',
+  //       url: 'https://apis.tradetipsapp.com/api/tipFeature/tipPinForUser',
+  //       headers: {
+  //         Authorization: 'Bearer '+ tokens,
+  //          },
+  //       data: formdata,
+  //     success: function(data) {
+  //     // alert(data);
+  //      var datak = JSON.stringify(data);
+  //      var dataResult = JSON.parse(datak); 
+  //      // alert(dataResult.isPin);
+  //       alert("Done");
+
+  //       }
+
+  //     });
+
+}
+
+
+
+function copyClipboard(e){
+
+  var copyText = document.getElementById("divClipboard"+ e);
+  // alert(copyText);
+ 
+  copyText.select();
+  // copyText.setSelectionRange(0, 99999)
+  document.execCommand("copy");
+  // document.body.removeChild(copyText);
+
+  alert("Copied the text: " + copyText.value);
+                                 
+                                  
+}
+
+function deleteTip(e) {
+
+  // alert(e);
+ 
+  var formdata = {tipId : e};
+
+  // alert(formdata);
+
+  // alert(tokens);
+
+    $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/tipFeature/tipHideForUser',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        data: formdata,
+      success: function(data) {
+
+        // alert(JSON.stringify(data));
+     
+        // var valss = parseInt(imgCount) - 1;
+
+          $("#tipDetailDivPart"+e).css("display" , "none");
+
+           $("#tipDetailDate"+ e).css("display" , "none");
+
+        // $("#imgstatus"+e).attr("src","show.jpeg");
+
+
+        }
+
+      });
+
+
+}
+
+
+</script>
