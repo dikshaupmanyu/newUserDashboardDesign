@@ -54,11 +54,11 @@ const db = admin.firestore();
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
-app.listen(port);
+// app.listen(port);
 
  // var httpServer = http.createServer(app);
-//var httpsServer = https.createServer(credentials, app);
+var httpsServer = https.createServer(credentials, app);
 
  // httpServer.listen(port);
-//httpsServer.listen(port);
+httpsServer.listen(port);
 console.log('The magic happens on port ' + port);
