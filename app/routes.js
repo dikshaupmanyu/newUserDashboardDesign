@@ -97,7 +97,9 @@ module.exports = function(app) {
 
     var mentorids = req.query.id;
 
-    res.render('aiDetails.ejs' , {tipsIds : mentorids});
+    var symbol = req.query.stockName;
+
+    res.render('aiDetails.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
 
@@ -286,11 +288,11 @@ module.exports = function(app) {
     res.render('room.ejs');
   });
 
-/*     app.get('/tip', function(req, res) {
+     app.get('/tip', function(req, res) {
 
     res.render('tip.ejs');
   });
-*/
+
 
 
 };
