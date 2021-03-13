@@ -62,16 +62,16 @@
         </div>
       </div>
 
-               <div class="modal welcome_modal" tabindex="-1" id="welcomeModal">
+               <!-- <div class="modal welcome_modal" tabindex="-1" id="welcomeModal">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-body">
                         <div class="welcome_modal_top">
                           <h2>This is how you make money with TradeTips!</h2>
-                         <!--  <img src="images/welcome-bird.png" alt="images"> -->
+                          <img src="images/welcome-bird.png" alt="images">
                         </div>
                         <div class="welcome_modal_btm">
-                         <!--  <h3>Below is your "list of services" screen. Services are any methods that you use to sell your investing advice to others, (such as running a newsletter, posting subscriber only videos, holding virtual classes, etc.). Any investing advice service you have can be posted to the app here, which will then appear on TradeTips as your own storefront.You set your own prices, and you are in control of what your customers see and when.</h3> -->
+                          <h3>Below is your "list of services" screen. Services are any methods that you use to sell your investing advice to others, (such as running a newsletter, posting subscriber only videos, holding virtual classes, etc.). Any investing advice service you have can be posted to the app here, which will then appear on TradeTips as your own storefront.You set your own prices, and you are in control of what your customers see and when.</h3>
                           <h3>1. Click on "Create New Service" & choose your service(s).</h3> 
                           <h3>2 Enter details, subscription schedule, and price.</h3>
                           <h3>3. Choose an image for your service and publish</h3>
@@ -81,7 +81,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
     </div>
   </div>
 </div>
@@ -107,7 +107,7 @@
   
   var userids = storageData.uid;
 
-   $.ajax({
+   /*$.ajax({
               type: 'POST',
               url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/getAllServiceSubscriptionPlanForMentor',
               headers: {
@@ -122,15 +122,15 @@
                  // alert(dataResult.length);
                  if(dataResult.length == 0){
                   $('#welcomeModal').modal('show');
-                  document.getElementById('serviceMeans').innerHTML="You currently have no services created. <a data-toggle='modal' data-target='#welcomeModal' style='color:blue;'>What is a service?</a>";
+                  document.getElementById('serviceMeans').innerHTML="You currently have no services created. <a data-toggle='modal' data-target='#welcomeModal' style='color:#007bff;'>What is a service?</a>";
                  } else {
                    // alert(dataResult.length);
-                    document.getElementById('serviceMeans').innerHTML='You have ' + dataResult.length +  ' service created. <a data-toggle="modal" data-target="#welcomeModal" style="color:blue;">What is a service?</a>';
+                    document.getElementById('serviceMeans').innerHTML='You have ' + dataResult.length +  ' service created. <a data-toggle="modal" data-target="#welcomeModal" style="color:#007bff;">What is a service?</a>';
                  }
 
               }
 
-            });
+            });*/
     
 
             $.ajax({
@@ -161,7 +161,7 @@
                      // });
                    
                    
-                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=Newsletter">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span><a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"></div></li></ul></div></div>';
 
                    // newtip.push(dataResult[i]);
                   }
@@ -192,7 +192,7 @@
 
                   // alert(dataResult[i].serviceTypeId);
                    
-                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img  src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=1-1Chat">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img  src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"></div></li></ul></div></div>';
 
                    // newtip.push(dataResult[i]);
                   }
@@ -224,7 +224,7 @@
 
                   // alert(dataResult[i].serviceTypeId);
                    
-                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img  src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=VideoSubscription">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img  src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"></div></li></ul></div></div>';
 
                    // newtip.push(dataResult[i]);
                   }
@@ -255,7 +255,7 @@
 
                   // alert(dataResult[i].serviceTypeId);
                    
-                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=LiveChat">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"></div></li></ul></div></div>';
 
                    // newtip.push(dataResult[i]);
                   }
@@ -285,7 +285,7 @@
 
                   // alert(dataResult[i].serviceTypeId);
                    
-                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=MentorPhoneGroup">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"></div></li></ul></div></div>';
 
                    // newtip.push(dataResult[i]);
                   }
@@ -317,7 +317,7 @@
 
                   // alert(dataResult[i].serviceTypeId);
                    
-                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=Webinar">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"></div></li></ul></div></div>';
 
                    // newtip.push(dataResult[i]);
                   }
@@ -347,7 +347,7 @@
 
                   // alert(dataResult[i].serviceTypeId);
                    
-                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=Books">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"></li></ul></div></div>';
 
                    // newtip.push(dataResult[i]);
                   }
@@ -378,7 +378,7 @@
 
                   // alert(dataResult[i].serviceTypeId);
                    
-                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/more-icon.png" alt="images"></a><div class="dropdown-menu dropdown-menu-right"><ul><li><span><i class="fas fa-pencil-alt"></i></span><a href="/editService?id='+ dataResult[i].id +'&ids2='+ dataResult[i].serviceTypeId +'&sname=Class">Edit Services</a></li><li><span><i class="far fa-trash-alt"></i></span> <a onclick="DeleteService(this.id)" id="'+ dataResult[i].id +'"> Delete Services</a></li></ul></div></div></li></ul></div></div>';
+                  newtip += '<div class="pckg_item"><div class="pckg_item_left"><div class="pckg_item_img"><img src="https://apistest.tradetipsapp.com'+ dataResult[i].imageDetails +'" alt="images"></div><div class="pckg_item_txt"><p>'+ dataResult[i].title +'</p></div></div><div class="pckg_item_right"><ul><li><h3><small>Price</small> <span>$'+ dataResult[i].price +'</span></h3></li><li><div class="dropdown msg_option_dropdown"></div></li></ul></div></div>';
 
                    // newtip.push(dataResult[i]);
                   }
@@ -407,8 +407,13 @@ function DeleteService(e) {
         data: formdata,
       success: function(data) {
 
-        alert("Delete data Sucessfully !!");
-        window.location.reload();
+        //alert("Delete data Sucessfully !!");
+        $(".successmsg").html('<span>"Delete data Sucessfully !!"</span>');
+        setTimeout(function(){$(".successmsg").empty()}, 2000);
+        //window.location.reload();
+        setTimeout(function(){
+            window.location.reload(1);
+               }, 2000);
 
         }
 

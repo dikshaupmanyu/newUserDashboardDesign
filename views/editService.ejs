@@ -148,10 +148,92 @@
 
 $("#file-upload").change(function() {
   readURL(this);
+  var serviceTypeId = $('#serviceTypeId').val();
+  var serviceTypeSubscriptionId = $('#serviceTypeSubscriptionId').val();
+  var serviceName = $('#serviceName').val();
+  var title = $('#title').val();
+  var userId = userids;
+  var descriptionOne = $('#description1').val();
+  // var descriptionTwo = "";
+  var frequency = $('#frequency').val();
+  var price = $('#price').val();
+  var imageDetails = $('#file-image').val();
+  var file = document.getElementById("file-upload").files[0];
+  // alert(file);
+  var fullPath = $("#file-upload").val();    
+  var filename = fullPath.replace(/^.*[\\\/]/, '');
+  // alert(filename);
+  var frequencyss = $("#frequency option:selected").text();
+  var stripeProductName = userName +'_'+ serviceName +'_'+ frequencyss;
+  // alert(stripeProductName);
+
+  var formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("serviceTypeId", serviceTypeId);
+    formdata.append("serviceSubscriptionPlanMentorId", serviceTypeSubscriptionId);
+    formdata.append("descriptionOne", descriptionOne);
+    formdata.append("descriptionTwo", "null");
+    formdata.append("stripeProductName", stripeProductName);
+    formdata.append("frequency", frequency);
+    formdata.append("price", price);
+    formdata.append("mentorId", userId);
+    if(filename == ""){
+    // alert("null");
+      formdata.append("imageDetails", "");
+
+    }else{
+    // alert("not null");
+      formdata.append("imageDetails", file , filename);
+
+    }
+    var requestOptions = {
+      method: 'POST',
+      headers: {
+              Authorization: 'Bearer '+ tokens
+            },
+      body: formdata,
+      redirect: 'follow'
+    };
+    fetch("https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/modifyServiceSubscriptionPlanByMentor", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+                // alert("calling val" +result);
+                // alert(JSON.stringify(result));
+                var datak = JSON.stringify(result);
+                 console.log(datak);
+                var dataResultp = JSON.parse(datak);
+                // alert(dataResultp.title);
+                alert("Your Image uploaded successfully");
+                //window.location.reload();
+
+       })
+      .catch(error => console.log('error', error));
 });
 
 function ImgDelete(){
-  document.getElementById('file-image').style.display= "none";
+  var r = confirm("Are you sure to delete this Image ?");
+  if (r == true) {
+  var serviceTypeSubscriptionId = $('#serviceTypeSubscriptionId').val();
+         $.ajax({
+              type: 'POST',
+              url: 'https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/deleteServiceSubscriptionPlanImageByMentor',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  serviceSubscriptionPlanMentorId : serviceTypeSubscriptionId,
+                },
+            success: function(data) {
+                 // alert(JSON.stringify(data));
+                   
+                 
+
+              }
+
+            });
+
+     document.getElementById('file-image').style.display= "none";
+   }
 }
 
 
@@ -254,8 +336,13 @@ $("#formoid").submit(function(event){
                 // alert(datak);
                 var dataResultp = JSON.parse(datak); 
                 // alert(dataResultp.title);
-                alert("Your newsletter "+dataResultp.title+" was submitted successfully");
-                window.location.reload();
+                //alert("Your newsletter "+dataResultp.title+" was submitted successfully");
+                $(".successmsg").html('<span>"Your newsletter '+dataResultp.title+' submitted successfully."</span>');
+               setTimeout(function(){$(".successmsg").empty()}, 2000);
+               setTimeout(function(){
+               window.location.reload(1);
+               }, 2000);
+               // window.location.reload();
 
        })
       .catch(error => console.log('error', error));

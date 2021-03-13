@@ -18,7 +18,7 @@
        }
    </style>
 <body onload="getCookie()">
-     
+
         <!-- Body Flyers Start -->
     <div class="body_flyer body_flyer1">
       <img src="images/body-flyer.png" alt="images">
@@ -189,6 +189,9 @@ function getCookie(){
  }
  else{
     $("#rememberme").prop('checked', false);
+     // alert(document.cookie);
+     document.cookie = "userName=; max-age=0; path=/;";
+     document.cookie = "password=; max-age=0; path=/;";
  }
 }
 </script>
