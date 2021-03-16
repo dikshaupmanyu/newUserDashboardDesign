@@ -267,16 +267,21 @@ function handleError(image) {
                  //  }
 
                   
-                 document.getElementById("resultSet").textContent = dataResult[0].rsiResult ;
+                 // document.getElementById("resultSet").textContent = dataResult[0].rsiResult ;
                  if(dataResult[0].rsiResult == "buy"){
 
+                   document.getElementById("resultSet").textContent = dataResult[0].rsiResult ;
                   document.getElementById('resultSet').className = 'bs_btn buy_btn';
 
                  }else if (dataResult[0].rsiResult == "sell"){
 
+
+                  document.getElementById("resultSet").textContent = dataResult[0].rsiResult ;
                   document.getElementById('resultSet').className = 'bs_btn sell_btn';
 
                  } else {
+
+                  document.getElementById("resultSet").textContent = "AVOID" ;
 
                   document.getElementById('resultSet').className = 'bs_btn avoid_btn';
                   
@@ -388,7 +393,7 @@ function handleError(image) {
                                $("#changepoint").css("color" , "#dc3545");
                             }
 
-
+                      if(dataResult[0].avg10days != "--"){
                    if(dataResult[0].avg10days < parseFloat(d[keyName].quote.latestPrice).toFixed(2)){
                      document.getElementById("entrypoint").textContent = ">$"+parseFloat(dataResult[0].avg10days).toFixed(2);
                       $("#entrypoint").css("color" , "#09b598");
@@ -399,7 +404,12 @@ function handleError(image) {
                      document.getElementById("entrypoint").textContent = "<$"+parseFloat(dataResult[0].avg10days).toFixed(2);
                       $("#entrypoint").css("color" , "#dc3545");
                    }
-
+                 }
+                 else{
+                  document.getElementById("entrypoint").textContent = dataResult[0].avg10days;
+                 }
+                 
+                 if(dataResult[0].avg50days != "--"){
                    if(dataResult[0].avg50days < parseFloat(d[keyName].quote.latestPrice).toFixed(2)){
                      document.getElementById("stoppoint").textContent = ">$"+parseFloat(dataResult[0].avg50days).toFixed(2);
                       $("#stoppoint").css("color" , "#09b598");
@@ -410,6 +420,12 @@ function handleError(image) {
                      document.getElementById("stoppoint").textContent = "<$"+parseFloat(dataResult[0].avg50days).toFixed(2);
                       $("#stoppoint").css("color" , "#dc3545");
                    }
+                 }
+                 else{
+                  document.getElementById("stoppoint").textContent = dataResult[0].avg50days;
+                 }
+
+                 if (dataResult[0].avg200days != "--"){
 
                     if(dataResult[0].avg200days < parseFloat(d[keyName].quote.latestPrice).toFixed(2)){
                      document.getElementById("exitpoint").textContent = ">$"+parseFloat(dataResult[0].avg200days).toFixed(2);
@@ -421,7 +437,10 @@ function handleError(image) {
                      document.getElementById("exitpoint").textContent = "<$"+parseFloat(dataResult[0].avg200days).toFixed(2);
                       $("#exitpoint").css("color" , "#dc3545");
                    }
-                    
+                 }
+                 else{
+                  document.getElementById("exitpoint").textContent = dataResult[0].avg200days;
+                 }
                     });
                     });
 

@@ -166,7 +166,29 @@
           var expires = (new Date(Date.now()+ 10*24*60*60*1000)).toUTCString();
           // alert(expires);
           document.cookie = "userName="+usrname+";expires="+expires+";path=/";
-          document.cookie = "password="+pass+";expires="+expires+";path=/"+"; secure";
+          //document.cookie = "password="+pass+";expires="+expires+";path=/"+"; secure";
+          function encode_cookie(cookie_value) {
+
+              // This variable holds the encoded cookie characters
+              var coded_string = ""
+              
+              // Run through each character in the cookie value
+              for (var counter = 0; counter < cookie_value.length; counter++) {
+              
+                // Add the character's numeric code to the string
+                coded_string += cookie_value.charCodeAt(counter)+ 25
+                
+                // Separate each code with a plus sign (+)
+                if (counter < cookie_value.length - 1) {
+                  coded_string += "+"
+                }
+              }
+              return coded_string
+            }
+AA = encode_cookie(pass);
+//alert(AA);
+document.cookie = "password="+AA+";expires="+expires+";path=/";
+
   }
 }
   else{
@@ -179,12 +201,33 @@
 function getCookie(){
   //alert(document.cookie.length);
   if(document.cookie.length!=0){
+
     var data = document.cookie.split("=");
     var name = data[1].split(";");
     //alert(name[0]);
     //alert(data[2]);
+    function decode_cookie(coded_string) {
+
+        // This variable holds the decoded cookie value
+        var cookie_value = ""
+        
+        // Use + to split the coded string into an array
+        var code_array = coded_string.split("+")
+        
+        // Loop through the array
+        for (var counter = 0; counter < code_array.length; counter++) {
+
+          // Convert the code into a character and 
+          // add it to the cookie value string
+          cookie_value += String.fromCharCode(code_array[counter]- 25)
+        }
+        return cookie_value
+}
+
+BB = decode_cookie(data[2]);
+//alert(BB);
     $("#uname").val(name[0]);
-    $("#pswrd").val(data[2]);
+    $("#pswrd").val(BB);
     $("#rememberme").prop('checked', true);
  }
  else{
