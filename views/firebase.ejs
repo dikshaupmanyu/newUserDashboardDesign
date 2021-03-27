@@ -143,6 +143,85 @@
       }
 
 
+      .dashboard_wrapper.mentordashboard1_wrapper.card{
+        height: 600px;
+        height: calc(100vh - 120px);
+      }
+
+      .emojis{
+        margin: 0 !important;
+        position: absolute !important;
+        bottom: 38px;
+        right: 40px;
+      }
+     body .emoji-button{
+        margin-left: calc(100% - 85px);
+      }
+      @media screen and (min-width:1600px) {
+        .dashboard_wrapper.mentordashboard1_wrapper.card{
+          height: calc(100vh - 180px);
+        }
+      }
+      .input-group>#btn-input.form-control:focus{
+        z-index: 1;
+      }
+      .emojis{
+        z-index: 1;
+        display: none;
+      }
+      .emojis[style*='display: block;'] + .emoji-button{
+        pointer-events: none !important;
+        opacity: .9;
+      }
+
+
+
+/* change Chat Style */
+.chat li{
+  position: relative;
+}
+.chat li .chat-body{
+  position: relative;
+  margin-top: 22px;
+  margin-bottom: 25px;
+}
+.header.clearfix small.text-muted {
+    bottom: -25px;
+    position: absolute;
+    left: 3px;
+    color: #777 !important;
+    min-width: 150px;
+}
+.header.clearfix small.text-muted.left{
+  right: 3px;
+  left: auto;
+}
+
+.header.clearfix strong.primary-font {
+    position: absolute;
+    top: -23px;
+    left: 3px;
+    color: #666 !important;
+    font-weight: 100;
+    font-size: 14px;
+    min-width: 110px;
+}
+.header.clearfix strong.primary-font.right{
+  right: 3px;
+  left: auto;
+}
+.chat-care .chat-img .img-circle {
+    border-radius: 50%;
+    position: absolute;
+    bottom: 9px;
+    left: .5rem;
+    background: #eee;
+}
+.chat-care .chat-img.right .img-circle {
+    left: auto;
+    right: .5rem;
+}
+
       </style>
 <!--       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
  -->
@@ -177,7 +256,7 @@
           <div class="dsbrd_container">
 
 
-          <div class="dashboard_wrapper mentordashboard1_wrapper card" style="background: #ffff;height: 600px;">
+          <div class="dashboard_wrapper mentordashboard1_wrapper card" style="background: #ffff;">
                 <div class="card-header text-center" style="border: none!important;">
                     <span><b>Room One</b></span>
                 </div>
@@ -281,6 +360,20 @@
   <script>
     $(function () {
       $('#btn-input').emoji({place: 'after'});
+
+      $('.emoji-button').on("click", function(e){
+        if($('.emojis').is(":visible")){
+          console.log('click')
+        }
+      })
+
+      $('emojis').on("hide", function() {
+          //alert('hide');
+       })
+       $('emojis').on("show", function() {
+          //alert('show');
+       })
+
     })
   </script>
 <br>
