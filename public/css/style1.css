@@ -4,6 +4,10 @@
   --danger-color: #DC3545;
 }
 
+.tips_bx.avoid-bg{
+    background: #000d31;
+}
+
 @font-face {
     font-family: 'SF UI Display Bold';
     src: url(../fonts/sf-ui-display-bold.woff);
@@ -28,6 +32,9 @@
     font-family: 'SF UI Display Thin';
     src: url(../fonts/sf-ui-display-thin.woff);
 }
+body>br{
+    display: none;
+}
 
 body {
     font-family: 'SF UI Display Medium';
@@ -35,6 +42,18 @@ body {
     padding: 0;
     background: #000D31;
     background: radial-gradient(circle, rgba(9, 26, 74, 1) 0%, rgba(0, 13, 49, 1) 100%);
+}
+body:before{
+    content: "";
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #000D31;
+    background: radial-gradient(circle, rgba(9, 26, 74, 1) 0%, rgba(0, 13, 49, 1) 100%);
+    z-index: -1;
 }
 
 h1,
@@ -1580,7 +1599,8 @@ button:focus {
     font-family: 'SF UI Display Light';
 }
 .tips_bx_amount p span{
-    font-family: 'SF UI Display Semibold';
+/*    font-family: 'SF UI Display Semibold';
+*/    font-family: 'SF UI Display Light';
     position: relative;
 }
 .tips_bx_amount p span.color_buy::after {
@@ -1643,6 +1663,7 @@ button:focus {
 .tips_bx_cmpny_name{
     display: flex;
     align-items: center;
+    padding-right: 10px;
 }
 .bs_btn {
     display: block;
@@ -1685,7 +1706,7 @@ button:focus {
 }
 .tips_bx_cmpny_states ul li h3{
     font-size: 18px;
-    font-family: 'SF UI Display Semibold';
+    font-family: 'SF UI Display Light';
     padding: 0px 0px 6px;
 }
 .tips_bx_cmpny_states ul li h4{
@@ -1824,7 +1845,7 @@ button:focus {
 }
 .head_of_tips_wtlist_items .center_wti {
     margin-left: auto; 
-    padding-right: 9px;
+    padding-right: 26px;
 }
 /*.tips_wtlist_item_right{
     width: 46px;
@@ -2037,6 +2058,10 @@ button:focus {
 }
 .review_bx_head {
     margin: 0px 0px 18px;
+}
+.review_bx_txt .author_tag{
+    float: right;
+    margin-top: 2px;
 }
 .review_bx_txt p {
     font-size: 16px;
@@ -3555,6 +3580,7 @@ button:focus {
     display: flex;
     align-items: center;
     width: 400px;
+    padding-left: 65px!important;
 }
 .pckg_item_img img{
     width: 73px;
@@ -4065,9 +4091,9 @@ body .only_id_use{
     display: none;
 }
  .multi-items {
-    position: absolute;
-    cursor: text;
-    
+/*    position: absolute;
+*/    cursor: text;
+   /* width: 350px;*/
    /* background: yellow;*/
     float: left;
 }
@@ -4075,7 +4101,6 @@ body .only_id_use{
 .multi-item{
     float: left;
 } 
-
 
 .package_items_flex .pckg_item{
     display: flex;
@@ -4129,9 +4154,6 @@ body .only_id_use{
         max-height: calc(100vh - 250px);
     }
 }
-
-
-
 
 /* width */
 .scrollbar-css::-webkit-scrollbar {

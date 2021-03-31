@@ -14,10 +14,8 @@
 .input_group {
   padding: 0px!important;
 }
-/*.multi-items {
-  float: left;
- 
-}*/
+
+
 .avoid_btn {
     background: #000;
     border-color: #fff;
@@ -29,8 +27,8 @@ span.hclass.red{
 span.hclass.green{
   color: #09B598;
 }
- .multi-items {
-    position: absolute;
+ .multi-items {/*
+    position: absolute;*/
     cursor: text;
         float: left;
 }
@@ -65,6 +63,25 @@ ul.search-list {
 .search-list-input {
     position: relative;
 }
+.search-list-input .input_group{
+  border-radius: 5px;
+  position: relative;
+  padding-right: 60px !important;
+}
+.search-list-input .input_group .input-group-append{
+  position: absolute;
+  right: 0;
+}
+ .search-list-input .input_group input.form-control{
+  /* flex: 0 0 110px; */
+  width: auto !important;
+  padding-left: 5px !important;
+  padding-right: 5px;
+}
+
+.search-list-input .multi-items{
+  order: -1;
+} 
 ul.search-list li {
     display: block;
     font-size: 14px;
@@ -264,8 +281,8 @@ ul.search-list-loader {
                 <div class="scroller-dash-right scrollbar-css">
                 <div class="search-list-input">
                   <div class="input-group input_group">
-                    <input type="text" class="form-control"  id="search-stock" autocomplete="off" placeholder="Enter Symbol or Company Name" style="width: 80% !important;text-transform: uppercase;">
-                    <label class="multi-items" id="multi-items"></label>
+                    <input type="text" class="form-control"  id="search-stock" autocomplete="off" placeholder="Enter Symbol or Company Name" style="text-transform: uppercase; box-sizing: border-box; width: 350px;">
+                    <label class="multi-items" id="multi-items" style="inset: 8px;"></label>
                     <input type="hidden" class="magicsearch-hidden" />
                     <div class="input-group-append" id="input-group-append">
                       <button  id="stockadd" class="btn">Add</button>
@@ -421,7 +438,7 @@ ul.search-list-loader {
                      
                        //myarrdata.push({id:myids[1],stockSymbol:clicked.val(),stockImage:null,stockDetail:null});
                        //myarrdata.push({stockSymbol:clicked.val(),stockName:myids[1]});
-                       $('.multi-items').append('<div class="multi-item" id="MY_'+compid+'" data-symbol="'+myname+'" title="'+clicked.val()+'" ><span style="color:#fff;">'+clicked.val()+'</span><span class="multi-item-close" id="'+compid+'"  onclick="remove_element(this.id,this.title)" style="top: 13px;color:#fff;cursor:pointer;padding-left:2px;"><b>x</b></span></div>&nbsp;');
+                       $('.multi-items').append('<div class="multi-item" id="MY_'+compid+'" data-symbol="'+myname+'" title="'+clicked.val()+'" ><span style="color:#fff;">'+clicked.val()+'</span><span class="multi-item-close" id="'+compid+'"  onclick="remove_element(this.id,this.title)" style="top: 13px;color:#fff;cursor:pointer;padding-left:2px;"><b>x</b></span></div>');
                          if(!adjustinput(compid,'plus')){
                             remove_element(myids[1],clicked.val());
                          }
@@ -1404,7 +1421,7 @@ $(".scroller-dash-left").scroll(function() {
                
                    for (k= 0; k< users.length; k ++) {
                      if(r[users[k]] != undefined){
-                    texts += '<div class="tips_wtlist_item" id="item-'+ deletdata[k] +'"><div class="tips_wtlist_item_left"><h2>'+ r[users[k]].quote.symbol +'<span>'+ r[users[k]].quote.companyName +'</span></h2></div><div class="tips_wtlist_item_center"><h3>$ '+ parseFloat(r[users[k]].quote.latestPrice).toFixed(2) +'</h3> '+ (r[users[k]].quote.change > 0 ? ' </div><div class="tips_wtlist_item_right"><h3><span class="color_buy">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>':'</div><div class="tips_wtlist_item_right"><h3><span class="color_sell">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>')+'</div><div class="tips_wtlist_item_right"><span class="delete_stck" style="    color: white;" onclick="delete_stck(this.id)" id="'+ deletdata[k] +' '+ r[users[k]].quote.symbol +'""><i class="fa fa-trash"></i></span></div></div>';
+                    texts += '<a href="stockChart?stockName=' + r[users[k]].quote.symbol + '"><div class="tips_wtlist_item" id="item-'+ deletdata[k] +'"><div class="tips_wtlist_item_left"><h2>'+ r[users[k]].quote.symbol +'<span>'+ r[users[k]].quote.companyName +'</span></h2></div><div class="tips_wtlist_item_center"><h3>$ '+ parseFloat(r[users[k]].quote.latestPrice).toFixed(2) +'</h3> '+ (r[users[k]].quote.change > 0 ? ' </div><div class="tips_wtlist_item_right"><h3><span class="color_buy">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>':'</div><div class="tips_wtlist_item_right"><h3><span class="color_sell">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>')+'</div><div class="tips_wtlist_item_right"><span class="delete_stck" style="    color: white;" onclick="delete_stck(this.id)" id="'+ deletdata[k] +' '+ r[users[k]].quote.symbol +'""><i class="fa fa-trash"></i></span></div></div></a>';
                    }
                  }
                        $(".load-wrapp-list").css('display','none');
@@ -2079,6 +2096,7 @@ function likeFunction1(e) {
      $input=$("#search-stock");
     var search=document.getElementById('search-stock');
     var addbutton=document.getElementById('input-group-append').offsetWidth;
+
     var lineno=1;
     mywidth=search.offsetWidth-addbutton;
     myheight=search.offsetHeight;
@@ -2093,14 +2111,15 @@ function likeFunction1(e) {
     //alert(addbutton);
     //alert(mywidth);
     
+    
     elem= multiwidth;
-        // alert(multiwidth);
+         // alert(multiwidth);
          document.getElementById('multi-items').innerHTML.replace(/&nbsp;/g,'');
     if(elem>mywidth && action=='plus')
     {
       //alert('not');
        document.getElementById("search-stock").blur();
-        return false;
+        // return false;
         if(lineno==1)
         {
                elem=0+document.getElementById('MY_'+comp).offsetWidth;
@@ -2156,7 +2175,7 @@ function likeFunction1(e) {
 </script>
 
 
-<script>
+<!-- <script>
 function openCity(evt, cityName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -2170,4 +2189,4 @@ function openCity(evt, cityName) {
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
 }
-</script>
+</script> -->

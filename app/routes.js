@@ -9,6 +9,11 @@ module.exports = function(app) {
     res.render('chat.ejs');
   });
 
+  app.get('/profile', function(req, res) {
+
+    res.render('profile.ejs');
+  });
+
   app.get('/dashboard', function(req, res) {
 
     // var request = require("request");
