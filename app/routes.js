@@ -14,9 +14,9 @@ module.exports = function(app) {
     res.render('profile.ejs');
   });
 
-    app.get('/stripe', function(req, res) {
+    app.get('/subscribe', function(req, res) {
 
-    res.render('stripe.ejs');
+    res.render('subscribe.ejs');
   });
 
       app.get('/complete', function(req, res) {
