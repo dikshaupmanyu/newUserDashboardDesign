@@ -14,6 +14,91 @@ module.exports = function(app) {
     res.render('profile.ejs');
   });
 
+    app.get('/stripe', function(req, res) {
+
+    res.render('stripe.ejs');
+  });
+
+      app.get('/complete', function(req, res) {
+
+    res.render('complete.ejs');
+  });
+
+     app.get('/incomplete', function(req, res) {
+
+    res.render('incomplete.ejs');
+  });
+
+    app.post("/charge", async (req, res , next) => {
+
+    var request = require("request");
+
+    console.log(req.body);
+    // console.log(res);
+    var email = req.body.email;
+    var uname = req.body.name;
+    var plan = req.body.planName;
+    var price = req.body.amount * 100;
+    var subscriptionPlanId = req.body.subscriptionPlan;
+    var couponId = req.body.text1;
+
+
+
+    const stripe = require('stripe')('pk_test_Pbri8k4HUNcegrgjAohigZKF002BpByODh');
+
+    try {
+
+
+    const paymentMethod = await stripe.paymentMethods.create({
+        type: 'card',
+        card: {
+          number: req.body.cardNumber,
+          exp_month: req.body.month,
+          exp_year: req.body.year,
+          cvc: req.body.cvv,
+        },
+        billing_details: {
+          email: req.body.email,
+          name: req.body.name
+        }
+      });
+
+        
+          var options = { method: 'POST',
+            url: 'https://apistest.tradetipsapp.com/api/stripe/createStripePayment',
+            headers: 
+             { 'postman-token': 'a1f3bad2-8aab-6d21-7162-d82350e953af',
+               'cache-control': 'no-cache',
+               authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6InBhbmthanRlamF3YXRAZ21haWwuY29tIiwic3ViIjoiZDlhY2VkMjMtN2I4OS00YWJjLWJkNzEtNTUyM2FiODNhOThhIiwiaWF0IjoxNjIwNDU4Mzc4LCJleHAiOjE2MjEwNjMxNzh9.K3om8lJ3Kl2A2mlV5Q_G4quJ70z7yZke3EeH6yFlz2W223KLe5VmR01KjEsjHEWGgPaYtXq4ZVV8pC6ABw8N8Q' },     formData: { userName: req.body.name,
+               paymentId: paymentMethod.id,
+               subscriptionPlanId: req.body.subscriptionPlan,
+               couponId : req.body.text1 } };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            // {
+            //   res.render('incomplete.ejs');
+            // }
+            // throw new Error(error);
+
+            console.log(response);
+            // console.log(error);
+            // console.log(body);
+            res.render('complete.ejs');
+          });
+
+
+        } catch {
+     
+        return res.redirect('/incomplete');
+};
+
+
+   
+ 
+});
+
   app.get('/dashboard', function(req, res) {
 
     // var request = require("request");
