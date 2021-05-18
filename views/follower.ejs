@@ -1,0 +1,250 @@
+  <%- include partials/innerheader %>
+
+<!--   <link rel="stylesheet" href="dist/sample.index.css">
+
+
+ -->
+
+
+  <div class="app_main">
+                  
+            <%- include partials/innersidebar %>
+           <div class="app_content">
+            <div class="dsbrd_container">
+             <div class="mentor_wrapper mentor_follow_wrapper row">
+      <div class="mentor_wrapper_left col">
+        <div class="mentor_head">
+          <button class="btn back_btn"><i class="fas fa-arrow-left"></i></button>
+          <div class="author_bx">
+            <img id = "imagePreview" alt="images">
+            <div class="author_bx_txt">
+               <h2 id ="user_n"></h2>
+            </div>
+          </div>
+         
+        </div>
+        <div class="mentor_tab_area my_tab_content">
+          <nav>
+            <div class="nav nav-tabs nav-fill" role="tablist">
+              <a class="nav-item nav-link active" id="mt_follower" data-toggle="tab" href="#mt_follower_tab" role="tab" aria-controls="mt_follower_tab" aria-selected="true">Following</a>
+              <a class="nav-item nav-link" id="mt_following" data-toggle="tab" href="#mt_following_tab" role="tab" aria-controls="mt_following_tab" aria-selected="false">Followers</a>
+            </div>
+          </nav>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="mt_follower_tab" role="tabpanel" aria-labelledby="mt_follower">
+              <h5>People you follow</h5>
+              <br>
+              <div class="mentor_follow_list" id="newFollowerlist">
+              
+              </div>
+            </div>
+            <div class="tab-pane fade" id="mt_following_tab" role="tabpanel" aria-labelledby="mt_following">
+              <h5>People following you</h5>
+              <br>
+              <div class="mentor_follow_list" id="newFollowinglist">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div class="mentor_wrapper_right col">
+        <div class="mentor_follow_area">
+          <ul>
+            <li>
+              <h2 id = "follower" style="text-align: center;"></h2>
+              <h3>Followers</h3>
+            </li>
+            <li>
+              <h2 id = "followings" style="text-align: center;"></h2>
+              <h3>Following</h3>
+            </li>
+          </ul>
+          <button class="btn cmn_btn btn_primary">Follow</button>
+        </div>
+        <div class="abt_mentor">
+          <h2>About Mentor</h2>
+          <!-- <p>Voyez ce jeu exquis wallon, de graphie en kit mais bref. Portez ce vieux whisky au juge blond qui fume sur son île intérieure, à côté de l"alcôve ovoïde, où les bûches se consument dans l"âtre, ce qui lui permet de penser à la cænogenèse de l"être dont il est.</p>
+          <h3><a href="#">Read more</a></h3> -->
+          <h4>Member Since <span id = "create_date"></span></h4>
+        </div>
+      </div>
+    </div>
+            </div>
+          </div>
+
+  </div>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+  <script type="text/javascript">
+  var sData = localStorage.getItem('allTokenData');
+  var storageData= JSON.parse(sData);
+ 
+  var user_name = storageData.uname;
+  var email_id = storageData.email;
+  var LoggedInId = storageData.uid;
+  var tokens = storageData.tokendata;
+  console.log(user_name);
+  console.log(email_id);
+  console.log(LoggedInId);
+
+   var date = storageData.creation_date;
+  console.log(date);
+  var newdate2 = date.split(/(\s+)/);
+  var date1 = new Date(newdate2[0]);
+  mm =  date1.toDateString();
+  var newdate1 = mm.split(/(\s+)/);
+  newdate1.splice(0, 2);
+  var newdate3 = newdate1.toString(newdate1);
+  var res = newdate3.replace(/[, ]+/g, " ").trim();
+  var date2 = res.substring(0, 6) + "," + res.substring(6, res.length);
+   document.getElementById("create_date").textContent = date2;
+
+  document.getElementById("imagePreview").src = "https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId="+LoggedInId;
+  document.getElementById("user_n").textContent = user_name;
+
+    $.ajax({
+              type: 'POST',
+              url: 'https://apis.tradetipsapp.com/api/followUserList/getAllFollowUserListByUserName',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  limit: 100,
+                  offset: 0,
+                  followUserName: user_name
+                },
+               success: function(data) {
+                var data_len = data.length;
+                document.getElementById("follower").textContent = data_len;
+
+               }
+             });
+         $.ajax({
+              type: 'POST',
+              url: 'https://apis.tradetipsapp.com/api/followUserList/getAllFollowUserListByUserName',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  limit: 100,
+                  offset: 0,
+                  userName: user_name
+                },
+               success: function(data) {
+                var data_len = data.length;
+                document.getElementById("followings").textContent = data_len;
+
+
+               }
+             });
+  var formdata = new FormData();
+  formdata.append("userName", user_name);
+  formdata.append("limit", "1000");
+  formdata.append("offset", "0");
+
+  var requestOptions = {
+  method: 'POST',
+  headers: {
+        Authorization: 'Bearer ' + tokens,
+      },
+  body: formdata,
+  redirect: 'follow'
+  };
+  fetch("https://apis.tradetipsapp.com/api/followUserList/getAllFollowUserListByUserName", requestOptions)
+   .then(resp => resp.json())
+    .then(function(data) {
+      // console.log(data);
+      for( var i = 0; i< data.length; i++){
+          var userid = data[i]['id'];
+          var followUserName = data[i]['followUserName'];
+          var followUserId = data[i]['followUserId'];
+          $("#newFollowerlist").append('<div class="mentor_follow_item"><a href="visitProfile?Ids='+followUserId+'&Names='+followUserName+'"><div class="author_bx"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+followUserId+'" alt="images" onerror="imgError(this);"><div class="author_bx_txt"><h2>'+followUserName+'</h2></div></div></a><button class="btn cmn_btn btn_primary btn_small">Following</button></div>');
+          }       
+  });
+
+  /////////////////////////////////////////////////////////////////////////////////
+
+  var formdata = new FormData();
+  formdata.append("followUserName", user_name);
+  formdata.append("limit", "1000");
+  formdata.append("offset", "0");
+
+  var requestOptions = {
+  method: 'POST',
+  headers: {
+        Authorization: 'Bearer ' + tokens,
+      },
+  body: formdata,
+  redirect: 'follow'
+  };
+  fetch("https://apis.tradetipsapp.com/api/followUserList/getAllFollowUserListByUserName", requestOptions)
+   .then(resp => resp.json())
+    .then(function(data) {
+      // console.log(data);
+      for( var i = 0; i< data.length; i++){
+          var userid = data[i]['id'];
+          var followUserName = data[i]['followUserName'];
+          var followUserId = data[i]['followUserId'];
+          $("#newFollowinglist").append('<div class="mentor_follow_item"><a href="visitProfile?Ids='+followUserId+'&Names='+followUserName+'"><div class="author_bx"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+followUserId+'" alt="images" onerror="imgError(this);"><div class="author_bx_txt"><h2>'+followUserName+'</h2></div></div></a><button class="btn cmn_btn btn_primary btn_small">Following</button></div>');
+          }       
+  });
+
+    ///////////////////////////////////////////////////////////////////////
+
+   function imgError(image) {
+    image.onerror = "";
+    image.src = "images/userIcon.png";
+    return true;
+}  
+
+  </script>
+
+
+     <%- include partials/innerfooter %>
+
+
+
+     <!--  <div class="col-sm-9"  style="height:800px;color: white;">
+
+
+            <br>
+              <h2>
+                <b>Chat Room One</b>
+              </h2>
+              <br>
+              <ul style="list-style: none;">
+                <li><h5><b>1. We believe</b> in personal rights and freedom.</h5> </li>
+                <br>
+                <li><h5><b>2. This space</b> is for sharing winning trades and investing strategies, and yes to speak your mind.</h5> </li>
+                <br>
+                <li><h5><b>3. The app</b> was designed to help anyone make money and beat the market. So, as long as you don’t stand in the way of that ... we are good to go.</h5> </li>
+              </ul>
+              <br>
+              <a href="/chat">
+              <input type="hidden" id="user_id">
+              <input type="hidden" id="user_nickname">
+              <button type="button" class="nav-link" id="login-button">Enter Room</button>
+              </a><br>    
+
+              <a href="/firebase">
+           
+              <button type="button" class="nav-link" id="login-button">Enter Firesbase Chat</button>
+              </a><br>          
+      </div> -->
+
+
+  
+
+<!--     <script src="dist/sample.index.js"></script>
+ -->  
+
+    <script type="text/javascript">
+
+   window.history.forward(); 
+        function noBack() { 
+            window.history.forward(); 
+        } 
+
+       
+ </script>
+

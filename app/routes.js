@@ -14,6 +14,26 @@ module.exports = function(app) {
     res.render('profile.ejs');
   });
 
+   app.get('/follower', function(req, res) {
+
+    res.render('follower.ejs');
+  });
+
+
+   app.get('/followUserList', function(req, res) {
+
+    res.render('followUserList.ejs');
+  });
+
+     app.get('/visitProfile', function(req, res) {
+
+      var userIds = req.query.Ids;
+      var userNames = req.query.Names;
+
+    res.render('visitProfile.ejs',{visitedId : userIds , visitedName : userNames});
+  });
+     
+
     app.get('/subscribe', function(req, res) {
 
     res.render('subscribe.ejs');
