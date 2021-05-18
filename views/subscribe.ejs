@@ -169,11 +169,13 @@ onload = function() {
                   <label>Coupon Code</label>
                      <input type="text" name="text1" class="form-control" placeholder="Enter Coupon Code">
                     <!--  <input type="button" value="Validate Coupon" class="form-control" name="Submit" onclick="validate(document.getElementsByName('text1')[0].value)"> -->
+
                 </div>
+                 <label><b class="mr-2">Discount Price:</b> <span id="demos">$0</span></label>
               </div>
               <div class="col-6">
                 <div class="form-group">
-                  <label></label>
+                
                     <!--  <input type="text" name="text1" class="form-control" placeholder="Enter Coupon Code"> -->
                      <!-- <input type="button" value="Validate Coupon" class="btn -btn-default form-control" name="Submit" onclick="validate(document.getElementsByName('text1')[0].value)" style="margin-top: 8px;"> -->
                       <button class="btn cmn_btn btn_primary px-sm-5" onclick="validate(document.getElementsByName('text1')[0].value)">Validate Coupon</button>
@@ -242,8 +244,8 @@ onload = function() {
 
   </div>
 <script src="https://js.stripe.com/v3/"></script>
-<script src="/js/card.js"></script>
-     <%- include partials/innerfooter %>
+<!-- <script src="/js/card.js"></script>
+ -->     <%- include partials/innerfooter %>
 
 
     <script type="text/javascript">
@@ -291,7 +293,7 @@ onload = function() {
   var requestOptions = {
     method: 'POST',
     headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6InBhbmthanRlamF3YXRAZ21haWwuY29tIiwic3ViIjoiZDlhY2VkMjMtN2I4OS00YWJjLWJkNzEtNTUyM2FiODNhOThhIiwiaWF0IjoxNjIwNDU4Mzc4LCJleHAiOjE2MjEwNjMxNzh9.K3om8lJ3Kl2A2mlV5Q_G4quJ70z7yZke3EeH6yFlz2W223KLe5VmR01KjEsjHEWGgPaYtXq4ZVV8pC6ABw8N8Q',
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6InBhbmthanRlamF3YXRAZ21haWwuY29tIiwic3ViIjoiZDlhY2VkMjMtN2I4OS00YWJjLWJkNzEtNTUyM2FiODNhOThhIiwiaWF0IjoxNjIxMzM0NzgxLCJleHAiOjE2MjE5Mzk1ODF9.BZjyKnKAwAq4sG7zatPdCp-TkpD4jcRybjxHjRO8rkbjER0ogKcSGYxk3t7XkEW-vIrqiAwpy6dOZD4_1IpVzw',
         },
     redirect: 'follow'
   };
@@ -322,7 +324,7 @@ onload = function() {
             type: 'POST',
             url: 'https://apistest.tradetipsapp.com/api/stripe/validateCoupon?couponId='+coupon,
             headers: {
-              Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6InBhbmthanRlamF3YXRAZ21haWwuY29tIiwic3ViIjoiZDlhY2VkMjMtN2I4OS00YWJjLWJkNzEtNTUyM2FiODNhOThhIiwiaWF0IjoxNjIwNDU5Nzc5LCJleHAiOjE2MjEwNjQ1Nzl9.t3r3wSU-RSPSRLmPx1IcjAhj23yOizh_TOCaiL2669rJTxcB9YEKjANOoDoTUL-p2LesahYCu4Cs_zsS7aybzw" ,
+              Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6InBhbmthanRlamF3YXRAZ21haWwuY29tIiwic3ViIjoiZDlhY2VkMjMtN2I4OS00YWJjLWJkNzEtNTUyM2FiODNhOThhIiwiaWF0IjoxNjIxMzM0NzgxLCJleHAiOjE2MjE5Mzk1ODF9.BZjyKnKAwAq4sG7zatPdCp-TkpD4jcRybjxHjRO8rkbjER0ogKcSGYxk3t7XkEW-vIrqiAwpy6dOZD4_1IpVzw" ,
             },
             // async:false,
             // data: formdata,
@@ -338,6 +340,7 @@ onload = function() {
             var fdiscount = pricess * finalpvals / 100 ;
             // alert(fdiscount);
             document.getElementById('demo').innerHTML = "$" + fdiscount;
+            document.getElementById('demos').innerHTML = "$" + fdiscount;
             window.alert("Coupon Code Accepted! Click the Order button!");
            },
            error: function(errMsg) {
