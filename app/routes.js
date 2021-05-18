@@ -9,12 +9,12 @@ module.exports = function(app) {
     res.render('chat.ejs');
   });
 
-  app.get('/profile', function(req, res) {
+  app.get('/settings', function(req, res) {
 
     res.render('profile.ejs');
   });
 
-   app.get('/follower', function(req, res) {
+   app.get('/myprofile', function(req, res) {
 
     res.render('follower.ejs');
   });
