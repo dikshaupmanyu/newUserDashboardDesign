@@ -20,6 +20,7 @@
             <div class="nav nav-tabs nav-fill" role="tablist">
               <a class="nav-item nav-link active" id="mt_feed" data-toggle="tab" href="#mtb_feed" role="tab" aria-controls="mtb_feed" aria-selected="true">Feed</a>
               <a class="nav-item nav-link" id="mt_save" data-toggle="tab" href="#mtb_save" role="tab" aria-controls="mtb_save" aria-selected="false">Saved</a>
+              <a class="nav-item nav-link" id="mt_comments" data-toggle="tab" href="#mtb_comments" role="tab" aria-controls="mtb_comments" aria-selected="false">Comments</a>
               <a class="nav-item nav-link" id="mt_service" data-toggle="tab" href="#mtb_service" role="tab" aria-controls="mtb_service" aria-selected="false">Services</a>
              <a class="nav-item nav-link" id="mt_follower" data-toggle="tab" href="#mt_follower_tab" role="tab" aria-controls="mt_follower_tab" aria-selected="false">Following</a>
             <a class="nav-item nav-link" id="mt_following" data-toggle="tab" href="#mt_following_tab" role="tab" aria-controls="mt_following_tab" aria-selected="false">Followers</a>
@@ -674,6 +675,10 @@
               </div>
              
             </div>
+            <div class="tab-pane fade" id="mtb_comments" role="tabpanel" aria-labelledby="mt_comments">
+              
+             
+            </div>
              <div class="tab-pane fade" id="mt_follower_tab" role="tabpanel" aria-labelledby="mt_follower">
               <h5>People you follow</h5>
               <br>
@@ -1080,6 +1085,242 @@
              });
 
 //////////////////////////////////////////////////////////////
+          $.ajax({
+              type: 'POST',
+              url: 'https://apis.tradetipsapp.com/api/timeline/getTimeLineWithPaginationForUser',
+              headers: {
+                Authorization: 'Bearer '+ tokens,
+                 },
+              data: {
+                  limit: 100,
+                  offset: 0,
+                  activityType: "Comment",
+                  userName: user_name
+                },
+               success: function(data) {
+                   console.log(data);
+                    let savedtip = [];
+                    var stockdata1 = [];
+                    var tipId1 = [];
+                    var usernames1 = [];
+                  for(var i=0; i< data.length; i++) {
+                    stockdata1.push(data[i].tipResponse.tip.stockName);
+                    tipId1.push(data[i].tipResponse.tip.id);
+                    usernames1.push(data[i].tipResponse.tip.appUser.userName);
+
+                    var date = new Date(data[i].tipResponse.tip.modifiedOn);
+                               var options = {year: "numeric", month: "long", day: "numeric"};
+
+                    var newdate = date.toGMTString('en-US', options);  
+
+            
+                    const stripped = newdate.replace(/GMT/g, 'EST');
+                    var newdate1 = stripped.toString(stripped);  
+                    var newdate2 = newdate1.split(/(\s+)/);
+                    newdate2.splice(11, 18);
+                    newdate2.splice(0, 2);
+                    newdate2.splice(3,3);
+                    //console.log(newdate2);
+                    function moveArrayItemToNewIndex(arr, old_index, new_index) {
+                    if (new_index >= arr.length) {
+                        var k = new_index - arr.length + 1;
+                        while (k--) {
+                                arr.push(undefined);
+                            }
+                        }
+                    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+                       return arr;
+                      };
+
+                    moveArrayItemToNewIndex(newdate2, 0, 2);
+                    var result1 = moveArrayItemToNewIndex(newdate2, 0, 2);
+                    //console.log(result1);
+                    result1.splice(1, 0, ' ');
+                    var newdate3 = result1.toString(result1);
+                    var result = newdate3.replace(/,/g, "");
+                    //console.log(result);
+                    x = result.substring(0, 6) + "," + result.substring(6, result.length);
+                    //console.log(x);
+                    function formatAMPM(date) {
+                          var hours = date.getHours();
+                          var minutes = date.getMinutes();
+                          var ampm = hours >= 12 ? 'PM' : 'AM';
+                          hours = hours % 12;
+                          hours = hours ? hours : 12; // the hour '0' should be '12'
+                          minutes = minutes < 10 ? '0'+minutes : minutes;
+                          var strTime = hours + ':' + minutes + ' ' + ampm;
+                          return strTime;
+                        }
+
+                    var date1 = formatAMPM(date);
+                    //console.log(date1);
+                    //console.log(newdate2);
+                    const stripped2 = x.replace(newdate2[4], date1);
+                    //console.log(stripped2);
+
+                    if(data[i].tipResponse.tip.stockSuggestion == "Buy") 
+
+                    {
+                    savedtip += '<div class="mentor_feed"><div class="tips_bx buy_bg"><div class="mentor_feed"><div class="tips_bx_author author_bx"><div class="author_bx_txt"><h2>You commented on '+data[i].tipResponse.tip.stockName+'</h2></div></div><div class="tips_bx_cmpny_name"><h2>'+stripped2+'</h2></div><div class="tips_bx_social"><ul><li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.commentCount+' Comments</a></li><li><img id="imgLikestatus' + data[i].tipResponse.tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + data[i].tipResponse.tip.id + '" style="cursor:pointer;"><span id="textvalLike' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.likeCount+'</span> Likes</a><p id="StatusLike' + data[i].tipResponse.tip.id + '" style="display:none;">' + data[i].tipResponse.userLikeStatus + '</p></li></ul></div></div></div>' 
+
+                  } else {
+                    
+                    savedtip +='<div class="mentor_feed"><div class="tips_bx sell_bg"><div class="mentor_feed"><div class="tips_bx_author author_bx"><div class="author_bx_txt"><h2>You commented on '+data[i].tipResponse.tip.stockName+'</h2></div></div><div class="tips_bx_cmpny_name"><h2>'+stripped2+'</h2></div><div class="tips_bx_social"><ul><li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.commentCount+' Comments</a></li><li><img id="imgLikestatus' + data[i].tipResponse.tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + data[i].tipResponse.tip.id + '" style="cursor:pointer;"><span id="textvalLike' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.likeCount+'</span> Likes</a><p id="StatusLike' + data[i].tipResponse.tip.id + '" style="display:none;">' + data[i].tipResponse.userLikeStatus + '</p></li></ul></div></div></div>' 
+
+                  }                            
+
+               }
+               if(stockdata1.length>0){
+
+                  $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ stockdata1 , function(d) {
+                  for (k= 0; k< stockdata1.length; k ++) {
+                    var userdataLike = $("#StatusLike"+ tipId1[k]).text();
+                     // alert(userdataLike);            
+                             
+                    if(userdataLike == "true"){
+                       // alert("true");
+                        $("#imgLikestatus"+ tipId1[k]).attr("src","unnamed.png");
+
+                    }
+                    else{
+                      //  alert("false");
+                        $("#imgLikestatus"+ tipId1[k]).attr("src","images/tips-like-icon.png");
+
+                    }
+
+                     
+                   ////////////////////////////////////////////////////////////////////
+
+                    $("#skComnyNames"+tipId1[k]).text(d[stockdata1[k]].quote.companyName);
+                    $("#flatestPrice"+tipId1[k]).text("$"+d[stockdata1[k]].quote.latestPrice);
+
+                    $("#flatestPrices"+tipId1[k]).text("$"+d[stockdata1[k]].quote.latestPrice);
+
+
+                   var newwdata1 = $("#flatestPrice"+ tipId1[k]).text();
+                    var newwdatas = $("#flatestPrices"+ tipId1[k]).text();
+
+                   var stockPricess1= $("#stockTipPrice1"+ tipId1[k]).text();
+                   var stockentry1 = $("#entrydata1"+ tipId1[k]).text();
+                   var stockexit1 = $("#exitdata1"+ tipId1[k]).text();
+                   var stockstop1 = $("#stopdata1"+ tipId1[k]).text();
+                   var suggestionslist = $(".suggestion"+ tipId1[k]).text();
+
+                    //////////////////////////clipboard//////////////////////////////////
+
+                    $("#divClipboard"+tipId1[k]).val(d[stockdata1[k]].quote.companyName+' Current price:$'+d[stockdata1[k]].quote.latestPrice+' Suggested entry: '+stockentry1+' exit: '+stockexit1+' stop: '+stockstop1+' Stock tip by '+usernames1[k]+' on TradeTips. Download at TradeTipsApp.com');
+
+                   //////////////////////chnage value//////////////////////////
+                   const minusValues = newwdata1.replace("$","") - stockPricess1.replace("$","");
+                   const values = Number(minusValues).toFixed(2);
+                   // alert(values);
+
+                    if(values > 0){
+                    // alert("home");
+                    $("#changeVals1"+ tipId1[k]).html('<p style="font-size:25px; display: inline-block;">&nbsp;|&nbsp;</p><p style="display: inline-block;"></p> Change &nbsp;:&nbsp;&nbsp;<span class="color_buy hclass green"><b>' +values + '</b></span>');
+
+                    }else{
+                    // alert("calling home");
+                    $("#changeVals1"+ tipId1[k]).html('<p style="font-size:25px; display: inline-block;">&nbsp;|&nbsp;</p><p style="display: inline-block;"></p> Change &nbsp;:&nbsp;&nbsp;<span class="color_sell hclass red"><b>' +values + '</b></span>');
+
+                    }
+
+                    //////////////////////////////////////////////////////
+
+                    const minusValuesNew = newwdatas.replace("$","") - stockPricess1.replace("$","");
+                    const valuesk = Number(minusValuesNew).toFixed(2);
+                    // alert(values);
+                    if(valuesk > 0){
+                    // alert("home");
+
+                    $("#changeValsfront1"+ tipId1[k]).html('<p style="font-size:25px; display: inline-block;">&nbsp;|&nbsp;</p><p style="display: inline-block;"></p> Change &nbsp;:&nbsp;&nbsp;<span class="color_buy hclass green"><b>' +valuesk + '</b></span>');
+
+                    }else{
+                    // alert("calling home");
+
+                    $("#changeValsfront1"+ tipId1[k]).html('<p style="font-size:25px; display: inline-block;">&nbsp;|&nbsp;</p><p style="display: inline-block;"></p> Change &nbsp;:&nbsp;&nbsp;<span class="color_sell hclass red"><b>' +valuesk + '</b></span>');
+
+                    }
+                     /////////////////////////entry data/////////////////////////
+
+
+                    if(stockentry1.replace("$","") <= newwdata1.replace("$","") &&  suggestionslist == "Buy"){
+                   
+                      $("#entrydata1"+ tipId1[k]).css("color" , "#09b598");                    
+                               
+                        } 
+
+                    else if(stockentry1.replace("$","") >= newwdata1.replace("$","") && suggestionslist == "Sell"){
+
+                                  
+                      $("#entrydata1"+ tipId1[k]).css("color" , "#09b598");                                
+
+                      }
+                      else
+                      {
+                                    
+                      $("#entrydata1"+ tipId1[k]).css("color" , "white");
+                                     
+                      }
+
+                     //////////////////exit data///////////////////////////////
+
+
+                    if(stockentry1.replace("$","") <= newwdata1.replace("$","") &&  suggestionslist == "Buy"){
+
+
+                      $("#exitdata1"+ tipId1[k]).css("color" , "#09b598");
+                               
+                                } 
+                    else if(stockentry1.replace("$","") >= newwdata1.replace("$","") && suggestionslist == "Sell"){
+
+                      $("#exitdata1"+ tipId1[k]).css("color" , "#09b598");
+
+                     }
+                    else{
+
+                      $("#exitdata1"+ tipId1[k]).css("color" , "white");
+
+                      }
+                         
+
+                      /////////////////////stop data//////////////////////////////  
+     
+
+                    if(suggestionslist == "Buy" && newwdata1.replace("$","") < stockPricess1.replace("$","") && newwdata1.replace("$","") <=  stockstop1.replace("$","")){
+
+
+                      $("#stopdata1"+ tipId1[k]).css("color" , "#d93545");
+
+                               
+                      } 
+                    else if(suggestionslist == "Sell" && stockPricess1.replace("$","") < newwdata1.replace("$","") && newwdata1.replace("$","") >=  stockstop1.replace("$","")){
+
+
+                      $("#stopdata1"+ tipId1[k]).css("color" , "white");
+
+                        }
+                    else{
+
+                      $("#stopdata1"+ tipId1[k]).css("color" , "white");
+
+                                }
+
+
+
+                  }
+
+                });
+
+               }
+               $("#mtb_comments").append(savedtip);
+             }
+
+             });
+
+
+
+///////////////////////////////////////////////////////////////////////////
 
 function copyClipboard(e){
   var copyText = document.getElementById("divClipboard"+ e);
