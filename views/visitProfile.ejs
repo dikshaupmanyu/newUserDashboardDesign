@@ -6,9 +6,9 @@
     <div class="mentor_wrapper mentor_follow_wrapper row">
       <div class="mentor_wrapper_left col">
         <div class="mentor_head">
-        <a href="follower"><button class="btn back_btn"><i class="fas fa-arrow-left"></i></button></a>
+        <a href="myprofile"><button class="btn back_btn"><i class="fas fa-arrow-left"></i></button></a>
         <div class="author_bx">
-          <img id = "imagePreview" alt="images">
+          <img id = "imagePreview" alt="images" onerror="imgError(this);">
           <div class="author_bx_txt">
             <!-- <h2 id ="user_n"><span><img src="images/mentor-tag.png" alt="images"></span></h2> -->
             <h2 id ="user_n"></h2>
@@ -680,15 +680,14 @@
              
             </div>
              <div class="tab-pane fade" id="mt_follower_tab" role="tabpanel" aria-labelledby="mt_follower">
-              <h5>People you follow</h5>
-              <br>
+               
               <div class="mentor_follow_list" id="newFollowerlist">
               
               </div>
             </div>
             <div class="tab-pane fade" id="mt_following_tab" role="tabpanel" aria-labelledby="mt_following">
-              <h5>People following you</h5>
-              <br>
+             
+             
               <div class="mentor_follow_list" id="newFollowinglist">
               </div>
             </div>
@@ -700,17 +699,17 @@
         <div class="mentor_follow_area">
           <ul>
             <li>
-              <h2 id = "follower" style="text-align: center;"></h2>
+              <h2 id = "followings" style="text-align: center;"></h2>
               <h3>Followers</h3>
             </li>
             <li>
-              <h2 id = "followings" style="text-align: center;"></h2>
+              <h2 id = "follower" style="text-align: center;"></h2>
               <h3>Following</h3>
             </li>
           </ul>
-          <button class="btn cmn_btn btn_primary">Follow</button>
+          <!-- <button class="btn cmn_btn btn_primary">Follow</button> -->
         </div>
-        <div class="abt_mentor">
+        <div class="abt_mentor" style="display: none;">
           <h2>About Mentor</h2>
          <!--  <p>Voyez ce jeu exquis wallon, de graphie en kit mais bref. Portez ce vieux whisky au juge blond qui fume sur son île intérieure, à côté de l"alcôve ovoïde, où les bûches se consument dans l"âtre, ce qui lui permet de penser à la cænogenèse de l"être dont il est.</p>
           <h3><a href="#">Read more</a></h3> -->
@@ -730,6 +729,8 @@
 
   var sData = localStorage.getItem('allTokenData');
   var storageData= JSON.parse(sData);
+  var loginUnamee = storageData.uname;
+
   var user_name = "<%= visitedName %>";
   // var email_id = storageData.email;
   var LoggedInId = "<%= visitedId %>";
@@ -809,13 +810,13 @@
                 },
                success: function(data) {
                 var data_len = data.length;
-                document.getElementById("follower").textContent = data_len;
+                document.getElementById("followings").textContent = data_len;
                  for( var i = 0; i< data_len; i++){
                     var userid = data[i]['id'];
                     var followUserName = data[i]['followUserName'];
                     var followUserId = data[i]['followUserId'];
                     var loginUserFollow = data[i]['loginUserFollow'];
-                    $("#newFollowerlist").append('<div class="mentor_follow_item"><a href="visitProfile?Ids='+followUserId+'&Names='+followUserName+'"><div class="author_bx"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+followUserId+'" alt="images" onerror="imgError(this);"><div class="author_bx_txt"><h2>'+followUserName+'</h2></div></div></a>'+( loginUserFollow == false ? '<button class="btn cmn_btn btn_primary btn_small">Following</button>' : '<button class="btn cmn_btn btn_primary btn_small">Follow</button>')+'</div>');
+                    $("#newFollowinglist").append('<div class="mentor_follow_item"><a href="visitProfile?Ids='+followUserId+'&Names='+followUserName+'"><div class="author_bx"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+followUserId+'" alt="images" onerror="imgError(this);"><div class="author_bx_txt"><h2>'+followUserName+'</h2></div></div></a>'+( loginUserFollow == true ? '<button class="btn cmn_btn btn_primary btn_small">Following</button>' : '<button class="btn cmn_btn btn_primary btn_small">Follow</button>')+'</div>');
                     }    
 
                }
@@ -834,13 +835,13 @@
                 },
                success: function(data) {
                 var data_len = data.length;
-                document.getElementById("followings").textContent = data_len;
+                document.getElementById("follower").textContent = data_len;
                   for( var i = 0; i< data_len; i++){
                     var userid = data[i]['id'];
                     var followUserName = data[i]['followUserName'];
                     var followUserId = data[i]['followUserId'];
                     var follow = data[i]['follow'];
-                    $("#newFollowinglist").append('<div class="mentor_follow_item"><a href="visitProfile?Ids='+followUserId+'&Names='+followUserName+'"><div class="author_bx"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+followUserId+'" alt="images" onerror="imgError(this);"><div class="author_bx_txt"><h2>'+followUserName+'</h2></div></div></a>'+( follow == true ? '<button class="btn cmn_btn btn_primary btn_small">Following</button>' : '<button class="btn cmn_btn btn_primary btn_small">Follow</button>')+'</div>');
+                    $("#newFollowerlist").append('<div class="mentor_follow_item"><a href="visitProfile?Ids='+followUserId+'&Names='+followUserName+'"><div class="author_bx"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+followUserId+'" alt="images" onerror="imgError(this);"><div class="author_bx_txt"><h2>'+followUserName+'</h2></div></div></a>'+( follow == true ? '<button class="btn cmn_btn btn_primary btn_small">Following</button>' : '<button class="btn cmn_btn btn_primary btn_small">Follow</button>')+'</div>');
                     }    
                }
              });
@@ -1161,11 +1162,11 @@
                     if(data[i].tipResponse.tip.stockSuggestion == "Buy") 
 
                     {
-                    savedtip += '<div class="mentor_feed"><div class="tips_bx buy_bg"><div class="mentor_feed"><div class="tips_bx_author author_bx"><div class="author_bx_txt"><h2>You commented on '+data[i].tipResponse.tip.stockName+'</h2></div></div><div class="tips_bx_cmpny_name"><h2>'+stripped2+'</h2></div><div class="tips_bx_social"><ul><li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.commentCount+' Comments</a></li><li><img id="imgLikestatusp' + data[i].tipResponse.tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + data[i].tipResponse.tip.id + '" style="cursor:pointer;"><span id="textvalLike' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.likeCount+'</span> Likes</a><p id="StatusLike' + data[i].tipResponse.tip.id + '" style="display:none;">' + data[i].tipResponse.userLikeStatus + '</p></li></ul></div></div></div>' 
+                    savedtip += '<div class="mentor_feed"><div class="tips_bx avoid_bg"><div class="mentor_feed"><div class="tips_bx_author author_bx"><div class="author_bx_txt"><h2>You commented on '+data[i].tipResponse.tip.stockName+'</h2></div></div><div class="tips_bx_cmpny_name"><h2>'+stripped2+'</h2></div><div class="tips_bx_social"><ul><li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.commentCount+' Comments</a></li><li><img id="imgLikestatusp' + data[i].tipResponse.tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + data[i].tipResponse.tip.id + '" style="cursor:pointer;"><span id="textvalLike' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.likeCount+'</span> Likes</a><p id="StatusLike' + data[i].tipResponse.tip.id + '" style="display:none;">' + data[i].tipResponse.userLikeStatus + '</p></li></ul></div></div></div>' 
 
                   } else {
                     
-                    savedtip +='<div class="mentor_feed"><div class="tips_bx sell_bg"><div class="mentor_feed"><div class="tips_bx_author author_bx"><div class="author_bx_txt"><h2>You commented on '+data[i].tipResponse.tip.stockName+'</h2></div></div><div class="tips_bx_cmpny_name"><h2>'+stripped2+'</h2></div><div class="tips_bx_social"><ul><li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.commentCount+' Comments</a></li><li><img id="imgLikestatusp' + data[i].tipResponse.tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + data[i].tipResponse.tip.id + '" style="cursor:pointer;"><span id="textvalLike' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.likeCount+'</span> Likes</a><p id="StatusLike' + data[i].tipResponse.tip.id + '" style="display:none;">' + data[i].tipResponse.userLikeStatus + '</p></li></ul></div></div></div>' 
+                    savedtip +='<div class="mentor_feed"><div class="tips_bx avoid_bg"><div class="mentor_feed"><div class="tips_bx_author author_bx"><div class="author_bx_txt"><h2>You commented on '+data[i].tipResponse.tip.stockName+'</h2></div></div><div class="tips_bx_cmpny_name"><h2>'+stripped2+'</h2></div><div class="tips_bx_social"><ul><li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.commentCount+' Comments</a></li><li><img id="imgLikestatusp' + data[i].tipResponse.tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + data[i].tipResponse.tip.id + '" style="cursor:pointer;"><span id="textvalLike' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.likeCount+'</span> Likes</a><p id="StatusLike' + data[i].tipResponse.tip.id + '" style="display:none;">' + data[i].tipResponse.userLikeStatus + '</p></li></ul></div></div></div>' 
 
                   }                            
 
@@ -1406,7 +1407,7 @@
                     const stripped2 = x.replace(newdate2[4], date1);
                     //console.log(stripped2);
 
-                   savedtip += '<div class="mentor_feed"><div class="tips_bx buy_bg"><div class="mentor_feed"><div class="tips_bx_author author_bx"><div class="author_bx_txt"><h2>You commented on '+data[i].tipResponse.tip.stockName+'</h2></div></div><div class="tips_bx_social"><ul><li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.commentCount+' Comments</a></li><li><img id="imgLikestatusgg' + data[i].tipResponse.tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + data[i].tipResponse.tip.id + '" style="cursor:pointer;"><span id="textvalLike' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.likeCount+'</span> Likes</a><p id="StatusLike' + data[i].tipResponse.tip.id + '" style="display:none;">' + data[i].tipResponse.userLikeStatus + '</p></li></ul></div></div></div>' 
+                   savedtip += '<div class="mentor_feed"><div class="tips_bx avoid_bg"><div class="mentor_feed"><div class="tips_bx_author author_bx"><div class="author_bx_txt"><h2>You commented on '+data[i].tipResponse.tip.stockName+'</h2></div></div><div class="tips_bx_social"><ul><li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.commentCount+' Comments</a></li><li><img id="imgLikestatusgg' + data[i].tipResponse.tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + data[i].tipResponse.tip.id + '" style="cursor:pointer;"><span id="textvalLike' + data[i].tipResponse.tip.id + '">'+data[i].tipResponse.likeCount+'</span> Likes</a><p id="StatusLike' + data[i].tipResponse.tip.id + '" style="display:none;">' + data[i].tipResponse.userLikeStatus + '</p></li></ul></div></div></div>' 
 
                     if(stockdata1.length>0){
 
@@ -1562,7 +1563,7 @@
                     var followUserId = data[i]['followUserId'];
                     var loginUserFollow = data[i]['userFollowing'];
 
-                    savedtip += '<div class="mentor_follow_item"><a href="visitProfile?Ids='+followUserId+'&Names='+followUserName+'"><div class="author_bx"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+followUserId+'" alt="images" onerror="imgError(this);"><div class="author_bx_txt"><h2>'+followUserName+'</h2></div></div></a>'+( loginUserFollow == false ? '<button class="btn cmn_btn btn_primary btn_small">Following</button>' : '<button class="btn cmn_btn btn_primary btn_small">Follow</button>')+'</div>'
+                  savedtip += '<div class="mentor_follow_item"><a href="visitProfile?Ids='+followUserId+'&Names='+followUserName+'"><div class="author_bx"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+followUserId+'" alt="images" onerror="imgError(this);"><div class="author_bx_txt"><h2>'+( followUserName == loginUnamee ? "You followed govinda " : ''+followUserName+' followed '+user_name+'')+'</h2></div></div></a>'+( loginUserFollow == true ? '<button class="btn cmn_btn btn_primary btn_small">Following</button>' : '<button class="btn cmn_btn btn_primary btn_small">Follow</button>')+'</div>'
 
                  }
 
