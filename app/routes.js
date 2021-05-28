@@ -49,6 +49,15 @@ module.exports = function(app) {
     res.render('incomplete.ejs');
   });
 
+      app.get('/stockChart', function(req, res) {
+
+    var mentorids = req.query.id;
+
+    var symbol = req.query.stockName;
+
+    res.render('stockChart.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
+  });
+
     app.post("/charge", async (req, res , next) => {
 
     var request = require("request");
