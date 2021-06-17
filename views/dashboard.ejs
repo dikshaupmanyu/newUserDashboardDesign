@@ -230,14 +230,11 @@ ul.search-list-loader {
  <div id="demo"> </div>
 </div> -->
 
-         <div class="scroller-dash-left scrollbar-css">
+            <div class="scroller-dash-left scrollbar-css">
                <div class="tips_boxes" id="bothdemo">
                  </div>
                   <div class="tips_boxes" id="tipbothdemo">
                 </div>
-       <!--                <div class="tips_boxes" id="demo">
-   
-                </div> -->
     
                   <div class="tips_boxes" id="AIdemo">
                 </div>
@@ -676,8 +673,10 @@ var formdata = {  offset: 0, limit: 1000000};
   var myoffset=0;
   var  mylimit=50;
    
-    loadAi(myoffset,mylimit);
+    // loadAi(myoffset,mylimit);
+    loaddata();
     loaddemodata(myoffset,mylimit);
+
          
 
 $(".scroller-dash-left").scroll(function() {
@@ -1447,147 +1446,60 @@ $(".scroller-dash-left").scroll(function() {
        
   });
 //////////////////////////////////////////////////////////////////////////////////////////////
-function loadAi(offset,limit){
+ // function loadAi(offset,limit){
+  
+ //  // loaddata();
 
-   formdata={  offset: offset, limit: limit};
- $.ajax({
-        type: 'POST',
-        url: 'https://apis.tradetipsapp.com/api/stockDetail/getAllStockOfUserByUserName?userName='+ userName,
-        headers: {
-          Authorization: 'Bearer '+ tokens ,
-        },
-        async:false,
-        data: formdata,
-      success: function(datas) {
-       // console.log(datas);
-       var dataks = JSON.stringify(datas);
-       var dataResults = JSON.parse(dataks);
-       // console.log(dataResults);
-       var texts = "" ;
-       var textsboth = "";
-       
-       var lens = dataResults.length;
-       // alert(lens);
-       var initial=0;
-         var stocklistdataF = [];
-          if(offset==0)
-           {
-            initial=offset;
-           }else{
-            initial=offset-1;
-           }
-          if(dataResults.length > 0){
-               let deletdata = [];
-                let users = [];
-                 let stckusers = [];
-                 let stckdata = [];
-                 
-                 for(var i= dataResults.length - 1; i >= 0 ; i--){
+ //                 formdata={  offset: offset, limit: limit};
 
-                   // for(var i = 0; i < dataResults.length; i++){
+                 async function loaddata(){
 
-                    // console.log(dataResults[i].stockSymbol);
-                    users.push(dataResults[i].stockSymbol);
-                    deletdata.push(dataResults[i].id);                  
-                }
+                   var myHeaders = new Headers();
+                       myHeaders.append("Authorization", `Bearer ${tokens}`);
 
+                      var requestOptions = {
+                          method: 'POST',
+                          headers: myHeaders,
+                          redirect: 'follow'
+                        };
 
-                
-                let resultSet = [];
-                for (i=initial; i < users.length; i++){
-                  var symbol = users[i];
-                  // console.log(symbol);
-                  // var formdata = {"stockSymbol" : symbol};
+                      const response = await fetch(`https://apis.tradetipsapp.com/api/stockDetail/getAllStockOfUserByUserName?userName=${userName}`, requestOptions)
 
-                //   var res = new Promise(function (resolve, reject) {
-                //     $.ajax({ type: 'POST',
-                //         url: 'https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet?stockSymbol='+symbol,
-                //         headers: {
-                //           Authorization: 'Bearer '+ tokens ,
-                //         },
-                //         dataType: "json",
-                //         success: function (data) {
-                //             resolve(resources);
-                //         },
-                //         error: function (err) {
-                //             reject(err);
-                //         }
-                //     });
-                // });
+                      const result = await response.json();
 
+                      if(result.length > 0){
 
-// function to trigger the ajax call
-// var ajax_request = function(symbol) {
-//     var deferred = $.Deferred();
+                      let users = [];
 
-     //    $.ajax({
-     //      url: 'https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet?stockSymbol='+symbol,
-     //      // dataType: "json",
-     //      headers: {
-     //                Authorization: 'Bearer '+ tokens ,
-     //              },
-     //      type: 'POST',
-     //      // data: item,
-     //      success: function(data) {
-     //        // do something here
-     //        console.log(data);
-     //        // mark the ajax call as completed
-     //        deferred.resolve(data);
-     //      },
-     //      error: function(error) {
-     //        // mark the ajax call as failed
-     //        deferred.reject(error);
-     //      }
-     //    });
+                      for(var i= result.length - 1; i >= 0 ; i--){
 
-     //    return deferred.promise();
-     // };
+                       // console.log(result[i].stockSymbol)
 
-    // var looper = $.Deferred().resolve();
+                        var myHeaders1 = new Headers();
+                        myHeaders1.append("Authorization", `Bearer ${tokens}`);    
 
-    // // go through each item and call the ajax function
-    // $.when.apply($, $.map(symbol, function(item, i) {
-    //   console.log(item[i]);
-    //   looper = looper.then(function() {
-    //     // trigger ajax call with item data
-    //     return ajax_request(item);
-    //   });
+                        var formdata = new FormData();
+                        formdata.append("stockSymbol", result[i].stockSymbol);
 
-    //   return looper;
-    // })).then(function() {
-    //   // run this after all ajax calls have completed
-    //   console.log('Done!');
-    // });
+                        var requestOp = {
+                          method: 'POST',
+                          headers: myHeaders1,
+                          body: formdata,
+                          redirect: 'follow'
+                        };
 
-                    
-                      $.ajax({
-                          type: 'POST',
-                          url: 'https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet?stockSymbol='+symbol,
-                          headers: {
-                            Authorization: 'Bearer '+ tokens ,
-                          },
-                          async:false,
-                          // data: formdata,
-                          processData: false,
-                          success: function(data, textStatus, jqXHR) {
-                            // console.log(textStatus + ": " + jqXHR.status);
-                           if(jqXHR.status == 500){
-                           }else{
-                             var filtered = data.filter(function (el) {
-                              return el.status != 500;
-                            });
-                           }
-                            if(filtered.length > 0){
-                           // console.log(filtered);  
-                           var dataks = JSON.stringify(filtered);
-                           var array = JSON.parse(dataks);
-                           $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ array[0].stock_name , function(d) {
+                        const responseone = await fetch(`https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet`, requestOp);
 
-                            // console.log(d[array[0].stock_name]);
+                        const array = await responseone.json();
 
-                            
+                         const response = await fetch(`https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols=${array[0].stock_name}`);
+                          const d = await response.json()
+                              // return datas;
 
-                              var date = array[0].sma_generation_date;
+                          console.log(d[array[0].stock_name]);
+
+                        
+                        var date = array[0].sma_generation_date;
                               const stripped = date.replace(/EST-0500/g, 'EST');
                               //console.log(stripped);
                               var newdate2 = stripped .split(/(\s+)/);
@@ -1596,52 +1508,220 @@ function loadAi(offset,limit){
                               //console.log(newdate2);
                   
                               var newdate3 = newdate2.toString(newdate2);
-                              var result = newdate3.replace(/,/g, "");
+                              var resultk = newdate3.replace(/,/g, "");
                               //console.log(result);
-                              SMA_date = result.substring(0, 6) + ", " + result.substring(6, result.length);
-                              //console.log(SMA_date);
-                
-                            if(d[array[0].stock_name] != undefined){  
+                              SMA_date = resultk.substring(0, 6) + ", " + resultk.substring(6, resultk.length);
+                              // console.log(SMA_date);
 
-                             if(array[0].rsiResult == "buy"){
-                                 texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx buy_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-                                } else if(array[0].rsiResult == "sell"){
-                //                    
-                                   texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx sell_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                              if(array[0].rsiResult == "buy"){
+                              texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx buy_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                              } else if(array[0].rsiResult == "sell"){
+                              //                    
+                              texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx sell_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+
+                              }
+                              else {
+                              texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx avoid_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn">AVOID</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days!='--' ?(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg10days+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days!='--' ?(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg50days+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days!='--' ?(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg200days+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+
+                              }
+                          
+                          $("#AIdemo").append(texts);
+                     }
+
+
+
+                  } else {
+
+                   // this.setState({ aitipStocklist: null })
+
+                  }
+                 }
+
+                 
+
+                // }
+
+
+
+                          // getDevices();
+                  // getUserAsync();
+
+                      // async function getUserAsync(symbol) 
+                      //   {
+                      //     let response = await fetch(`https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols=${symbol}`);
+                      //     let data = await response.json()
+                      //     return data;
+                      //   }
+//                   async function getDevices(){
+//                       // const location = window.location.hostname;
+//                       // console.log(symbol);
+//                       const settings = {
+//                           method: 'POST',
+//                            headers: {
+//                                     Authorization: 'Bearer '+ tokens ,
+//                                   },
+//                       };
+//                       try {
+                          
+
+//                           const fetchResponse = await fetch(`https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet?stockSymbol=${symbol}`, settings);
+//                           const array = await fetchResponse.json();
+
+                         
+//                           console.log(array[0].stock_name);
+
+                          
+
+
+
+
+
+//                            // getUserAsync(array[0].stock_name)
+//                            //    .then(function(d) {console.log(d[array[0].stock_name])}); 
+//                           // console.log(array[0].stock_name);
+//                           // console.log(symbol);
+//                           //  var dataks =  JSON.stringify(data);
+//                           //  var array = JSON.parse(dataks);
+//                           //  if(array[0].stock_name == symbol){
+//                           //   return true;
+//                           //  }else{
+//                           //   return false;
+//                            // }
+
+
+//                            // $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ array[0].stock_name , function(d) {
+
+//                            //   console.log(d[array[0].stock_name]);
+
+                            
+
+                             
+
+
+                            
+
+
+//                               // var d[array[0].stock_name] == MSFT;
+                
+//                 //              if(d[array[0].stock_name] != undefined){  
+
+//                 //              if(array[0].rsiResult == "buy"){
+//                 //                  texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx buy_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+//                 //                 } else if(array[0].rsiResult == "sell"){
+//                 // //                    
+//                 //                    texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx sell_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
                                    
-                                }
-                                else {
-                                  texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx avoid_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn">AVOID</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days!='--' ?(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg10days+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days!='--' ?(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg50days+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days!='--' ?(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg200days+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+//                 //                 }
+//                 //                 else {
+//                 //                   texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx avoid_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn">AVOID</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days!='--' ?(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg10days+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days!='--' ?(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg50days+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days!='--' ?(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg200days+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
                                    
-                                }
+//                 //                 }
                                 
-                                  $("#AIdemo").append(texts);
+//                 //                   $("#AIdemo").append(texts);
                                   
                             
-                              }
+//                 //                }
                                 
-                            });
+//                              // });
+//         return data;
+//     } catch (e) {
+//         return e;
+//     }    
+
+// }
+
+// async function getRecord() {
+
+//      try {               
+//     const resultrecord = await $.ajax({
+//                           type: 'POST',
+//                           url: 'https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet?stockSymbol='+symbol,
+//                           headers: {
+//                             Authorization: 'Bearer '+ tokens ,
+//                           },
+//                           // async:false,
+//                           // data: formdata,
+//                           processData: false,
+//                           success: function(data, textStatus, jqXHR) {
+//                             // console.log(textStatus + ": " + jqXHR.status);
+//                            if(jqXHR.status == 500){
+//                            }else{
+//                              var filtered = data.filter(function (el) {
+//                               return el.status != 500;
+//                             });
+//                            }
+//                             if(filtered.length > 0){
+//                            // console.log(filtered);  
+//                            var dataks =  JSON.stringify(filtered);
+//                            var array = JSON.parse(dataks);
+//                            $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ array[0].stock_name , function(d) {
+
+//                             // console.log(d[array[0].stock_name]);
+
+                            
+
+//                               var date = array[0].sma_generation_date;
+//                               const stripped = date.replace(/EST-0500/g, 'EST');
+//                               //console.log(stripped);
+//                               var newdate2 = stripped .split(/(\s+)/);
+//                               //console.log(newdate2);
+//                               newdate2.splice(3,3);
+//                               //console.log(newdate2);
+                  
+//                               var newdate3 = newdate2.toString(newdate2);
+//                               var result = newdate3.replace(/,/g, "");
+//                               //console.log(result);
+//                               SMA_date = result.substring(0, 6) + ", " + result.substring(6, result.length);
+//                               //console.log(SMA_date);
+                
+//                             if(d[array[0].stock_name] != undefined){  
+
+//                              if(array[0].rsiResult == "buy"){
+//                                  texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx buy_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+//                                 } else if(array[0].rsiResult == "sell"){
+//                 //                    
+//                                    texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx sell_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                                   
+//                                 }
+//                                 else {
+//                                   texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx avoid_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn">AVOID</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days!='--' ?(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg10days+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days!='--' ?(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg50days+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days!='--' ?(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg200days+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                                   
+//                                 }
+                                
+//                                   $("#AIdemo").append(texts);
+                                  
+                            
+//                               }
+                                
+//                             });
        
                          
-                       }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown){
-                          // console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
-                        }
-                        });
-     
-           
-                   }
+//                        }
+//                         },
+//                         error: function(jqXHR, textStatus, errorThrown){
+//                           // console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+//                         }
+//                         });
+
+//                     return resultrecord;
+
+//                      } catch(error){
+
+//                      }
+                      // }
+                   // }
            
 // console.log(res)
 // console.log(res.PromiseValue)
 // return res.PromiseValue // undefined 
      
-       }
-     }
+   //     }
+   //    }
        
-    });
-  }
+   // });
+    
+   // }
+  
 ////////////////////////////////////////////////////////////////////////////////////////////
 function copyClipboard(e){
   var copyText = document.getElementById("divClipboard"+ e);
