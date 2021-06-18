@@ -19,6 +19,12 @@ module.exports = function(app) {
     res.render('follower.ejs');
   });
 
+    app.get('/faq', function(req, res) {
+
+    res.render('faq.ejs');
+  });
+
+
 
    app.get('/followUserList', function(req, res) {
 
