@@ -84,24 +84,25 @@ credits{
         <div class="scroller-dash-right scrollbar-css">
           <div class="tips_boxes" id="AIdemo">
           </div>
+          <p>5-Day Prediction Models :</p>
           <ul>
             <li>
                 <div class="input-color">
-                    <input type="text" value="newsAffected" />
+                    <input type="text" value="News Model" />
                     <div class="color-box" style="background-color: #FF850A;"></div>
                     <!-- Replace "#FF850A" to change the color -->
                 </div>
             </li>
             <li>
                 <div class="input-color">
-                    <input type="text" value="vxxaffected" />
+                    <input type="text" value="VXX Model" />
                     <div class="color-box" style="background-color: navy;"></div>
                     <!-- Replace "navy" to change the color -->
                 </div>
             </li>
              <li>
                 <div class="input-color">
-                    <input type="text" value="normalizedPrice" />
+                    <input type="text" value="Technical Model" />
                     <div class="color-box" style="background-color: green;"></div>
                     <!-- Replace "navy" to change the color -->
                 </div>
@@ -131,7 +132,8 @@ var sData = localStorage.getItem('allTokenData');
 
   var symbol = "<%=stockSymbol%>";
 
-  var stockid = "<%=tipsIds%>";
+
+  // var stockid = "<%=tipsIds%>";
 
  // var newftd = "1621232672661" ;
 var date = new Date();
@@ -193,7 +195,7 @@ const a = null
 
                   $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ dataResult.object[0].stockName , function(d) {
 
-                      // console.log(d);
+                      console.log(d);
 
                           var count = Object.keys(d).length;
                           Object.keys(d).map((keyName, key) => {
@@ -292,21 +294,21 @@ const a = null
                         data.push({
                             x:i,
                             y: fparse,
-                            label : "vxxaffected<br>" + num1,
+                            label : "VXX Affected<br>" + num1,
 
                           });
 
                          data1.push({
                             x:i,
                             y: fparse3,
-                            label : "newsaffected<br>" + num1,
+                            label : "News Affected<br>" + num1,
 
                           });
 
                          data2.push({
                             x:i,
                             y: fparse4,
-                            label : "normalizedPrice<br>" + num1,
+                            label : "Technical Model<br>" + num1,
 
                           });
 
@@ -333,38 +335,6 @@ const a = null
                           text: symbol
                         },
                         showScale: false,
-                        //  scales: {
-                        //   x: {
-                        //     display: true,
-                        //     title: {
-                        //       display: true,
-                        //       text: 'Month',
-                        //       color: '#911',
-                        //       font: {
-                        //         family: 'Comic Sans MS',
-                        //         size: 20,
-                        //         weight: 'bold',
-                        //         lineHeight: 1.2,
-                        //       },
-                        //       padding: {top: 20, left: 0, right: 0, bottom: 0}
-                        //     }
-                        //   },
-                        //   y: {
-                        //     display: true,
-                        //     title: {
-                        //       display: true,
-                        //       text: 'Value',
-                        //       color: '#191',
-                        //       font: {
-                        //         family: 'Times',
-                        //         size: 20,
-                        //         style: 'normal',
-                        //         lineHeight: 1.2
-                        //       },
-                        //       padding: {top: 30, left: 0, right: 0, bottom: 0}
-                        //     }
-                        //   }
-                        // },
                          axisX:{
                           crosshair: {
                             enabled: true,
@@ -388,8 +358,7 @@ const a = null
                               }
                             ]
                         }, 
-                        data: [{
-                         
+                        data: [{                         
                           type: "line",
                           markerType : "none",
                           color : "navy blue",
@@ -416,9 +385,11 @@ const a = null
                       });
 
                       chart.render();
-        
+               
       
-           }     
+           }  
+
+
                         loaddata();
                         async function loaddata(){
 
