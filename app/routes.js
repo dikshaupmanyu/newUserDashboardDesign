@@ -64,6 +64,16 @@ module.exports = function(app) {
     res.render('stockChart.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
+       app.get('/prediction', function(req, res) {
+
+    var mentorids = req.query.id;
+
+    var symbol = req.query.stockName;
+
+    res.render('prediction.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
+  });
+
+
     app.post("/charge", async (req, res , next) => {
 
     var request = require("request");

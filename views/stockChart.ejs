@@ -190,7 +190,7 @@ credits{
              </div>   
             </div>
         </div>
-       
+        <a id="symbolprediction" style="color: white;">Get 5 Day Prediction</a>
       </div>
 
       <!-- <div class="tab">
@@ -230,6 +230,10 @@ credits{
   var LoggedInId = storageData.uid;
 
   var symbol = "<%=stockSymbol%>";
+
+  var stockid = "<%=tipsIds%>";
+
+  document.getElementById("symbolprediction").href= "prediction?stockName=<%=stockSymbol%>&id=<%=tipsIds%>";
 
  // var newftd = "1621232672661" ;
 var date = new Date();
