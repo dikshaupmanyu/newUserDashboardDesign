@@ -24,6 +24,12 @@ module.exports = function(app) {
     res.render('faq.ejs');
   });
 
+     app.get('/notification', function(req, res) {
+
+    res.render('notification.ejs');
+  });
+
+
 
 
    app.get('/followUserList', function(req, res) {

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,7 +12,6 @@
     <link rel="stylesheet" type="text/css" href="css/fontawesome1-all.min.css">
     <link rel="stylesheet" type="text/css" href="css/icomoon/style.css">
     <link rel="stylesheet" type="text/css" href="css/style1.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/responsive1.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.magicsearch.css">
   </head>
@@ -21,24 +22,30 @@
    padding-left: 350px;
 }
 
+.notification {
+  color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px
+}
 
-/*Payment Page CSS*/
-.payment-card {
-  background: #06264D;
-  border-radius: 10px;
-  max-width: 500px;
-  padding: 30px 40px;
-  width: 100%;
-  margin: 25px auto 15px;
-  color: #fff;
+.notification:hover {
+  /*background: red;*/
+  color: white;
 }
-.payment-year-input{
-    margin-left: -5px;
+
+.notification .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
 }
-.payment-card .form-control{
-    box-shadow: none;
-    height: 45px;
-}
+</style>
 </style>
 
     <!-- Body Flyers Start -->
@@ -84,12 +91,20 @@
             <div class="app_header_content_right">
               <ul class="d-flex">
                 <li class="header_right_menu">
+                   <div class="dropdown user_dropdown">
+                    <a href="notification" class="notification">
+                     <i class="far fa-bell"></i>
+                      <span class="badge" id="badgecount"></span></a>
+                  </div>
+                </li>
+                <li class="header_right_menu">
+                 
                   <div class="dropdown user_dropdown">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <img id="myImg" alt="images">
                       <h4 id=loginvals></h4>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownUser">
+                     <div class="dropdown-menu" aria-labelledby="dropdownUser">
                       
                         <a class="dropdown-item" href="myprofile">
                         <svg id="noun_Log_Out_1933995" data-name="noun_Log Out_1933995" xmlns="http://www.w3.org/2000/svg" width="16.524" height="16.524" viewBox="0 0 16.524 16.524">
@@ -111,7 +126,7 @@
                         </svg>
                         Settings
                       </a>
-                      <a class="dropdown-item" href="#" onclick="myFunction()">
+                      <a class="dropdown-item" href="/logout">
                         <svg id="noun_Log_Out_1933995" data-name="noun_Log Out_1933995" xmlns="http://www.w3.org/2000/svg" width="16.524" height="16.524" viewBox="0 0 16.524 16.524">
                           <g id="Group_14310" data-name="Group 14310" transform="translate(0 0)">
                             <g id="Group_14309" data-name="Group 14309">
@@ -130,16 +145,13 @@
         </div>
       </div>
 
-
-
-
-
-
 <script type="text/javascript">
   window.history.forward(); 
         function noBack() { 
             window.history.forward(); 
         } 
+
+
 window.addEventListener("load", function() {
 
   var url_string = window.location.href; 
@@ -152,125 +164,49 @@ window.addEventListener("load", function() {
    var LoggedInUsername = storageData.uname;
    var LoggedInEmail = storageData.email;
    var LoggedInId = storageData.uid;
+   var tokens = storageData.tokens;
    // alert(LoggedInId);
    document.getElementById("myImg").src = "https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId="+LoggedInId;
    $('#loginvals').html(LoggedInUsername);
    $('#loginemailvals').html(LoggedInEmail);
+
+    $.ajax({
+        type: 'POST',
+        url: 'https://apistest.tradetipsapp.com/api/notificationActivity/getCountOfAllUnreadNotificationActivityDetails',
+        headers: {
+          Authorization: 'Bearer '+ tokens,
+           },
+        // data: formdata,
+       success: function(data) {
+
+            // alert(data);
+
+            if(data.unReadCount > 0){
+
+              // alert(data.unReadCount);
+
+               document.getElementById("badgecount").textContent = data.unReadCount;
+
+            }else {
+
+               document.getElementById("badgecount").textContent = "0";
+              // alert("no count");
+            }
+
+         },error: function(error){
+           document.getElementById("badgecount").textContent = "0";
+         }
+
+
+   });
 
 
 });
 
 
 
-// var timer;
-
-// $(document).ready(function(){
-
-
-//     $("#search-box").keyup(function(){
-//         // alert($(this).val());
-//       // alert("timeset");
-
-//      clearTimeout(timer);
-
-//     timer = setTimeout(() => {
-//           // alert("timeout");
-//           // alert($(this).val());
-//         $.ajax({
-//         type: "POST",
-//         url: "https://apis.tradetipsapp.com/api/stocksearchdetails/searchStockSymbol",
-//         data:'stockSymbol='+$(this).val(),
-//         headers: { Authorization: 'Bearer '+ tokens},
-//         beforeSend: function(){
-//             // $("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
-//              $("#suggesstion-box").css("overflow-y", "none");
-//              // clearTimeout(timer);
-
-//         },
-//         success: function(data){
-//             // alert(data);
-
-//            var datak = JSON.stringify(data);
-//            var dataResult = JSON.parse(datak);
-//            var len = dataResult.length;
-//            // alert(len);
-          
-      
-//             // $("#suggesstion-box").show();
-//               $("#suggesstion-box").css("overflow-y", "scroll");
-//               $("#suggesstion-box").css("height", "100px");
-//               $("#suggesstion-box").empty();
-
-                  
-//                   clearTimeout(timer);
-             
-//                  for( var i = 0; i<len; i++){
-//                     // alert(len);
-//                     var id = dataResult[i]['id'];
-//                     var symbol = dataResult[i]['stockSymbol'];
-//                     var name = dataResult[i]['stockName'];
-//                      // alert(name);
-
-//                      clearTimeout(timer);  
-
-//                     $("#suggesstion-box").append("<li style='    list-style: none;' value='"+symbol+"'><input id='radiobtn"+symbol+"' type='radio' name='symbolName' value='"+symbol+"'>&nbsp;"+symbol+"</li>");
-
-//                     clearTimeout(timer);
-
-//                     $(':radio[name="symbolName"]').change(function(){
-//                         $(this).parent('li').addClass('selected').siblings().removeClass('selected');
-
-//                     }).filter(':checked').change();   
-
-
-//                 }
-
-                   
-//                 $('input:radio[name="symbolName"]').click(function () {
-//                     // alert("hi");
-//                     // alert($(this).val());
-
-//                     var dataset = $(this).val();
-
-//                     // alert(dataset);
-
-//                      document.getElementById("setEntry").readOnly  = false;
-//                     document.getElementById("setStop").readOnly  = false;
-//                      document.getElementById("setExit").readOnly  = false;
-//                      document.getElementById("search-box").readOnly  = true;
-
-//                     var url = "https://cloud.iexapis.com/stable/stock/market/batch?token=pk_dd324da3fb5f4428a47b05ab12f23ce2&types=quote&symbols="+dataset;
-//                           $.ajax({
-//                             url : url,
-//                             type: "GET",
-//                             success: function(data)
-//                             {
-//                                      // alert(data[symbol]);
-
-//                                 document.getElementById("search-box").value  = dataset;
-
-//                                  // document.getElementById("setEntry").value = JSON.stringify(data[dataset].quote.latestPrice);
-//                                  // document.getElementById("setStop").value = JSON.stringify(data[dataset].quote.latestPrice);
-//                                  // document.getElementById("setExit").value = JSON.stringify(data[dataset].quote.latestPrice);
-//                                  //  document.getElementById("createprice").value = JSON.stringify(data[dataset].quote.latestPrice);
-                              
-//                             }
-
-//                           });
-//                 });
-     
-                             
-//         }
-//         });
-//          }  , 1000 );
-//     });
-// });
-
-
-
-function myFunction() {
-  localStorage.clear();
-  window.location.href="/";
-}
 
 </script>
+
+
+
