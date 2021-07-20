@@ -18,16 +18,16 @@
             var urls = new URL(url_string);
             var sData = localStorage.getItem('allTokenData');
             var storageData= JSON.parse(sData);
-            // alert(JSON.stringify(storageData));
+            alert(JSON.stringify(storageData));
             $("#user_nickname").val(storageData.uname);
             $('#user_id').val(storageData.uid);
             $('#user_fcm_token').val(storageData.fcmToken);
 
-            // alert(storageData.fcmToken);
+            alert(storageData.fcmToken);
            
 
             var fcmToken = document.getElementById('user_fcm_token').value;
-            // alert(fcmToken);
+            alert(fcmToken);
 
 
           firebase.auth().signInWithCustomToken(fcmToken)
