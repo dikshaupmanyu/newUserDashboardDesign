@@ -103,6 +103,7 @@
                       $('#success').html('Login Sucessfully !');
                   
                             const tdss = dataResult.accessToken;
+                            const tds7 = dataResult.fcmToken;
                             const tds1 = dataResult.accessTokenStreamIO;
                             const tds2 = dataResult.userName;
                             const tds3 = dataResult.id;
@@ -112,6 +113,7 @@
 
                             localStorage.setItem('allTokenData', JSON.stringify({
                                 tokendata: tdss,
+                                fcmToken: tds7,
                                 streamtoken: tds1,
                                 uname: tds2,
                                 uid: tds3,
