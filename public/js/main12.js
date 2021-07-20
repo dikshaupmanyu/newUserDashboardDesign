@@ -17,7 +17,7 @@ var config = {
     token_uri: "https://oauth2.googleapis.com/token",
     auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
     client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zgd2j%40chatdemo-96e4f.iam.gserviceaccount.com"
-   // apiKey: "AIzaSyA89MvmT1QzbvnCGfZ8B7yaJRuE3DwaOPE",
+    // apiKey: "AIzaSyA89MvmT1QzbvnCGfZ8B7yaJRuE3DwaOPE",
     // authDomain: "chatdemo-96e4f.firebaseapp.com",
     // databaseURL: "https://chatdemo-96e4f.firebaseio.com",
     // projectId: "chatdemo-96e4f",
@@ -68,10 +68,11 @@ function handleCreate(event) {
   event.preventDefault();
    // alert(JSON.stringify(event));
 
-  var url_string = window.location.href;
-  var urls = new URL(url_string);
-  var loggedInName = urls.searchParams.get("uname");
-  var loggedInVal = urls.searchParams.get("uid");
+  var sData = localStorage.getItem('allTokenData');
+  var storageData= JSON.parse(sData);
+  var loggedInVal = storageData.uid;
+  // alert(loggedInVal);
+  var loggedInName = storageData.uname;
   // alert(loggedInName);
   // var today = Date.now();
   // var str = today.toDateString().split(' ').slice(1).join(' ') + " at " + today.toLocaleTimeString() + " GMT+5:30";
@@ -128,10 +129,11 @@ $("input[type='file']").on('change', function(e) {
   console.log(file);
   console.log(file.type);
 
-  var url_string = window.location.href;
-  var urls = new URL(url_string);
-  var loggedInName = urls.searchParams.get("uname");
-  var loggedInVal = urls.searchParams.get("uid");
+  var sData = localStorage.getItem('allTokenData');
+  var storageData= JSON.parse(sData);
+  var loggedInVal = storageData.uid;
+  // alert(loggedInVal);
+  var loggedInName = storageData.uname;
   // alert(loggedInName);
   // var today = Date.now();
   // var str = today.toDateString().split(' ').slice(1).join(' ') + " at " + today.toLocaleTimeString() + " GMT+5:30";
@@ -282,10 +284,10 @@ function handleDelete(id) {
 // dom functions
 function createTask(task) {
   // alert(task);
-  var url_string = window.location.href;
-  var urls = new URL(url_string);
-  var loggedInName = urls.searchParams.get("uname");
-  var loggedInVal = urls.searchParams.get("uid");
+  var sData = localStorage.getItem('allTokenData');
+  var storageData= JSON.parse(sData);
+  var loggedInVal = storageData.uid;
+   var loggedInName = storageData.uname;
   // alert(loggedInName)
   const elem = document.createElement("li");
   // elem.id = task.id;
@@ -397,22 +399,15 @@ function fetchTasks() {
 
                 var sData = localStorage.getItem('allTokenData');
                 var storageData= JSON.parse(sData);
-                // var loggedInVal = storageData.uid;
-                //  var loggedInName = storageData.uname;
-                // // alert(loggedInName)
-
-                var url_string = window.location.href;
-                var urls = new URL(url_string);
-                var loggedInName = urls.searchParams.get("uname");
-                var loggedInVal = urls.searchParams.get("uid");
-
+                var loggedInVal = storageData.uid;
+                 var loggedInName = storageData.uname;
+                // alert(loggedInName)
                 const elem = document.createElement("li");
                 elem.id = task.messageId;
                 elem.innerHTML = reviewTemplate(task);
                 tasksDOM.append(elem);
 
-               $('.card-body').scrollTop($('.card-body')[0].scrollHeight);
-
+                 $('.card-body').scrollTop($('.card-body')[0].scrollHeight);
 
                 // $('#tasks').scrollTop($('#tasks')[0].scrollHeight);
               //   elem.setAttribute("id", task.messageId);
@@ -628,18 +623,30 @@ function fetchTasks() {
 
 function reviewTemplate({profileImageUrl,userName,userId, message,createdDate,messageType}) {
 
-  var url_string = window.location.href;
-  var urls = new URL(url_string);
-  var loggedInName = urls.searchParams.get("uname");
-  var loggedInVal = urls.searchParams.get("uid");
+  // alert(profileImageUrl);
+  // fetch(profileImageUrl, { method: 'HEAD' })
+  //   .then(res => {
+  //       if (res.ok) {
+  //           alert('Image exists.');
+  //       } else {
+  //           alert('Image does not exist.');
+  //       }
+  //   }).catch(err => alert('Error:', err));
+  var sData = localStorage.getItem('allTokenData');
+  var storageData= JSON.parse(sData);
+  var loggedInVal = storageData.uid;
+  // alert(loggedInVal);
+  // alert(userId);
+  // var todate=new Date(createdDate).getDate();
+  // var tomonth=new Date(createdDate).getMonth()+1;
+  // var toyear=new Date(createdDate).getFullYear();
+  // var original_date=tomonth+'/'+todate+'/'+toyear;
+  // alert(original_date);
 
   const date = new Date(createdDate).toDateString();
   // alert(date);
-
-  
    
    if(loggedInVal == userId){
-
 
         if(messageType == "text"){
 
