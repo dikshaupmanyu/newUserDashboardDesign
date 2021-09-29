@@ -298,7 +298,7 @@ onload = function() {
     redirect: 'follow'
   };
 
-  fetch("https://apistest.tradetipsapp.com/api/subscriptionPlan/getAllSubscriptionPlan", requestOptions)
+  fetch("https://apis.tradetipsapp.com/api/subscriptionPlan/getAllSubscriptionPlan", requestOptions)
   .then(resp => resp.json())
     .then(function(data) {
       // console.log(data);
@@ -322,7 +322,7 @@ onload = function() {
 
        $.ajax({
             type: 'POST',
-            url: 'https://apistest.tradetipsapp.com/api/stripe/validateCoupon?couponId='+coupon,
+            url: 'https://apis.tradetipsapp.com/api/stripe/validateCoupon?couponId='+coupon,
             headers: {
               Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6InBhbmthanRlamF3YXRAZ21haWwuY29tIiwic3ViIjoiZDlhY2VkMjMtN2I4OS00YWJjLWJkNzEtNTUyM2FiODNhOThhIiwiaWF0IjoxNjIxMzM0NzgxLCJleHAiOjE2MjE5Mzk1ODF9.BZjyKnKAwAq4sG7zatPdCp-TkpD4jcRybjxHjRO8rkbjER0ogKcSGYxk3t7XkEW-vIrqiAwpy6dOZD4_1IpVzw" ,
             },
@@ -441,7 +441,7 @@ onload = function() {
 
     // // alert("neww");
 
-    // fetch("https://apistest.tradetipsapp.com/api/tip/addTip", requestOptions)
+    // fetch("https://apis.tradetipsapp.com/api/tip/addTip", requestOptions)
     //   .then(response => response.json())
     //   .then(result => {
 

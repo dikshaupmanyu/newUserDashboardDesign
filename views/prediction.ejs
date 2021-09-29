@@ -171,7 +171,7 @@ const a = null
 
   $.ajax({
         type: 'POST',
-        url: 'https://apistest.tradetipsapp.com/api/GraphParameter/getNormalPriceBySubscription?stockName='+symbol,
+        url: 'https://apis.tradetipsapp.com/api/GraphParameter/getNormalPriceBySubscription?stockName='+symbol,
         headers: {
           Authorization: 'Bearer '+ tokens,
            },
@@ -406,7 +406,7 @@ const a = null
                                 redirect: 'follow'
                               };
 
-                              const responseone = await fetch(`https://apistest.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet`, requestOp);
+                              const responseone = await fetch(`https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet`, requestOp);
 
                               const array = await responseone.json();
                               // alert(array[0].stock_name)

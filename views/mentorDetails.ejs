@@ -292,7 +292,7 @@ function handleError(image) {
   var formdata = {tipId: tipIds};
   $.ajax({
         type: 'POST',
-        url: 'https://apistest.tradetipsapp.com/api/tip/getAllTipFeatureDetailsByTipId',
+        url: 'https://apis.tradetipsapp.com/api/tip/getAllTipFeatureDetailsByTipId',
         headers: {
           Authorization: 'Bearer '+ tokens,
            },
@@ -330,7 +330,7 @@ function handleError(image) {
 
                   if(dataResult.tip.imageDetails != null){
 
-                     document.getElementById("tipImage").src = "https://apistest.tradetipsapp.com/api/appUser/getImageByTipId?tipId="+dataResult.tip.id;      
+                     document.getElementById("tipImage").src = "https://apis.tradetipsapp.com/api/appUser/getImageByTipId?tipId="+dataResult.tip.id;      
 
                   }else{
 
@@ -396,7 +396,7 @@ function handleError(image) {
                   //console.log(newdate2);
                   const stripped1 = x.replace(newdate2[4], date1);
                   document.getElementById("datee").textContent = stripped1;
-                  document.getElementById("MentorUserImage").src = "https://apistest.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId="+dataResult.tip.appUser.id;
+                  document.getElementById("MentorUserImage").src = "https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId="+dataResult.tip.appUser.id;
                   document.getElementById("TipNumber").textContent = "$"+ parseFloat(dataResult.tip.createTipPrice).toFixed(2);
                   document.getElementById("CompanySymbol").textContent = dataResult.tip.stockName;
                   // document.getElementById("entrypoint").textContent = "$"+parseFloat(dataResult.tip.entryPoint).toFixed(2);
@@ -412,7 +412,7 @@ function handleError(image) {
                   
                   document.getElementById("commentDetail").textContent = dataResult.tip.comment;
 
-                   document.getElementById("myImguser").src = "https://apistest.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId="+LoggedInId;
+                   document.getElementById("myImguser").src = "https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId="+LoggedInId;
 
                   document.getElementById("StatusPin").textContent = dataResult.userPinStatus;
 
@@ -550,7 +550,7 @@ function handleError(image) {
                     var formdata = {tipId: tipIds,offset: 0, limit: 100};
                      $.ajax({
                     type: 'POST',
-                    url: 'https://apistest.tradetipsapp.com/api/comment/getCommentsByTipIdPagination',
+                    url: 'https://apis.tradetipsapp.com/api/comment/getCommentsByTipIdPagination',
                     headers: {
                       Authorization: 'Bearer '+ tokens,
                        },
@@ -564,7 +564,7 @@ function handleError(image) {
 
                           // alert(JSON.stringify(dataResult1[i]));
 
-                            var text = '<div class="review_bx"><div class="review_bx_head"><div class="author_bx"><img onerror="handleError(this);" src="https://apistest.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+dataResult1[i].appUser.id+'" alt="images"><div class="author_bx_txt"><h2 style="display: inline-block";>'+dataResult1[i].appUser.userName+'</h2></div></div></div><div class="review_bx_txt"><span class="author_tag"><a javascript:void(0); onclick="return flagclick(\'' + dataResult1[i].id + '\',\'' + dataResult1[i].appUser.id + '\')"><i class="fas fa-flag" aria-hidden="true" style="color:white;"></i></a></span><p>'+dataResult1[i].commentDetails+'</p></div>';
+                            var text = '<div class="review_bx"><div class="review_bx_head"><div class="author_bx"><img onerror="handleError(this);" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+dataResult1[i].appUser.id+'" alt="images"><div class="author_bx_txt"><h2 style="display: inline-block";>'+dataResult1[i].appUser.userName+'</h2></div></div></div><div class="review_bx_txt"><span class="author_tag"><a javascript:void(0); onclick="return flagclick(\'' + dataResult1[i].id + '\',\'' + dataResult1[i].appUser.id + '\')"><i class="fas fa-flag" aria-hidden="true" style="color:white;"></i></a></span><p>'+dataResult1[i].commentDetails+'</p></div>';
                             $("#commentdemo").append(text);
                     }
                        }
@@ -613,7 +613,7 @@ function handleError(image) {
                    },
             body: formdata,
             redirect: 'follow'};
-            fetch("https://apistest.tradetipsapp.com/api/comment/addCommentOnTip", requestOptions)
+            fetch("https://apis.tradetipsapp.com/api/comment/addCommentOnTip", requestOptions)
            .then(response => response.json())
            .then(result => {
                 //console.log("calling val" +result);
@@ -626,7 +626,7 @@ function handleError(image) {
 
                 $.ajax({
                       type: 'POST',
-                      url: 'https://apistest.tradetipsapp.com/api/comment/getCommentsByTipIdPagination',
+                      url: 'https://apis.tradetipsapp.com/api/comment/getCommentsByTipIdPagination',
                       headers: {
                          Authorization: 'Bearer '+ tokens,
                        },
@@ -634,7 +634,7 @@ function handleError(image) {
                       success: function(data) {
                         // alert(data[0]);
          
-                      var texts = '<div class="review_bx"><div class="review_bx_head"><div class="author_bx"><img src="https://apistest.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+data[0].appUser.id+'" alt="images"><div class="author_bx_txt"><h2 style="display: inline-block";>'+data[0].appUser.userName+'</h2></div></div></div><div class="review_bx_txt"><input type="text" name="a" id="a" value="'+ data[0].appUser.userName +'"><span class="author_tag"><a javascript:void(0); onclick="return flagclick(\'' + data[0].id + '\',\'' + data[0].appUser.id + '\')"><i class="fas fa-flag" aria-hidden="true"  style="color:white;"></i></a></span><p>'+data[0].commentDetails+'</p></div>';
+                      var texts = '<div class="review_bx"><div class="review_bx_head"><div class="author_bx"><img src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+data[0].appUser.id+'" alt="images"><div class="author_bx_txt"><h2 style="display: inline-block";>'+data[0].appUser.userName+'</h2></div></div></div><div class="review_bx_txt"><input type="text" name="a" id="a" value="'+ data[0].appUser.userName +'"><span class="author_tag"><a javascript:void(0); onclick="return flagclick(\'' + data[0].id + '\',\'' + data[0].appUser.id + '\')"><i class="fas fa-flag" aria-hidden="true"  style="color:white;"></i></a></span><p>'+data[0].commentDetails+'</p></div>';
                       $("#commentdemo").prepend(texts);
                       }
                     });
@@ -642,7 +642,7 @@ function handleError(image) {
                  var formdata = {tipId: tipIds};
                   $.ajax({
                         type: 'POST',
-                        url: 'https://apistest.tradetipsapp.com/api/tip/getAllTipFeatureDetailsByTipId',
+                        url: 'https://apis.tradetipsapp.com/api/tip/getAllTipFeatureDetailsByTipId',
                         headers: {
                           Authorization: 'Bearer '+ tokens,
                            },
@@ -694,7 +694,7 @@ var requestOptions = {
   redirect: 'follow'
 };
 // console.log(requestOptions);
-fetch("https://apistest.tradetipsapp.com/api/tipCommentFlag/addCommentFlag", requestOptions)
+fetch("https://apis.tradetipsapp.com/api/tipCommentFlag/addCommentFlag", requestOptions)
 .then(response => response.json())
 .then(result => {
 // console.log("calling val" +result);
@@ -735,7 +735,7 @@ function pinFunction(e) {
 
     $.ajax({
         type: 'POST',
-        url: 'https://apistest.tradetipsapp.com/api/tipFeature/tipUnPinForUser',
+        url: 'https://apis.tradetipsapp.com/api/tipFeature/tipUnPinForUser',
         headers: {
           Authorization: 'Bearer '+ tokens,
            },
@@ -763,7 +763,7 @@ function pinFunction(e) {
   }else{
     $.ajax({
         type: 'POST',
-        url: 'https://apistest.tradetipsapp.com/api/tipFeature/tipPinForUser',
+        url: 'https://apis.tradetipsapp.com/api/tipFeature/tipPinForUser',
         headers: {
           Authorization: 'Bearer '+ tokens,
            },
@@ -812,7 +812,7 @@ function likeFunction(e) {
 
     $.ajax({
         type: 'POST',
-        url: 'https://apistest.tradetipsapp.com/api/tipFeature/tipUnLikeForUser',
+        url: 'https://apis.tradetipsapp.com/api/tipFeature/tipUnLikeForUser',
         headers: {
           Authorization: 'Bearer '+ tokens,
            },
@@ -843,7 +843,7 @@ function likeFunction(e) {
     // alert("equal false");
     $.ajax({
         type: 'POST',
-        url: 'https://apistest.tradetipsapp.com/api/tipFeature/tipLikeForUser',
+        url: 'https://apis.tradetipsapp.com/api/tipFeature/tipLikeForUser',
         headers: {
           Authorization: 'Bearer '+ tokens,
            },
@@ -891,7 +891,7 @@ function likeFunction(e) {
 
 //     $.ajax({
 //         type: 'POST',
-//         url: 'https://apistest.tradetipsapp.com/api/tipFeature/tipUnLikeForUser',
+//         url: 'https://apis.tradetipsapp.com/api/tipFeature/tipUnLikeForUser',
 //         headers: {
 //           Authorization: 'Bearer '+ tokens,
 //            },
@@ -916,7 +916,7 @@ function likeFunction(e) {
 //   }else{
 //     $.ajax({
 //         type: 'POST',
-//         url: 'https://apistest.tradetipsapp.com/api/tipFeature/tipLikeForUser',
+//         url: 'https://apis.tradetipsapp.com/api/tipFeature/tipLikeForUser',
 //         headers: {
 //           Authorization: 'Bearer '+ tokens,
 //            },

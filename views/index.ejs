@@ -78,7 +78,7 @@
             if(userName!="" && password!="" ){
               $.ajax({
                 type: 'POST',
-                url: 'https://apistest.tradetipsapp.com/api/auth/appSignIn',
+                url: 'https://apis.tradetipsapp.com/api/auth/appSignIn',
                 headers: {
                   Authorization: 'Bearer '+ localStorage.getItem("token"),
                   Authorization: 'Bearer '+ sessionStorage.getItem("token")

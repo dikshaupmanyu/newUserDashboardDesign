@@ -612,13 +612,13 @@
   document.getElementById("user_n").value = user_name;
   document.getElementById("F_name").value = user_name;
   document.getElementById("emails").value = email_id;
-  document.getElementById("imagePreview").src = "https://apistest.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId="+LoggedInId;
+  document.getElementById("imagePreview").src = "https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId="+LoggedInId;
 
 /*  var formdata = {appuserName: user_name};
 
     $.ajax({
         type: 'POST',
-        url: 'https://apistest.tradetipsapp.com/api/appUser/getAppUserByUserName',
+        url: 'https://apis.tradetipsapp.com/api/appUser/getAppUserByUserName',
         headers: {
                    Authorization: 'Bearer '+ tokens,
                   },
@@ -653,7 +653,7 @@ var requestOptions = {
   body: formdata1,
   redirect: 'follow'
 };
-fetch("https://apistest.tradetipsapp.com/api/appUser/appUserUpdateById", requestOptions)
+fetch("https://apis.tradetipsapp.com/api/appUser/appUserUpdateById", requestOptions)
   .then(response => response.text())
   .then(result => console.log(result))
   .catch(error => console.log('error', error));
@@ -703,7 +703,7 @@ $('#button_click').on('click', function() {
           redirect: 'follow'
         };
   
-    fetch("https://apistest.tradetipsapp.com/api/auth/changePassword", requestOptions)
+    fetch("https://apis.tradetipsapp.com/api/auth/changePassword", requestOptions)
     .then(response => response.json())
         .then(result => {
             //console.log(result);
