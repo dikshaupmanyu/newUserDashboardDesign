@@ -181,7 +181,7 @@ $("#formoid").submit(function(event){
       redirect: 'follow'
     };
 
-    fetch("https://apistest.tradetipsapp.com/api/serviceMentorSubscriptionPlan/addServiceSubscriptionPlanByMentor", requestOptions)
+    fetch("https://apis.tradetipsapp.com/api/serviceMentorSubscriptionPlan/addServiceSubscriptionPlanByMentor", requestOptions)
       .then(response => response.json())
       .then(result => {
                 // alert("calling val" +result);
