@@ -1,5 +1,6 @@
 var compression = require('compression')
 var express  = require('express');
+const bodyParser = require('body-parser');
 var app      = express();
 var fs      = require('fs');
 var port     = process.env.PORT || 8080;
@@ -20,6 +21,7 @@ var Base64 = require('Base64');
 var expressJwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
 const admin = require('firebase-admin');
+const stripe = require('stripe')('sk_test_beRNx3hBDckaj2C0eLZYgrqP'); // Add your Secret Key Here
 
 const serviceAccount = require('./serviceAccountKey.json');
 //initialize admin SDK using serciceAcountKey
@@ -39,6 +41,7 @@ const db = admin.firestore();
 	app.use(express.logger('dev')); // log every request to the console
 	app.use(express.cookieParser()); // read cookies (needed for auth)
 	app.use(express.bodyParser()); // get information from html forms
+    app.use(bodyParser.urlencoded({ extended: true }));
 
 	app.set('view engine', 'ejs'); // set up ejs for templating
 
@@ -56,9 +59,9 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 // launch ======================================================================
 // app.listen(port);
 
- // var httpServer = http.createServer(app);
+// var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
- // httpServer.listen(port);
+// httpServer.listen(port);
 httpsServer.listen(port);
 console.log('The magic happens on port ' + port);
