@@ -95,7 +95,7 @@ function handleCreate(event) {
     .add(task)
     .then((ref) => {
       task.id = ref.id;
-      fullName.value = '';
+      // fullName.value = '';
       message.value  = '';
       // date.value = '';
       // return createTask(task);
@@ -163,7 +163,7 @@ $("input[type='file']").on('change', function(e) {
     .then((ref) => {
       console.log(ref.id);
       task.id = ref.id;
-      fullName.value = '';
+      // fullName.value = '';
       message.value  = '';
       // date.value = '';
       // return createTask(task);
@@ -196,7 +196,7 @@ $("input[type='file']").on('change', function(e) {
     .then((ref) => {
       console.log(ref.id);
       task.id = ref.id;
-      fullName.value = '';
+      // fullName.value = '';
       message.value  = '';
       // date.value = '';
       // return createTask(task);
@@ -230,7 +230,7 @@ $("input[type='file']").on('change', function(e) {
     .then((ref) => {
       console.log(ref.id);
       task.id = ref.id;
-      fullName.value = '';
+      // fullName.value = '';
       message.value  = '';
       // date.value = '';
       // return createTask(task);
