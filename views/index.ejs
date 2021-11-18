@@ -17,7 +17,7 @@
            -webkit-text-security:disc;
        }
    </style>
-<body onload="getCookie()">
+<body>
 
         <!-- Body Flyers Start -->
     <div class="body_flyer body_flyer1">
@@ -37,12 +37,12 @@
         </div>
         <div class="account_bx_frm">
           <input type="text" class="form-control" id="uname" name="userName" placeholder="Enter Username" required="required">
-          <input type="text" class="form-control" id="pswrd" name="password" placeholder="Enter Password" required="required">
+          <input type="text" class="form-control" id="pswrd" name="password" placeholder="Enter Password" autocomplete="off" required="required">
           <div class="rmbr_frgt">
-            <label>
-            <input type="checkbox" required="required" name="remember" id="rememberme">
-            Remember Me
-            </label>
+           <label>
+            <!--  <input type="checkbox" required="required" name="remember" id="rememberme">
+            Remember Me-->
+            </label> 
             <h4><a href="/forgetPassword">Forgot password?</a></h4>
           </div>
           <button class="btn cmn_btn btn_primary" id="butlogin">Login</button>
@@ -103,19 +103,23 @@
                       $('#success').html('Login Sucessfully !');
                   
                             const tdss = dataResult.accessToken;
+                            const tds7 = dataResult.fcmToken;
                             const tds1 = dataResult.accessTokenStreamIO;
                             const tds2 = dataResult.userName;
                             const tds3 = dataResult.id;
                             const tds4 = dataResult.accessTokenStreamIOWithID;
                             const tds5 = dataResult.email;
+                            const tds6 = dataResult.createdOn;
 
                             localStorage.setItem('allTokenData', JSON.stringify({
                                 tokendata: tdss,
+                                fcmToken: tds7,
                                 streamtoken: tds1,
                                 uname: tds2,
                                 uid: tds3,
                                 streamdatatoken: tds4,
                                 email:tds5,
+                                creation_date : tds6
                             }));
 
                        // window.location.href = "/home";  
@@ -153,7 +157,7 @@
  </script>
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
  $('#rememberme').click(function() {
   var rem = document.getElementById("rememberme");
@@ -238,7 +242,7 @@ BB = decode_cookie(data[2]);
  }
 }
 </script>
-
+ -->
  
 </body>
 </html>

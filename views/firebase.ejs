@@ -1,8 +1,8 @@
   <%- include partials/innerheader %>
 
    
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/emoji.css">
+<!--     <link rel="stylesheet" href="css/style.css">
+ -->    <link rel="stylesheet" href="css/emoji.css">
     <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -14,17 +14,37 @@
     <script>
         window.addEventListener("load", function() {
 
-            var url_string = window.location.href; 
+             var url_string = window.location.href; 
             var urls = new URL(url_string);
             var sData = localStorage.getItem('allTokenData');
             var storageData= JSON.parse(sData);
+            // alert(JSON.stringify(storageData));
             $("#user_nickname").val(storageData.uname);
             $('#user_id').val(storageData.uid);
-            // var today = new Date();
-            // // alert(today);
-            // var str = today.toDateString().split(' ').slice(1).join(' ') + " at " + today.toLocaleTimeString() + " GMT+5:30";
-            // // alert(str);
-            // $('#dateval').val(str);
+            $('#user_fcm_token').val(storageData.fcmToken);
+
+            // alert(storageData.fcmToken);
+           
+
+            var fcmToken = document.getElementById('user_fcm_token').value;
+            // alert(fcmToken);
+
+
+          firebase.auth().signInWithCustomToken(fcmToken)
+            .then((userCredential) => {
+              // Signed in
+              // console.log(userCredential);
+              var user = userCredential.user;
+              // var ids = userCredential.uid;
+              console.log(user.uid);
+              // ...
+            })
+            .catch((error) => {
+              console.log("error is" + error);
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // ...
+            });
     });
     </script>
       <style type="text/css">
@@ -285,6 +305,7 @@
                       <div class="input-group">
                         <input type="hidden" id="user_id">
                         <input type="hidden" id="user_nickname">
+                        <input type="hidden" id="user_fcm_token">
                        <!--  <input type="hidden" id="dateval"> -->
                         <span class="input-group-btn">
                              <input type="file" style="display: none;">
@@ -346,7 +367,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase.js"></script>
 
 
-    <script src="js/main1.js"></script>
+    <script src="js/main12.js"></script>
 
       <script type="text/javascript" src="js/custom.js"></script>
 

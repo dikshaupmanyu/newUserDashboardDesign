@@ -16,11 +16,23 @@ $(document).ready(function(){
      // alert("hi");
       var value = $radios.filter(':checked').val();
       $('[data-switch-field]').hide();
+
+      if(value==1)
+      {
+            $('[data-switch-field = 1]').show();
+             $('[data-switch-field = 2]').show();
+      }else{
       $('[data-switch-field = '+value+']').show();
+    }
       if(value==0){
         $('[data-switch-field]').show();
       }
+
+
+       $('.scroller-dash-left').scrollTop(0);
   });
+
+
 
   $('.recent_post_tips_arrow').on("click", function(e){
     $(this).toggleClass('fa-rotate-180');
@@ -32,9 +44,9 @@ $(document).ready(function(){
   });
 
 });
-$( window ).resize(function() {
-  sidebarSlimScroll();
-});
+// $( window ).resize(function() {
+//   sidebarSlimScroll();
+// });
 
 
 // Header sticky js Start
