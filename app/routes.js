@@ -9,63 +9,12 @@ module.exports = function(app) {
     res.render('chat.ejs');
   });
 
-  app.get('/settings', function(req, res) {
+  app.get('/profile', function(req, res) {
 
     res.render('profile.ejs');
   });
 
-<<<<<<< HEAD
    app.get('/stockChart', function(req, res) {
-=======
-   app.get('/myprofile', function(req, res) {
-
-    res.render('follower.ejs');
-  });
-
-    app.get('/faq', function(req, res) {
-
-    res.render('faq.ejs');
-  });
-
-     app.get('/notification', function(req, res) {
-
-    res.render('notification.ejs');
-  });
-
-
-
-
-   app.get('/followUserList', function(req, res) {
-
-    res.render('followUserList.ejs');
-  });
-
-     app.get('/visitProfile', function(req, res) {
-
-      var userIds = req.query.Ids;
-      var userNames = req.query.Names;
-
-    res.render('visitProfile.ejs',{visitedId : userIds , visitedName : userNames});
-  });
-     
-
-    app.get('/subscribe', function(req, res) {
-
-    res.render('subscribe.ejs');
-  });
-
-      app.get('/complete', function(req, res) {
-
-    res.render('complete.ejs');
-  });
-
-     app.get('/incomplete', function(req, res) {
-
-    res.render('incomplete.ejs');
-  });
-
-      app.get('/stockChart', function(req, res) {
->>>>>>> 2a06370ba2134c36500e1c3077546fe1b8ff3263
 
     var mentorids = req.query.id;
 
@@ -74,91 +23,6 @@ module.exports = function(app) {
     res.render('stockChart.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
-<<<<<<< HEAD
-=======
-       app.get('/prediction', function(req, res) {
-
-    var mentorids = req.query.id;
-
-    var symbol = req.query.stockName;
-
-    res.render('prediction.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
-  });
-
-
-    app.post("/charge", async (req, res , next) => {
-
-    var request = require("request");
-
-    console.log(req.body.token);
-    // console.log(res);
-    var email = req.body.email;
-    var uname = req.body.name;
-    var plan = req.body.planName;
-    var price = req.body.amount * 100;
-    var subscriptionPlanId = req.body.subscriptionPlan;
-    var couponId = req.body.text1;
-    var tokens = req.body.token;
-
-
-
-    const stripe = require('stripe')('pk_test_Pbri8k4HUNcegrgjAohigZKF002BpByODh');
-
-    try {
-
-
-    const paymentMethod = await stripe.paymentMethods.create({
-        type: 'card',
-        card: {
-          number: req.body.cardNumber,
-          exp_month: req.body.month,
-          exp_year: req.body.year,
-          cvc: req.body.cvv,
-        },
-        billing_details: {
-          email: req.body.email,
-          name: req.body.name
-        }
-      });
-
-        
-          var options = { method: 'POST',
-            url: 'https://apis.tradetipsapp.com/api/stripe/createStripePayment',
-            headers: 
-             { 'postman-token': 'a1f3bad2-8aab-6d21-7162-d82350e953af',
-               'cache-control': 'no-cache',
-               authorization: 'Bearer '+tokens },     
-               formData: { userName: req.body.name,
-               paymentId: paymentMethod.id,
-               subscriptionPlanId: req.body.subscriptionPlan,
-               couponId : req.body.text1 } };
-
-          request(options, function (error, response, body) {
-            if (error) throw new Error(error);
-
-            // {
-            //   res.render('incomplete.ejs');
-            // }
-            // throw new Error(error);
-
-            // console.log(response);
-            // console.log(error);
-            // console.log(body);
-            res.render('complete.ejs');
-          });
-
-
-        } catch {
-     
-        return res.redirect('/incomplete');
-};
-
-
-   
- 
-});
-
->>>>>>> 2a06370ba2134c36500e1c3077546fe1b8ff3263
   app.get('/dashboard', function(req, res) {
 
     // var request = require("request");
