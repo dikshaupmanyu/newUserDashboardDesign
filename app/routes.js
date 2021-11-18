@@ -14,6 +14,15 @@ module.exports = function(app) {
     res.render('profile.ejs');
   });
 
+   app.get('/stockChart', function(req, res) {
+
+    var mentorids = req.query.id;
+
+    var symbol = req.query.stockName;
+
+    res.render('stockChart.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
+  });
+
   app.get('/dashboard', function(req, res) {
 
     // var request = require("request");
@@ -105,6 +114,25 @@ module.exports = function(app) {
     var symbol = req.query.stockName;
 
     res.render('aiDetails.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
+  });
+
+
+      app.get('/macdDetails', function(req, res) {
+
+    var mentorids = req.query.id;
+
+    var symbol = req.query.stockName;
+
+    res.render('macdDetails.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
+  });
+
+        app.get('/macdSellDetails', function(req, res) {
+
+    var mentorids = req.query.id;
+
+    var symbol = req.query.stockName;
+
+    res.render('macdSellDetails.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
 

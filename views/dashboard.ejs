@@ -231,17 +231,42 @@ ul.search-list-loader {
 </div> -->
 
             <div class="scroller-dash-left scrollbar-css">
-       <div class="tips_boxes" id="bothdemo">
-           
-         </div>
+               <!-- <div class="tips_boxes" id="bothdemo">
+                   
+                 </div>
                   <div class="tips_boxes" id="AIdemo">
    
                 </div>
                 <div class="tips_boxes" id="tipbothdemo">
    
                 </div>
+                 <div class="tips_boxes" id="MACDdemo">
+                </div>
+
+                 <div class="tips_boxes" id="MACDdemoSell">
+                </div>
+    
                 
    
+                <div class="tips_boxes" id="demo">
+   
+                </div>
+ -->
+                <div class="tips_boxes" id="bothdemo">
+                 </div>
+                  <div class="tips_boxes" id="tipbothdemo">
+                </div>
+                  <div class="tips_boxes" id="MACDdemo">
+                </div>
+
+                 <div class="tips_boxes" id="MACDdemoSell">
+                </div>
+    
+                  <div class="tips_boxes" id="AIdemo">
+                </div>
+               <!--  <div class="tips_boxes" id="tipbothdemo">
+                </div> -->
+                  
                 <div class="tips_boxes" id="demo">
    
                 </div>
@@ -1395,6 +1420,61 @@ $(".scroller-dash-left").scroll(function() {
 
 }
 
+////////////////////////////////start MACD tip/////////////////////////////////////////////////////////////
+
+$.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/tip/getAllTipFeaturePaginationForUserWithMacdGif',
+        headers: {
+          Authorization: 'Bearer '+ tokens ,
+        },
+        async:false,
+        data: {offset : 0 , limit : 15},
+        // async : true,
+      success: function(datas) {
+       var dataks = JSON.stringify(datas);
+       var dataResults = JSON.parse(dataks);
+       // alert(dataResults.buyStockCrossover);
+       // alert(JSON.stringify(dataResults.buyStockCrossover));   
+       var array = dataResults.buyStockCrossover;
+       var totalarray = array.length;
+       // console.log(stocknames);
+       var finalstockval = [];
+       for(i=0;i<totalarray;i++){
+
+        finalstockval.push(array[i].stockSymbol);
+
+
+       }
+
+
+        textMacdTips = '<div class="tips_bx buy_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><a href="macdDetails?id=' + array[0].id + '" target="_blank"><div class="tips_bx_author author_bx"><img src="images/macd_buy.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">MACD tips</em> <span>'+ array[0].crossoverDate +'</span></h2></div></div></a><div class="tips_bx_amount"><h2>'+ totalarray +' Signals</h2><p>'+ finalstockval.join(', ') +'</p></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].crossover + '</span> <h2><em class="only_id_use">S&P500 and Nasdaq100</em> <span>All MACD convergence crossover signals </span></h2></div><div class="tips_bx_amount"><p><a href="#" data-toggle="modal" data-target="#myModalMACD">What is MACD ?</a></p></div></div>';
+        
+    $("#MACDdemo").append(textMacdTips);
+
+       var arraySell = dataResults.sellStockCrossover;
+       var totalarraySell = arraySell.length;
+       var finalstockvalSell = [];
+       for(i=0;i<totalarraySell;i++){
+
+        finalstockvalSell.push(arraySell[i].stockSymbol);
+
+
+       }
+
+        textMacdTipsSell = '<div class="tips_bx sell_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><a href="macdSellDetails?id=' + arraySell[0].id + '" target="_blank"><div class="tips_bx_author author_bx"><img src="images/macd_sell.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">MACD tips</em> <span>'+ arraySell[0].crossoverDate +'</span></h2></div></div></a><div class="tips_bx_amount"><h2>'+ totalarraySell +' Signals</h2><p>'+ finalstockvalSell.join(', ') +'</p></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + arraySell[0].crossover + '</span> <h2><em class="only_id_use">S&P500 and Nasdaq100</em> <span>All MACD convergence crossover signals </span></h2></div><div class="tips_bx_amount"><p><a href="#" data-toggle="modal" data-target="#myModalMACD">What is MACD ?</a></p></div></div>';
+        
+          $("#MACDdemoSell").append(textMacdTipsSell);
+     
+    
+      
+       }
+       
+  });
+////////////////////////////////end MACD tip/////////////////////////////////////////////////////////////
+
+
+
   $(".load-wrapp-list").css('display','block');
  $.ajax({
         type: 'POST',
@@ -1421,7 +1501,7 @@ $(".scroller-dash-left").scroll(function() {
                
                    for (k= 0; k< users.length; k ++) {
                      if(r[users[k]] != undefined){
-                    texts += '<a href="stockChart?stockName=' + r[users[k]].quote.symbol + '"><div class="tips_wtlist_item" id="item-'+ deletdata[k] +'"><div class="tips_wtlist_item_left"><h2>'+ r[users[k]].quote.symbol +'<span>'+ r[users[k]].quote.companyName +'</span></h2></div><div class="tips_wtlist_item_center"><h3>$ '+ parseFloat(r[users[k]].quote.latestPrice).toFixed(2) +'</h3> '+ (r[users[k]].quote.change > 0 ? ' </div><div class="tips_wtlist_item_right"><h3><span class="color_buy">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>':'</div><div class="tips_wtlist_item_right"><h3><span class="color_sell">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>')+'</div><div class="tips_wtlist_item_right"><span class="delete_stck" style="    color: white;" onclick="delete_stck(this.id)" id="'+ deletdata[k] +' '+ r[users[k]].quote.symbol +'""><i class="fa fa-trash"></i></span></div></div></a>';
+                    texts += '<a href="stockChart?stockName='+ r[users[k]].quote.symbol +'&id='+ deletdata[k] +'"><div class="tips_wtlist_item" id="item-'+ deletdata[k] +'"><div class="tips_wtlist_item_left"><h2>'+ r[users[k]].quote.symbol +'<span>'+ r[users[k]].quote.companyName +'</span></h2></div><div class="tips_wtlist_item_center"><h3>$ '+ parseFloat(r[users[k]].quote.latestPrice).toFixed(2) +'</h3> '+ (r[users[k]].quote.change > 0 ? ' </div><div class="tips_wtlist_item_right"><h3><span class="color_buy">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>':'</div><div class="tips_wtlist_item_right"><h3><span class="color_sell">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>')+'</div><div class="tips_wtlist_item_right"><span class="delete_stck" style="    color: white;" onclick="delete_stck(this.id)" id="'+ deletdata[k] +' '+ r[users[k]].quote.symbol +'""><i class="fa fa-trash"></i></span></div></div></a>';
                    }
                  }
                        $(".load-wrapp-list").css('display','none');
