@@ -1,4 +1,30 @@
 <%- include partials/innerheader %>
+<div class="modal" id="myModalMACD">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: #000;">What Is Moving Average Convergence Divergence (MACD)?</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <p style="color: #000;">MACD is a mathematical indicator for stock investors that uses the average closing prices of a stock in 2 timeframes, a short-term (past 9 days) and a longer-term (past 26 days)</p>
+          <p style="color: #000;">When the short-term average closing prices (called a moving average) crosses over the longer-term moving average from below heading up, that is a sign to investors to buy the stock.</p>
+          <p style="color: #000;">The reverse is true when the short-term moving average crosses the longer-term moving average from above heading down. That is a sign to sell the stock.</p>
+          <p style="color: #000;">TradeTips makes knowing when a MACD signal happens by just sending you the list all SP500 and Nasdaq100 stocks that just had a buy or sell crossover event the day before.</p>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 <style>
 .dashboard_wrapper_left
 {
@@ -231,22 +257,15 @@ ul.search-list-loader {
 </div> -->
 
             <div class="scroller-dash-left scrollbar-css">
-<<<<<<< HEAD
                <!-- <div class="tips_boxes" id="bothdemo">
                    
                  </div>
                   <div class="tips_boxes" id="AIdemo">
    
-=======
-               <div class="tips_boxes" id="bothdemo">
-                 </div>
-                  <div class="tips_boxes" id="tipbothdemo">
->>>>>>> 2a06370ba2134c36500e1c3077546fe1b8ff3263
                 </div>
-    
-                  <div class="tips_boxes" id="AIdemo">
+                <div class="tips_boxes" id="tipbothdemo">
+   
                 </div>
-<<<<<<< HEAD
                  <div class="tips_boxes" id="MACDdemo">
                 </div>
 
@@ -255,16 +274,15 @@ ul.search-list-loader {
     
                 
    
-=======
-               <!--  <div class="tips_boxes" id="tipbothdemo">
-                </div> -->
-                  
->>>>>>> 2a06370ba2134c36500e1c3077546fe1b8ff3263
                 <div class="tips_boxes" id="demo">
    
                 </div>
+
+              </div>
+
  -->
-                <div class="tips_boxes" id="bothdemo">
+
+                 <div class="tips_boxes" id="bothdemo">
                  </div>
                   <div class="tips_boxes" id="tipbothdemo">
                 </div>
@@ -386,225 +404,140 @@ ul.search-list-loader {
         </div>
          
            <%- include partials/innerfooter %>
- <script type="text/javascript">
-    $(document).ready(function(){
-    
-    // $('#button').click( function(e) {
-        
-    //     e.preventDefault(); // stops link from making page jump to the top
-    //     e.stopPropagation(); // when you click the button, it stops the page from seeing it as clicking the body too
-    //     $('#content').toggle();
-        
-    // });
-    
-    // $('#content').click( function(e) {
-        
-    //     e.stopPropagation(); // when you click within the content area, it stops the page from seeing it as clicking the body too
-        
-    // });
-    
-    $('body').click( function() {
-        // if(('#search-stock').val("")){
-        //   $('#symbol-box').css("display" , "none");
-        // }else{
-          $('#symbol-box').css("display" , "none");
-        //  $('.load-wrapp').css("display" , "none");
-          
-        // }
 
-
-        
-        
-    });
-    
-});
-  </script>
 
 <script type="text/javascript">
-   var sData = localStorage.getItem('allTokenData');
-   var storageData= JSON.parse(sData);
+  var sData = localStorage.getItem('allTokenData');
+  var storageData= JSON.parse(sData);
  
-   var tokens = storageData.tokendata;
-  // alert(tokens);
-  
-  var userName = storageData.uname;
- // alert(userName);
-  //var stock1 = [];
-   var myarrdata = new Array();
+  var tokens = storageData.tokendata;
+  //alert(tokens);
+ var myarrdata = new Array();
    var myarr = new Array();
    var mydeletedata = new Array();
   var companies=new Array();
   var deletecompanies=new Array();
  
-  $.ajax({
-
-    type: 'POST',
-    url: 'https://apis.tradetipsapp.com/api/stockDetail/getAllStockOfUserByUserName?userName='+ userName,
-    headers: {
-      Authorization: 'Bearer '+ tokens ,
-    },
-    data: formdata,
-
-  success: function(datas) {
-   var dataks = JSON.stringify(datas);
-   var dataResults = JSON.parse(dataks);
-    
-           let deletdata = [];
-            let users = [];
-             let stckusers = [];
-             let stckdata = [];
+  $(function() {
+     $("#search-stock").keyup(function(){
+      clearTimeout(timers);
+       $('.load-wrapp').css('display','block');
+       $('#symbol-box').css('display','none');
+    timers = setTimeout(() => {
+//           // alert("timeout");
+          // alert($(this).val());
+        $.ajax({
+        type: "POST",
+         url: "https://apis.tradetipsapp.com/api/stocksearchdetails/searchStockSymbol",
+         data:'stockSymbol='+$(this).val(),
+         headers: { Authorization: 'Bearer '+ tokens},
+         beforeSend: function(){
+             // $("#search-box").css("background","");
+           //   $("#symbol-box").css("overflow-y", "none");
+             // $("#symbol-box").css("position", "absolute");
+              // $("#symbol-box").css("margin-top", "75px");
+              //$("#symbol-box").css("min-width", "300px");
+              // clearTimeout(timer);
+         },
+         success: function(data){
+             // alert(data);
+            var datak = JSON.stringify(data);
+            var dataResult = JSON.parse(datak);
+            var len = dataResult.length;
+         
+         
+     
+             // $("#suggesstion-box").show();
+             //  $("#symbol-box").css("overflow-y", "scroll");
+               //$("#symbol-box").css("height", "200px");
+             $("#symbol-box").empty();
+             $input=$("#search-stock");
+                  var search=document.getElementById('search-stock');
+                 
+                 
+                   clearTimeout(timers);
+/*
+                   $("input:checkbox[name=symbols]:checked").each(function(){
+                         yourArray.push($(this).val());
+                    });*/
+                   
+                   
              
-             for(var i= dataResults.length - 1; i >= 0 ; i--){
-
-                users.push(dataResults[i].stockSymbol);
+                  for( var i = 0; i<len; i++){
+                     // alert(len);
+                     var id = dataResult[i]['id'];
+                     var symbol = dataResult[i]['stockSymbol'];
+                     var name = dataResult[i]['stockName'];
+                      // alert(name);
+                        // console.log(dataResult[i]);
+                        // console.log(id);
+                      clearTimeout(timers);  
+            $("#symbol-box").append("<li style='list-style: none;' value='"+symbol+"'><span class='ck_box_custom'><input id='checkbtn_"+id+"' type='checkbox' class='checkbtn' name='symbols[]' data-id='"+name+"'  value='"+symbol+"'><label for='checkbtn_"+id+"'>&nbsp;"+symbol+"</label></span></li>");
+                     clearTimeout(timers);
+                     $('.checkbtn').on('click',function(){
+                     
+                        var clicked = $(this);
+                        var myids ='';
+                        var compid='';
+                            myids=clicked.attr('id');
+                            myname=clicked.attr('data-id');
+                              myids  =myids.split('_');
+                              compid=myids[1];
+                           if($(this).is(':checked') && !myarr.includes(clicked.val()))
+                           {
+                             myarr.push(clicked.val());
+                       
                          
-            }
-        
-    
-
-      $(function() {
-         $("#search-stock").keyup(function(e){
-          //console.log(e);
-          clearTimeout(timers);
-           // $('.load-wrapp').css('display','block');
-            $('#symbol-box').css('display','none');
-           timers = setTimeout(() => {
-             // console.log($(this).val());
-             if($(this).val() != ""){
-              // $('.load-wrapp').css('display','block');
-              // document.body.style.cursor = 'pointer';
-              $("#search-stock").attr("placeholder", "ENTER SYMBOL OR COMPANY NAME");
-
-             }
-                  $.ajax({
-                   type: "POST",
-                   url: "https://apis.tradetipsapp.com/api/stocksearchdetails/searchStockSymbol",
-                   data:'stockSymbol='+$(this).val(),
-                   headers: { Authorization: 'Bearer '+ tokens},
-                   success: function(data){
-                        //alert(data);
-                      // console.log("value is" + data);
-                     // var dataid = [];
-                      var datak = JSON.stringify(data);
-                      var dataResult = JSON.parse(datak);
-                      var len = dataResult.length;
-                      //console.log(dataResult);    
-
-                      $("#symbol-box").empty();
-                       $input=$("#search-stock");
-                            var search=document.getElementById('search-stock');
+                          //clicked.attr('data-id');
+                          companies.push(compid);
+                     
+                       //myarrdata.push({id:myids[1],stockSymbol:clicked.val(),stockImage:null,stockDetail:null});
+                       //myarrdata.push({stockSymbol:clicked.val(),stockName:myids[1]});
+                       $('.multi-items').append('<div class="multi-item" id="MY_'+compid+'" data-symbol="'+myname+'" title="'+clicked.val()+'" ><span style="color:#fff;">'+clicked.val()+'</span><span class="multi-item-close" id="'+compid+'"  onclick="remove_element(this.id,this.title)" style="top: 13px;color:#fff;cursor:pointer;padding-left:2px;"><b>x</b></span></div>');
+                         if(!adjustinput(compid,'plus')){
+                            remove_element(myids[1],clicked.val());
+                         }
+                       
+                       // alert(myarr);
+                      }else if(!$(this).is(':checked') && myarr.includes(clicked.val()))
+                      {
+                        //alert(clicked.val());
+                         valindex=   myarr.indexOf(clicked.val());
+                          //alert(clicked.val());
+                          myarr.splice(valindex, 1);
+                          style="top: 13px;color:#fff;cursor:pointer;padding-left:2px;"
+                        //  myarrdata.splice(valindex,1);
+                       
+                         
+                        //  myarr.filter(function arritem() {return clicked.val() } );
+                                //  alert(myarr);
                            
-                           
-                             clearTimeout(timers);
-                             
-                            
-                          for( var i = 0; i<len; i++){
-                               // alert(len);
-                               var id = dataResult[i]['id'];
-                               var symbol = dataResult[i]['stockSymbol'];
-                               var name = dataResult[i]['stockName'];
-                                // alert(name);
-                                  // console.log(dataResult[i]);
-                                  // console.log(id);
-                                clearTimeout(timers);  
-                               
-                                var ss = users.includes(symbol);
-                                // console.log(ss);
-                                // console.log(id);
-                                // console.log("input#checkbtn_"+id);
-
-                                 if(ss ==true){
-                                
-                                    // $("input#checkbtn_"+id).prependTo("#symbol-box");
-
-
-
-                                    $("<li style='list-style: none;' value='"+symbol+"'><span class='ck_box_custom'><input id='checkbtn_"+id+"' type='checkbox' class='checkbtn' name='symbols[]' data-id='"+name+"'  value='"+symbol+"'><label for='checkbtn_"+id+"'>&nbsp;"+symbol+"</label></span></li>").prependTo("#symbol-box");
-
-                                     // dataid.push($("input#checkbtn_"+id).prop("checked", true));
-
-                                      $("input#checkbtn_"+id).prop("checked", true);
-
-
-
-                                      // setTimeout($("input#checkbtn_"+id).prop("checked", true),3600);
-
-                                       // setTimeout(dataid,3600);     
-                                   
-                                 } else {
-
-                                   $("#symbol-box").append("<li style='list-style: none;' value='"+symbol+"'><span class='ck_box_custom'><input id='checkbtn_"+id+"' type='checkbox' class='checkbtn' name='symbols[]' data-id='"+name+"'  value='"+symbol+"'><label for='checkbtn_"+id+"'>&nbsp;"+symbol+"</label></span></li>");
-
-                                 }  
-
-
-
-                               clearTimeout(timers);
-                               $('.checkbtn').on('click',function(){
-                               
-                                  var clicked = $(this);
-                                  // alert(JSON.stringify(clicked));
-                                  var myids ='';
-                                  var compid='';
-                                      myids=clicked.attr('id');
-                                      myname=clicked.attr('data-id');
-                                      myids  =myids.split('_');
-                                      compid=myids[1];
-                                 if($(this).is(':checked') && !myarr.includes(clicked.val()))
-                                 {
-                                    myarr.push(clicked.val());
-                                 
-                                   
-                                    //clicked.attr('data-id');
-                                    companies.push(compid);
-                               
-                                 $('.multi-items').append('<div class="multi-item" id="MY_'+compid+'" data-symbol="'+myname+'" title="'+clicked.val()+'" ><span style="color:#fff;">'+clicked.val()+'</span><span class="multi-item-close" id="'+compid+'"  onclick="remove_element(this.id,this.title)" style="top: 13px;color:#fff;cursor:pointer;padding-left:2px;"><b>x</b></span></div>');
-                                   if(!adjustinput(compid,'plus')){
-                                      remove_element(myids[1],clicked.val());
-                                   }
-                                 
-                                 // alert(myarr);
-                                }else if(!$(this).is(':checked') && myarr.includes(clicked.val()))
-                                {
-                                  //alert(clicked.val());
-                                   valindex=   myarr.indexOf(clicked.val());
-                                    //alert(clicked.val());
-                                    myarr.splice(valindex, 1);
-                                    style="top: 13px;color:#fff;cursor:pointer;padding-left:2px;"
-                                
-                                    remove_element(myids[1],clicked.val());
-                                }
-                                 $(".magicsearch-hidden").val(companies);
-                                 $("#search-stock").val('');
-                               });  
-                           }
-
-                           //console.log(dataid);
-
-                           // setTimeout(for(i=0; i< dataid.length; i ++){
-                           //   dataid[0];
-                           // })
-
-                           
+                        // removeItem(clicked.val(), myarr);
+                            remove_element(myids[1],clicked.val());
+                      }
+                         // console.log(myarr);
+                         //console.log(myarrdata);
+                       $(".magicsearch-hidden").val(companies);
+                       $("#search-stock").val('');
+                      // $("#search-stock").attr('data-stocks',myarrdata);
+                         //$(this).parent('li').addClass('selected').siblings().removeClass('selected');
+                     });  
+                 }
+                     $('.load-wrapp').css('display','none');
+                    $('#symbol-box').css('display','block');
 
                              
-                              // $('.load-wrapp').css('display','none');
-                              $('#symbol-box').css('display','block');
-                                       
-                  }
-                  });
-             }  , 1000 );
+        }
         });
-      });
-     }
- });
-
- ////////////stock add start ///////////////////
- var timers;
+          }  , 1000 );
+    });
+  });
+  var timers;
  
 $(document).ready(function(){
  $("#stockadd").click(function(){
-          $('#symbol-box').css('display','none');
+            //alert(myarr);
+             $('#symbol-box').css('display','none');
            $('.load-wrapp-list').css('display','block');
           
           var allIDS=$('.magicsearch-hidden').val();
@@ -672,11 +605,6 @@ $(document).ready(function(){
       });
      });
 });
-
-///////////stock add end //////////////////////////////
-
-//////////// delete stock start //////////////////////////
-
 function delete_stck(ID)
 {
  var r = confirm("Are you sure to delete this company ?");
@@ -699,23 +627,103 @@ function delete_stck(ID)
        });
    }
   }
-
-  /////////////////delete stock end///////////////////////
  
-/////////////////////////////////load code data/////////////////////////////
- 
+/////////////////////////////////dashborad HTML changes/////////////////////////////////
+/////////////////////////////////css changes/////////////////////////////
+  var newData;
+  $("form#data").submit(function(e) {
+    e.preventDefault();    
+    // alert(JSON.stringify(e));
+     var multi = $("#stockName").val();
+     
+    });     
          
-var formdata = {  offset: 0, limit: 1000000};
-  
-  var xt = 1;
-  var myoffset=0;
-  var  mylimit=50;
+      var userName = storageData.uname;
+       var formdata = {  offset: 0, limit: 1000000};
+        
+        var xt = 1;
+          var myoffset=0;
+         var  mylimit=50;
+         //alert(myoffset);  
+                // alert(mylimit);
+                loadAi(myoffset,mylimit);
+          loaddemodata(myoffset,mylimit);
+         
+
+        /* $(window).scroll(function() {
+   if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+       $(window).unbind('scroll');
+       alert("near bottom!");
+   }
+});*/
+
+
+   /*      $(window).on("scroll", function() {
+  var scrollHeight = $(document).height();
+  var scrollPosition = $(window).height() + $(window).scrollTop();
+  if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+
+     if(mylimit<10000)
+           {
+                
+                xt+= 1;
+                if(xt!=0)
+                {
+
+                  myoffset= mylimit+1;
+                  mylimit=xt*10;
+
+                  console.log(myoffset);
+                   console.log(mylimit);
+                   console.log(xt);
+                  // alert(myoffset);  
+                    //   alert(mylimit);
+                loaddemodata(myoffset,mylimit);
+                  loadAi(myoffset,mylimit);
+                 // return false ;
+                }
+                 
+                
+              
+           }
+       console.log("scrolling");
+  }
+});*/
+
+      
+ 
+/*
+           var ScrollDebounce = true;
+           window.onscroll = function() {
+            ScrollDebounce = false;
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+
+      if(mylimit<10000)
+           {
+                
+                xt+= 1;
+                if(xt!=0)
+                {
+
+                  myoffset= mylimit+1;
+                  mylimit=xt*50;
+
+                  console.log(myoffset);
+                   console.log(mylimit);
+                   console.log(xt);
+                  // alert(myoffset);  
+                    //   alert(mylimit);
+                loaddemodata(myoffset,mylimit);
+                  loadAi(myoffset,mylimit);
+                }
+                 
+                
+              
+           }
+        alert("bottom");
+    }
+};*/
    
-    // loadAi(myoffset,mylimit);
-    loaddata();
-    loaddemodata(myoffset,mylimit);
-
-         
 
 $(".scroller-dash-left").scroll(function() {
     if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
@@ -730,28 +738,37 @@ $(".scroller-dash-left").scroll(function() {
           {
             myoffset= mylimit+1;
             mylimit=xt*50;
+
+            // console.log(myoffset);
+             // console.log(mylimit);
+             // console.log(xt);
+            // alert(myoffset);  
+              //   alert(mylimit);
               if(checkdval==1 || checkdval==2)
                loadAi(myoffset,mylimit);
                if(checkdval==1 || checkdval==3)  
-               loaddemodata(myoffset,mylimit);
+            loaddemodata(myoffset,mylimit);
             
           }
+           
+          
         
      }
+       //alert("bottom");    
     } 
     
 });
 
       
-  $(window).on('unload', function() {
-   $(window).scrollTop(0);
-  });
+               $(window).on('unload', function() {
+               $(window).scrollTop(0);
+              });
                window.onunload = function(){ window.scrollTo(0,0); }
 
- function loaddemodata(offset,limit)
- {
+       function loaddemodata(offset,limit)
+       {
 
-  formdata={  offset: offset, limit: limit};
+           formdata={  offset: offset, limit: limit};
 
   $.ajax({
 
@@ -786,7 +803,7 @@ $(".scroller-dash-left").scroll(function() {
        }
        for (i= initial; i<=limit; i ++) {
 
-              if(dataResult[i]!=undefined){
+                    if(dataResult[i]!=undefined){
                 stockVal.push(dataResult[i].tip.stockName);  
                 stockdataa.push(dataResult[i].tip.stockName);
                 tipId.push(dataResult[i].tip.id);  
@@ -848,22 +865,22 @@ $(".scroller-dash-left").scroll(function() {
          
              if(dataResult[i].tip.stockSuggestion == "Buy"){
 
-               text += '<div class="tips_bx buy_bg" data-switch-field="3"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img onerror="imgError(this);" id="imgcall' + dataResult[i].tip.id + '" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+ dataResult[i].tip.appUser.id+'" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrice' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeVals' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn suggestion' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><img src="images/tips-comment-icon.png" alt="images">' + dataResult[i].commentCount + ' Comments</a></li><li><a onclick="pinFunction(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><p id="StatusPin' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p><img id="imgstatus' + dataResult[i].tip.id + '" alt="images">Follow Tip</a> </li><li onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '"><img id="imgLikestatus' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '" style="cursor:pointer;"><span id="textvalLike' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard' +dataResult[i].tip.id+'"><span><i class="fas fa-copy"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
+               text += '<div class="tips_bx buy_bg" data-switch-field="3"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img onerror="imgError(this);" id="imgcall' + dataResult[i].tip.id + '" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+ dataResult[i].tip.appUser.id+'" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrice' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeVals' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn suggestion' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + dataResult[i].tip.id + '">' + dataResult[i].commentCount + ' Comments</a></li><li><a onclick="pinFunction(this.id)" id="' + dataResult[i].tip.id + '" style="color: #000;cursor:pointer;"><p id="StatusPin' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p><img id="imgstatus' + dataResult[i].tip.id + '" alt="images"><a href="#">Save</a> </li><li><img id="imgLikestatus' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '" style="cursor:pointer;"><span id="textvalLike' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard' +dataResult[i].tip.id+'"><span><i class="fas fa-folder-open"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
 
-               textboth += '<div class="tips_bx buy_bg" data-switch-field="1" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx" ><img onerror="imgError1(this);" id="imgcall1' + dataResult[i].tip.id + '" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+ dataResult[i].tip.appUser.id+'" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrice1' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice1' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeVals1' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn suggestion1' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames1'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><img src="images/tips-comment-icon.png" alt="images">' + dataResult[i].commentCount + ' Comments</a></li><li><a onclick="pinFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><p id="StatusPin1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p><img id="imgstatus1' + dataResult[i].tip.id + '" alt="images">Follow Tip</a> </li><li onclick="likeFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><img id="imgLikestatus1' + dataResult[i].tip.id + '" alt="images"><a onclick="likeFunction1(this.id)" id="' + dataResult[i].tip.id + '"><span id="textvalLike1' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard1(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard1' +dataResult[i].tip.id+'"><span><i class="fas fa-copy"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
+               textboth += '<div class="tips_bx buy_bg" data-switch-field="1" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx" ><img onerror="imgError1(this);" id="imgcall1' + dataResult[i].tip.id + '" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId='+ dataResult[i].tip.appUser.id+'" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrice1' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice1' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeVals1' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn suggestion1' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames1'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + dataResult[i].tip.id + '">' + dataResult[i].commentCount + ' Comments</a></li><li><a onclick="pinFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="color: #000;"><p id="StatusPin1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p><img id="imgstatus1' + dataResult[i].tip.id + '" alt="images"><a href="#">Save</a> </li><li><img id="imgLikestatus1' + dataResult[i].tip.id + '" alt="images"><a onclick="likeFunction1(this.id)" id="' + dataResult[i].tip.id + '"><span id="textvalLike1' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard1(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard1' +dataResult[i].tip.id+'"><span><i class="fas fa-folder-open"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
 
 
              } else if(dataResult[i].tip.stockSuggestion == "Sell") {
 
-                text += '<div class="tips_bx sell_bg" data-switch-field="3"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img onerror="imgError(this);" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrices' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeValsfront' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn suggestion' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><img src="images/tips-comment-icon.png" alt="images">' + dataResult[i].commentCount + ' Comments</a></li> <li><a onclick="pinFunction(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer"><p id="StatusPin' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p><img id="imgstatus' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;">Follow Tip</a> </li><li onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '"style="cursor:pointer;"><img id="imgLikestatus' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '"style="cursor:pointer;"><span id="textvalLike' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard' +dataResult[i].tip.id+'"><span><i class="fas fa-copy"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
+                text += '<div class="tips_bx sell_bg" data-switch-field="3"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img onerror="imgError(this);" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrices' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeValsfront' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn suggestion' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + dataResult[i].tip.id + '">' + dataResult[i].commentCount + ' Comments</a></li> <li><img id="imgstatus' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;"><a onclick="pinFunction(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer"><p id="StatusPin' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p>Save</a> </li><li><img id="imgLikestatus' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '"style="cursor:pointer;"><span id="textvalLike' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard' +dataResult[i].tip.id+'"><span><i class="fas fa-folder-open"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
 
-                 textboth += '<div class="tips_bx sell_bg " data-switch-field="1" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img onerror="imgError1(this);" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrices1' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice1' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeValsfront1' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn suggestion1' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames1'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><img src="images/tips-comment-icon.png" alt="images">' + dataResult[i].commentCount + ' Comments</a></li> <li><a onclick="pinFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><p id="StatusPin1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p><img id="imgstatus1' + dataResult[i].tip.id + '" alt="images"style="cursor:pointer;">Follow Tip</a> </li><li onclick="likeFunction1(this.id)" id="' + dataResult[i].tip.id + '"><img id="imgLikestatus1' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="cursor:pointer;"><span id="textvalLike1' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard1(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard1' +dataResult[i].tip.id+'"><span><i class="fas fa-copy"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
+                 textboth += '<div class="tips_bx sell_bg " data-switch-field="1" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img onerror="imgError1(this);" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrices1' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice1' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeValsfront1' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn suggestion1' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames1'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + dataResult[i].tip.id + '">' + dataResult[i].commentCount + ' Comments</a></li> <li><img id="imgstatus1' + dataResult[i].tip.id + '" alt="images"style="cursor:pointer;"><a onclick="pinFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><p id="StatusPin1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p>Save</a> </li><li><img id="imgLikestatus1' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;"><a onclick="likeFunction1(this.id)" id="' + dataResult[i].tip.id + '"style="cursor:pointer;"><span id="textvalLike1' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard1(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard1' +dataResult[i].tip.id+'"><span><i class="fas fa-folder-open"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
 
              } else {
 
-                  text += '<div class="tips_bx avoid_bg" data-switch-field="3"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img onerror="imgError(this);" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrices' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeValsfront' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn suggestion' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><img src="images/tips-comment-icon.png" alt="images">' + dataResult[i].commentCount + ' Comments</a></li> <li><a onclick="pinFunction(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><p id="StatusPin' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p><img id="imgstatus' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;">Follow Tip</a> </li><li onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><img id="imgLikestatus' + dataResult[i].tip.id + '" alt="images"style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '"style="cursor:pointer;"><span id="textvalLike' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard' +dataResult[i].tip.id+'"><span><i class="fas fa-copy"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
+                  text += '<div class="tips_bx avoid_bg" data-switch-field="3"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img onerror="imgError(this);" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="images"><div class="tips_bx_cmpny_name" id=""><h2><em class="only_id_use">' + dataResult[i].tip.appUser.userName + '</em> <span>'+ stripped1 +'</span></h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrices' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeValsfront' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn suggestion' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + dataResult[i].tip.id + '">' + dataResult[i].commentCount + ' Comments</a></li> <li><img id="imgstatus' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;"><a onclick="pinFunction(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><p id="StatusPin' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p>Save</a> </li><li><img id="imgLikestatus' + dataResult[i].tip.id + '" alt="images"style="cursor:pointer;"><a onclick="likeFunction(this.id)" id="' + dataResult[i].tip.id + '"style="cursor:pointer;"><span id="textvalLike' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard' +dataResult[i].tip.id+'"><span><i class="fas fa-folder-open"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
 
-                 textboth += '<div class="tips_bx avoid_bg mytipboth '+i+'" data-switch-field="1" style="display:block;"><div class="tips_bx_head" style="display:block;"><div class="tips_bx_author author_bx"><img onerror="imgError1(this);" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="images"><div class="author_bx_txt"><h2>' + dataResult[i].tip.appUser.userName + '</h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrices1' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice1' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeValsfront1' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn suggestion1' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames1'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><img src="images/tips-comment-icon.png" alt="images">' + dataResult[i].commentCount + ' Comments</a></li> <li><a onclick="pinFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><p id="StatusPin1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p><img id="imgstatus1' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;">Follow Tip</a> </li><li onclick="likeFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><img id="imgLikestatus1' + dataResult[i].tip.id + '" alt="images"style="cursor:pointer;"><a onclick="likeFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="cursor:pointer;"><span id="textvalLike1' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard1(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard1' +dataResult[i].tip.id+'"><span><i class="fas fa-copy"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
+                 textboth += '<div class="tips_bx avoid_bg mytipboth '+i+'" data-switch-field="1" style="display:block;"><div class="tips_bx_head" style="display:block;"><div class="tips_bx_author author_bx"><img onerror="imgError1(this);" src="https://apis.tradetipsapp.com/api/appUser/getImageByAppUserId?appUserId=' + dataResult[i].tip.appUser.id + '" alt="images"><div class="author_bx_txt"><h2>' + dataResult[i].tip.appUser.userName + '</h2></div></div><div class="tips_bx_amount"> <h2 class="hclass" id="flatestPrices1' + dataResult[i].tip.id + '"><span>$</span></h2><p>At Time of Tip :  <span class="hclass" id="stockkTipPrice1' + dataResult[i].tip.id + '"><span><b style="color:white">$</b></span><b style="color:white">'+ parseFloat(dataResult[i].tip.createTipPrice).toFixed(2) +'</b></span><span id="changeValsfront1' + dataResult[i].tip.id + '"></span></span></div></div><div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn suggestion1' + dataResult[i].tip.id + '">' + dataResult[i].tip.stockSuggestion + '</span><h2>' + dataResult[i].tip.stockName + ' <span id="skComnyNames1'+ dataResult[i].tip.id +'"></span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>Entry</h3><h4 id="entrydatas1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.entryPoint).toFixed(2) +'</h4></li><li><h3>Exit</h3><h4><span id="exitdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.exitPoint).toFixed(2) +'</span></h4></li><li><h3>Stop</h3><h4 id="stopdata1' + dataResult[i].tip.id + '"><span>$</span>'+ parseFloat(dataResult[i].tip.stopPoint).toFixed(2) +'</h4></li></ul></div></div><div class="tips_bx_txt"> <p>'+ dataResult[i].tip.comment +'</p></div><div class="tips_bx_social"><ul> <li><img src="images/tips-comment-icon.png" alt="images"><a href="mentorDetails?id=' + dataResult[i].tip.id + '">' + dataResult[i].commentCount + ' Comments</a></li> <li><img id="imgstatus1' + dataResult[i].tip.id + '" alt="images" style="cursor:pointer;"><a onclick="pinFunction1(this.id)" id="' + dataResult[i].tip.id + '" style="color: #fff;cursor:pointer;"><p id="StatusPin1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userPinStatus + '</p>Save</a> </li><li><img id="imgLikestatus1' + dataResult[i].tip.id + '" alt="images"style="cursor:pointer;"><a onclick="likeFunction1(this.id)" id="' + dataResult[i].tip.id + '"style="cursor:pointer;"><span id="textvalLike1' + dataResult[i].tip.id + '">' + dataResult[i].likeCount + '</span> Likes</a><p id="StatusLike1' + dataResult[i].tip.id + '" style="display:none;">' + dataResult[i].userLikeStatus + '</p></li><li><div class="dropdown msg_option_dropdown"><a class="btn dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/tips-more-icon.png" alt="images"> More</a><div class="dropdown-menu"> <ul><li><a href="mentorDetails?id=' + dataResult[i].tip.id + '"><span><i class="fas fa-folder-open"></i></span> View Detail</a></li><li onClick="copyClipboard1(this.id)" id="'+dataResult[i].tip.id +'"><input type = "text" aria-hidden="true" style="position: absolute;left: -999em;" id="divClipboard1' +dataResult[i].tip.id+'"><span><i class="fas fa-folder-open"></i></span>Copy to Clipboard</li><li><a onclick="newhandleRemoveTipResultData(this.id)" id="' + dataResult[i].tip.id + '"><span><i class="fas fa-trash"></i></span> Remove Tip</a></li></ul></div></div></li></ul></div></div>';
 
              }
            }
@@ -1495,9 +1512,7 @@ $.ajax({
         headers: {
           Authorization: 'Bearer '+ tokens ,
         },
-        async:false,
         data: formdata,
-        // async : true,
       success: function(datas) {
        var dataks = JSON.stringify(datas);
        var dataResults = JSON.parse(dataks);
@@ -1508,20 +1523,13 @@ $.ajax({
           if(dataResults.length > 0){
                let deletdata= [];
                 let users = [];
-               
-
                 for(var i= dataResults.length - 1; i >= 0 ; i--){
-
-                  // for(var i = 0; i < dataResults.length; i++){
-
-                    // console.log(dataResults[i].stockSymbol);
                     users.push(dataResults[i].stockSymbol);
                     deletdata.push(dataResults[i].id);                  
                 }
                 $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ users , function(r) {
                
                    for (k= 0; k< users.length; k ++) {
-                    //console.log(users[k]);
                      if(r[users[k]] != undefined){
                     texts += '<a href="stockChart?stockName='+ r[users[k]].quote.symbol +'&id='+ deletdata[k] +'"><div class="tips_wtlist_item" id="item-'+ deletdata[k] +'"><div class="tips_wtlist_item_left"><h2>'+ r[users[k]].quote.symbol +'<span>'+ r[users[k]].quote.companyName +'</span></h2></div><div class="tips_wtlist_item_center"><h3>$ '+ parseFloat(r[users[k]].quote.latestPrice).toFixed(2) +'</h3> '+ (r[users[k]].quote.change > 0 ? ' </div><div class="tips_wtlist_item_right"><h3><span class="color_buy">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>':'</div><div class="tips_wtlist_item_right"><h3><span class="color_sell">'+ parseFloat(r[users[k]].quote.change).toFixed(2) +'</span></h3>')+'</div><div class="tips_wtlist_item_right"><span class="delete_stck" style="    color: white;" onclick="delete_stck(this.id)" id="'+ deletdata[k] +' '+ r[users[k]].quote.symbol +'""><i class="fa fa-trash"></i></span></div></div></a>';
                    }
@@ -1539,282 +1547,129 @@ $.ajax({
        
   });
 //////////////////////////////////////////////////////////////////////////////////////////////
- // function loadAi(offset,limit){
-  
- //  // loaddata();
+function loadAi(offset,limit){
 
- //                 formdata={  offset: offset, limit: limit};
-
-                 async function loaddata(){
-
-                   var myHeaders = new Headers();
-                       myHeaders.append("Authorization", `Bearer ${tokens}`);
-
-                      var requestOptions = {
-                          method: 'POST',
-                          headers: myHeaders,
-                          redirect: 'follow'
-                        };
-
-                      const response = await fetch(`https://apis.tradetipsapp.com/api/stockDetail/getAllStockOfUserByUserName?userName=${userName}`, requestOptions)
-
-                      const result = await response.json();
-
-                      if(result.length > 0){
-
-                      let users = [];
-
-                      for(var i= result.length - 1; i >= 0 ; i--){
-
-                       // console.log(result[i].stockSymbol)
-
-                        var myHeaders1 = new Headers();
-                        myHeaders1.append("Authorization", `Bearer ${tokens}`);    
-
-                        var formdata = new FormData();
-                        formdata.append("stockSymbol", result[i].stockSymbol);
-
-                        var requestOp = {
-                          method: 'POST',
-                          headers: myHeaders1,
-                          body: formdata,
-                          redirect: 'follow'
-                        };
-
-                        const responseone = await fetch(`https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet`, requestOp);
-
-                        const array = await responseone.json();
-
-                         const response = await fetch(`https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols=${array[0].stock_name}`);
-                          const d = await response.json()
-                              // return datas;
-
-                          console.log(d[array[0].stock_name]);
-
-                        
-                        var date = array[0].sma_generation_date;
-                              const stripped = date.replace(/EST-0500/g, 'EST');
-                              //console.log(stripped);
-                              var newdate2 = stripped .split(/(\s+)/);
-                              //console.log(newdate2);
-                              newdate2.splice(3,3);
-                              //console.log(newdate2);
-                  
-                              var newdate3 = newdate2.toString(newdate2);
-                              var resultk = newdate3.replace(/,/g, "");
-                              //console.log(result);
-                              SMA_date = resultk.substring(0, 6) + ", " + resultk.substring(6, resultk.length);
-                              // console.log(SMA_date);
-
-                              if(array[0].rsiResult == "buy"){
-                              texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx buy_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-                              } else if(array[0].rsiResult == "sell"){
-                              //                    
-                              texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx sell_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-
-                              }
-                              else {
-                              texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx avoid_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn">AVOID</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days!='--' ?(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg10days+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days!='--' ?(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg50days+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days!='--' ?(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg200days+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-
-                              }
-                          
-                          $("#AIdemo").append(texts);
-                     }
-
-
-
-                  } else {
-
-                   // this.setState({ aitipStocklist: null })
-
-                  }
-                 }
-
+   formdata={  offset: offset, limit: limit};
+ $.ajax({
+        type: 'POST',
+        url: 'https://apis.tradetipsapp.com/api/stockDetail/getAllStockOfUserByUserName?userName='+ userName,
+        headers: {
+          Authorization: 'Bearer '+ tokens ,
+        },
+        data: formdata,
+      success: function(datas) {
+       // console.log(datas);
+       var dataks = JSON.stringify(datas);
+       var dataResults = JSON.parse(dataks);
+       // console.log(dataResults);
+       var texts = "" ;
+       var textsboth = "";
+       
+       var lens = dataResults.length;
+       // alert(lens);
+       var initial=0;
+         var stocklistdataF = [];
+          if(offset==0)
+           {
+            initial=offset;
+           }else{
+            initial=offset-1;
+           }
+          if(dataResults.length > 0){
+               let deletdata = [];
+                let users = [];
+                 let stckusers = [];
+                 let stckdata = [];
+                for(var i= dataResults.length - 1; i >= 0 ; i--){
+                    users.push(dataResults[i].stockSymbol);
+                    deletdata.push(dataResults[i].id);                  
+                }
+                let resultSet = [];
+                for (i=initial; i < users.length; i++){
+                  var symbol = users[i];
+                  // console.log(symbol);
+                  // var formdata = {"stockSymbol" : symbol};
                  
-
-                // }
-
-
-
-                          // getDevices();
-                  // getUserAsync();
-
-                      // async function getUserAsync(symbol) 
-                      //   {
-                      //     let response = await fetch(`https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols=${symbol}`);
-                      //     let data = await response.json()
-                      //     return data;
-                      //   }
-//                   async function getDevices(){
-//                       // const location = window.location.hostname;
-//                       // console.log(symbol);
-//                       const settings = {
-//                           method: 'POST',
-//                            headers: {
-//                                     Authorization: 'Bearer '+ tokens ,
-//                                   },
-//                       };
-//                       try {
+                  $.ajax({
+                      type: 'POST',
+                      url: 'https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet?stockSymbol='+symbol,
+                      headers: {
+                        Authorization: 'Bearer '+ tokens ,
+                      },
+                      // data: formdata,
+                      processData: false,
+                    success: function(data, textStatus, jqXHR) {
+                        // console.log(textStatus + ": " + jqXHR.status);
+                       if(jqXHR.status == 500){
+                       }else{
+                         var filtered = data.filter(function (el) {
+                          return el.status != 500;
+                        });
+                       }
+                        if(filtered.length > 0){
+                       // console.log(filtered);  
+                       var dataks = JSON.stringify(filtered);
+                       var array = JSON.parse(dataks);
+                       $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ array[0].stock_name , function(d) {
+                          var date = array[0].sma_generation_date;
+                          const stripped = date.replace(/EST-0500/g, 'EST');
+                          //console.log(stripped);
+                          var newdate2 = stripped .split(/(\s+)/);
+                          //console.log(newdate2);
+                          newdate2.splice(3,3);
+                          //console.log(newdate2);
+              
+                          var newdate3 = newdate2.toString(newdate2);
+                          var result = newdate3.replace(/,/g, "");
+                          //console.log(result);
+                          SMA_date = result.substring(0, 6) + ", " + result.substring(6, result.length);
+                          //console.log(SMA_date);
+            
                           
 
-//                           const fetchResponse = await fetch(`https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet?stockSymbol=${symbol}`, settings);
-//                           const array = await fetchResponse.json();
-
-                         
-//                           console.log(array[0].stock_name);
-
-                          
-
-
-
-
-
-//                            // getUserAsync(array[0].stock_name)
-//                            //    .then(function(d) {console.log(d[array[0].stock_name])}); 
-//                           // console.log(array[0].stock_name);
-//                           // console.log(symbol);
-//                           //  var dataks =  JSON.stringify(data);
-//                           //  var array = JSON.parse(dataks);
-//                           //  if(array[0].stock_name == symbol){
-//                           //   return true;
-//                           //  }else{
-//                           //   return false;
-//                            // }
-
-
-//                            // $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ array[0].stock_name , function(d) {
-
-//                            //   console.log(d[array[0].stock_name]);
-
-                            
-
-                             
-
-
-                            
-
-
-//                               // var d[array[0].stock_name] == MSFT;
-                
-//                 //              if(d[array[0].stock_name] != undefined){  
-
-//                 //              if(array[0].rsiResult == "buy"){
-//                 //                  texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx buy_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-//                 //                 } else if(array[0].rsiResult == "sell"){
-//                 // //                    
-//                 //                    texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx sell_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-                                   
-//                 //                 }
-//                 //                 else {
-//                 //                   texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx avoid_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn">AVOID</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days!='--' ?(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg10days+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days!='--' ?(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg50days+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days!='--' ?(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg200days+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-                                   
-//                 //                 }
-                                
-//                 //                   $("#AIdemo").append(texts);
-                                  
-                            
-//                 //                }
-                                
-//                              // });
-//         return data;
-//     } catch (e) {
-//         return e;
-//     }    
-
-// }
-
-// async function getRecord() {
-
-//      try {               
-//     const resultrecord = await $.ajax({
-//                           type: 'POST',
-//                           url: 'https://apis.tradetipsapp.com/api/sectorNewsSentiment/getSentimentandSMAByStockSymbolResultSet?stockSymbol='+symbol,
-//                           headers: {
-//                             Authorization: 'Bearer '+ tokens ,
-//                           },
-//                           // async:false,
-//                           // data: formdata,
-//                           processData: false,
-//                           success: function(data, textStatus, jqXHR) {
-//                             // console.log(textStatus + ": " + jqXHR.status);
-//                            if(jqXHR.status == 500){
-//                            }else{
-//                              var filtered = data.filter(function (el) {
-//                               return el.status != 500;
-//                             });
-//                            }
-//                             if(filtered.length > 0){
-//                            // console.log(filtered);  
-//                            var dataks =  JSON.stringify(filtered);
-//                            var array = JSON.parse(dataks);
-//                            $.get('https://cloud.iexapis.com/stable/stock/market/batch?types=quote&token=pk_dd324da3fb5f4428a47b05ab12f23ce2&symbols='+ array[0].stock_name , function(d) {
-
-//                             // console.log(d[array[0].stock_name]);
-
-                            
-
-//                               var date = array[0].sma_generation_date;
-//                               const stripped = date.replace(/EST-0500/g, 'EST');
-//                               //console.log(stripped);
-//                               var newdate2 = stripped .split(/(\s+)/);
-//                               //console.log(newdate2);
-//                               newdate2.splice(3,3);
-//                               //console.log(newdate2);
-                  
-//                               var newdate3 = newdate2.toString(newdate2);
-//                               var result = newdate3.replace(/,/g, "");
-//                               //console.log(result);
-//                               SMA_date = result.substring(0, 6) + ", " + result.substring(6, result.length);
-//                               //console.log(SMA_date);
-                
-//                             if(d[array[0].stock_name] != undefined){  
-
-//                              if(array[0].rsiResult == "buy"){
-//                                  texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx buy_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-//                                 } else if(array[0].rsiResult == "sell"){
-//                 //                    
-//                                    texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx sell_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-                                   
-//                                 }
-//                                 else {
-//                                   texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx avoid_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn">AVOID</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days!='--' ?(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg10days+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days!='--' ?(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg50days+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days!='--' ?(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg200days+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
-                                   
-//                                 }
-                                
-//                                   $("#AIdemo").append(texts);
-                                  
-                            
-//                               }
-                                
-//                             });
-       
-                         
-//                        }
-//                         },
-//                         error: function(jqXHR, textStatus, errorThrown){
-//                           // console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
-//                         }
-//                         });
-
-//                     return resultrecord;
-
-//                      } catch(error){
-
-//                      }
-                      // }
-                   // }
-           
-// console.log(res)
-// console.log(res.PromiseValue)
-// return res.PromiseValue // undefined 
+                         if(array[0].rsiResult == "buy"){
+                             texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx buy_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                            } else if(array[0].rsiResult == "sell"){
+            //                    
+                               texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx sell_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                               
+                            }
+                            else {
+                              texts = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx avoid_bg" data-switch-field="2" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn">AVOID</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days!='--' ?(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg10days+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days!='--' ?(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg50days+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days!='--' ?(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg200days+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                               
+                            }
+                             // console.log(d[keyName].quote.companyName);
+                             // console.log(d[keyName].quote.latestPrice);
+                              $("#AIdemo").append(texts);
+                         if(array[0].rsiResult == "buy"){
+                               textsboth = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx buy_bg" data-switch-field="1" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn buy_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                            } else if(array[0].rsiResult == "sell") {
+                               textsboth = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx sell_bg" data-switch-field="1" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn sell_btn">' + array[0].rsiResult + '</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                               
+                            } else {
+                                 textsboth = '<a href="aiDetails?id=' + array[0].id + '&stockName=' + array[0].stock_name + '"  id="mystocks-' + array[0].stock_name +'" target="_blank"><div class="tips_bx avoid_bg" data-switch-field="1" style="display:block;"><div class="tips_bx_head"><div class="tips_bx_author author_bx"><img src="images/ailogo.png" alt="images" style="border-radius:0px !important;"><div class="tips_bx_cmpny_name" style="color:white;"><h2><em class="only_id_use">TradeTips AI</em> <span>'+ SMA_date +'</span></h2></div></div><div class="tips_bx_amount"><h2>$'+ parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) +'</h2><p>Change &nbsp;:&nbsp;&nbsp;'+ (d[array[0].stock_name].quote.change > 0 ? '<span class="color_buy">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>':'<span class="color_sell">'+ parseFloat(d[array[0].stock_name].quote.change).toFixed(2) +'</span>') +'</p></div></div> <div class="tips_bx_cmpny"><div class="tips_bx_cmpny_name"><span class="bs_btn avoid_btn">AVOID</span> <h2><em class="only_id_use">' + array[0].stock_name + '</em> <span>'+ d[array[0].stock_name].quote.companyName +'</span></h2></div><div class="tips_bx_cmpny_states"><ul><li><h3>10 Days</h3>'+(array[0].avg10days!='--' ? (array[0].avg10days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg10days).toFixed(2) +'</span></h4>' : array[0].avg10days > parseFloat(array[0].avg10days).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg10days).toFixed(2)+'</span></h4>') :'<h4 style="color:white;"><span>'+ array[0].avg10days+'</span></h4>')+'</li><li><h3>50 Days</h3>  '+(array[0].avg50days!='--' ?(array[0].avg50days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg50days).toFixed(2) +'</span></h4>' : array[0].avg50days> parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg50days).toFixed(2)+'</span></h4>') : '<h4 style="color:white;"><span>'+ array[0].avg50days+'</span></h4>')+'</li> <li><h3>200 Days</h3>  '+(array[0].avg200days!='--' ?(array[0].avg200days < parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ? '<h4 style="color:#09b598;"><span>>$'+ parseFloat(array[0].avg200days).toFixed(2) +'</span></h4>' : array[0].avg200days > parseFloat(d[array[0].stock_name].quote.latestPrice).toFixed(2) ?'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>':'<h4 style="color:#dc3545;"><span><$'+parseFloat(array[0].avg200days).toFixed(2)+'</span></h4>'):'<h4 style="color:white;"><span>'+ array[0].avg200days+'</span></h4>')+'</li></ul></div></div><div class="tips_bx_txt"><p>'+ array[0].news_summary +'</p></div></div></div></div></a>';
+                               
+                            }
+                             // $("#bothdemo").append(textsboth);
+                        });
+                     // console.log(array);
+   
+                     
+                   }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                      // console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+                    }
+                    });
      
-   //     }
-   //    }
+           
+                   }
+                 
+       }
+     }
        
-   // });
-    
-   // }
-  
+    });
+  }
 ////////////////////////////////////////////////////////////////////////////////////////////
 function copyClipboard(e){
   var copyText = document.getElementById("divClipboard"+ e);
@@ -1891,7 +1746,7 @@ function pinFunction(e) {
         $("#StatusPin"+ e).text("false");
         $("#imgstatus"+e).attr("src","images/tips-save-icon.png");
         //alert("Unaved!!");
-        $(".successmsg").html('<span>Tip has been Unfollowed Successfully.</span>');
+        $(".successmsg").html('<span>Unsaved !!!</span>');
         setTimeout(function(){$(".successmsg").empty()}, 3000);
         }
       });
@@ -1910,7 +1765,7 @@ function pinFunction(e) {
         $("#StatusPin"+ e).text("true");
         $("#imgstatus"+e).attr("src","savetip.png");
         //alert("Saved!!");
-        $(".successmsg").html('<span>Tip has been Followed Successfully.</span>');
+        $(".successmsg").html('<span>Saved!!!</span>');
         setTimeout(function(){$(".successmsg").empty()}, 3000);
         }
       });
@@ -1935,7 +1790,7 @@ function pinFunction1(e) {
         //$("#textval1"+e).text(valss);
         $("#StatusPin1"+ e).text("false");
         $("#imgstatus1"+e).attr("src","images/tips-save-icon.png");//show.jpeg
-        $(".successmsg").html('<span>Tip has been Unfollowed Successfully.</span>');
+        $(".successmsg").html('<span>Unaved!!!</span>');
         setTimeout(function(){$(".successmsg").empty()}, 3000);
         }
       });
@@ -1953,7 +1808,7 @@ function pinFunction1(e) {
         //$("#textval1"+e).text(valss);
         $("#StatusPin1"+ e).text("true");
         $("#imgstatus1"+e).attr("src","savetip.png");
-        $(".successmsg").html('<span>Tip has been Followed Successfully.</span>');
+        $(".successmsg").html('<span>Saved!!!</span>');
         setTimeout(function(){$(".successmsg").empty()}, 3000);
         }
       });
@@ -1980,7 +1835,7 @@ function likeFunction(e) {
         $("#textvalLike"+e).text(valss);
         $("#StatusLike"+ e).text("false");
         $("#imgLikestatus"+e).attr("src","images/tips-like-icon.png");
-        $(".successmsg").html('<span>Unliked!</span>');
+        $(".successmsg").html('<span>Unliked!!!</span>');
         setTimeout(function(){$(".successmsg").empty()}, 3000);
         }
       });
@@ -1999,7 +1854,7 @@ function likeFunction(e) {
         $("#textvalLike"+e).text(valss);
         $("#StatusLike"+ e).text("true");
         $("#imgLikestatus"+e).attr("src","unnamed.png");
-        $(".successmsg").html('<span>Liked!</span>');
+        $(".successmsg").html('<span>Liked!!!</span>');
         setTimeout(function(){$(".successmsg").empty()}, 3000);
         }
       });
@@ -2026,7 +1881,7 @@ function likeFunction1(e) {
         $("#textvalLike1"+e).text(valss);
         $("#StatusLike1"+ e).text("false");
         $("#imgLikestatus1"+e).attr("src","images/tips-like-icon.png");
-        $(".successmsg").html('<span>Unliked!</span>');
+        $(".successmsg").html('<span>Unliked!!!</span>');
         setTimeout(function(){$(".successmsg").empty()}, 3000);
         }
       });
@@ -2046,7 +1901,7 @@ function likeFunction1(e) {
         $("#StatusLike1"+ e).text("true");
         $("#imgLikestatus1"+e).attr("src","unnamed.png");
        
-        $(".successmsg").html('<span>Liked!</span>');
+        $(".successmsg").html('<span>Liked!!!</span>');
         setTimeout(function(){$(".successmsg").empty()}, 3000);
         }
       });
@@ -2336,7 +2191,7 @@ function likeFunction1(e) {
   }
   function remove_element(ID,tit)
 {
-  //console.log(tit);
+  console.log(tit);
   adjustinput(ID,'minus');
   $('#MY_'+ID).remove();
   comindex=companies.indexOf(ID);
@@ -2351,6 +2206,7 @@ function likeFunction1(e) {
      $input=$("#search-stock");
     var search=document.getElementById('search-stock');
     var addbutton=document.getElementById('input-group-append').offsetWidth;
+
     var lineno=1;
     mywidth=search.offsetWidth-addbutton;
     myheight=search.offsetHeight;
