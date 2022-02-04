@@ -23,6 +23,18 @@ module.exports = function(app) {
     res.render('stockChart.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
+   app.get('/myprofile', function(req, res) {
+
+    res.render('follower.ejs');
+  });
+
+    app.get('/subscribe', function(req, res) {
+
+    res.render('subscribe.ejs');
+  });
+
+
+
   app.get('/dashboard', function(req, res) {
 
     // var request = require("request");
