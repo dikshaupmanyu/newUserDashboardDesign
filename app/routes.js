@@ -23,6 +23,15 @@ module.exports = function(app) {
     res.render('stockChart.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
+  app.get('/prediction', function(req, res) {
+
+    var mentorids = req.query.id;
+
+    var symbol = req.query.stockName;
+
+    res.render('prediction.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
+  });
+
    app.get('/myprofile', function(req, res) {
 
     res.render('follower.ejs');
@@ -33,7 +42,10 @@ module.exports = function(app) {
     res.render('subscribe.ejs');
   });
 
+  app.get('/notification', function(req, res) {
 
+    res.render('notification.ejs');
+  });
 
   app.get('/dashboard', function(req, res) {
 
@@ -251,6 +263,24 @@ module.exports = function(app) {
 
   });
 
+  
+app.get('/faq', function(req, res) {
+
+//   if(req.session.loggedIn) 
+//  { 
+// var fdata = req.session.tokens;
+// var fusername = req.session.username;
+// var fuid = req.session.uid; 
+// var femail = req.session.email; 
+
+// res.render('faq.ejs', {tokens : fdata , userName : fusername , userid : fuid , email :femail});
+
+//  } else {
+//    res.redirect('/')
+//  }
+ res.render('faq.ejs')
+});
+
   app.post('/firebasejs', function(req, res) {
 
      // console.log(req.body);
@@ -338,6 +368,28 @@ module.exports = function(app) {
     res.render('tip.ejs');
   });
 
+  app.get('/chatWindowAdminUser', function(req, res) {
+
+    const admin = require('firebase-admin');
+  
+    const db = admin.firestore();
+
+    //  if(req.session.loggedIn) 
+	  //  { 
+		// var fdata = req.session.tokens;
+		// var fusername = req.session.username;
+		// var fuid = req.session.uid; 
+		// var femail = req.session.email; 
+		// var Chat_fcmtoken = req.session.fcmtoken;
+
+		// res.render('chatWindowAdminUser.ejs', {tokens : fdata , fcmToken : Chat_fcmtoken , userName : fusername , userid : fuid , email :femail});
+
+	  //  } else {
+    // }
+    
+    res.render('chatWindowAdminUser.ejs')
+
+  });
 
 
 };

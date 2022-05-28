@@ -42,14 +42,7 @@ credits{
       </div>
       <div class="ai_dtl_head_right">
          
-        <div class="ai_dtl_head_right_bx">
-          <h4 class="border_secondary">Today’s High</h4>
-          <h3 id="highval"></h3>
-        </div>
-        <div class="ai_dtl_head_right_bx">
-          <h4 class="border_danger">Today’s Low</h4>
-          <h3 id="lowval"></h3>
-        </div>
+
         <div class="ai_dtl_head_right_bx tips_wtlist_item_right">
           <h4 class="border_primary">Change</h4>
           <h3 id="changepoint"></h3>
@@ -59,6 +52,7 @@ credits{
           <h5 id="DateVals"></h5>
         </div>
       </div>
+      <a id="symbolprediction" style="color: white;"><button class="btn btn-success">Get 5-Day Prediction</button></a>
     </div>
   </div>
   <div class="graph_area">
@@ -77,22 +71,118 @@ credits{
           </nav>
           <div class="tab-content">
             <div class="tab-pane fade show active" id="mtb_feed" role="tabpanel" aria-labelledby="mt_feed">
-              <div id="chartContainer" style="height: 500px; width: 100%!important;"></div>
+              <div class="ai_dtl_head">
+                <div class="col-md-9">
+                   <div id="chartContainer" style="height: 500px; width: 100%!important;"></div>
+                </div>
+                <div class="col-md-3">
+                   <div class="ai_dtl_head">                
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_secondary">Today’s High</h4>
+                       <h3 id="highval"></h3>
+                     </div>
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_danger">Today’s Low</h4>
+                       <h3 id="lowval"></h3>
+                     </div>
+                </div>
+                </div>
+              </div> 
             </div>
             <div class="tab-pane fade" id="mtb_save" role="tabpanel" aria-labelledby="mt_save">
-                 <div id="chartContainer1" style="height: 500px; width: 100%!important"></div>
+              <div class="ai_dtl_head">
+                <div class="col-md-9">
+                   <div id="chartContainer1" style="height: 500px; width: 100%!important;"></div>
+                </div>
+                <div class="col-md-3">
+                   <div class="ai_dtl_head">                
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_secondary">Today’s High</h4>
+                       <h3 id="highval5d"></h3>
+                     </div>
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_danger">Today’s Low</h4>
+                       <h3 id="lowval5d"></h3>
+                     </div>
+                </div>
+                </div>
+              </div> 
             </div>
             <div class="tab-pane fade" id="mtb_service" role="tabpanel" aria-labelledby="mt_service">
-               <div id="chartContainer2" style="height: 500px; width: 100%!important;"></div>
+              <div class="ai_dtl_head">
+                <div class="col-md-9">
+                   <div id="chartContainer2" style="height: 500px; width: 100%!important;"></div>
+                </div>
+                <div class="col-md-3">
+                   <div class="ai_dtl_head">                
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_secondary">Today’s High</h4>
+                       <h3 id="highval1m"></h3>
+                     </div>
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_danger">Today’s Low</h4>
+                       <h3 id="lowval1m"></h3>
+                     </div>
+                </div>
+                </div>
+             </div> 
             </div>
             <div class="tab-pane fade" id="mtb_feed1" role="tabpanel" aria-labelledby="mt_feed1">
-              <div id="chartContainer3" style="height: 500px; width: 100%!important;"></div>
+              <div class="ai_dtl_head">
+                <div class="col-md-9">
+                   <div id="chartContainer3" style="height: 500px; width: 100%!important;"></div>
+                </div>
+                <div class="col-md-3">
+                   <div class="ai_dtl_head">                
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_secondary">Today’s High</h4>
+                       <h3 id="highval3m"></h3>
+                     </div>
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_danger">Today’s Low</h4>
+                       <h3 id="lowval3m"></h3>
+                     </div>
+                </div>
+                </div>
+              </div>   
             </div>
             <div class="tab-pane fade" id="mtb_save1" role="tabpanel" aria-labelledby="mt_save1">
-                 <div id="chartContainer4" style="height: 500px; width: 100%!important;"></div>
+              <div class="ai_dtl_head">
+                <div class="col-md-9">
+                   <div id="chartContainer4" style="height: 500px; width: 100%!important;"></div>
+                </div>
+                <div class="col-md-3">
+                   <div class="ai_dtl_head">                
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_secondary">Today’s High</h4>
+                       <h3 id="highval6m"></h3>
+                     </div>
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_danger">Today’s Low</h4>
+                       <h3 id="lowval6m"></h3>
+                     </div>
+                   </div>
+                </div>
+              </div>   
             </div>
             <div class="tab-pane fade" id="mtb_service1" role="tabpanel" aria-labelledby="mt_service1">
-               <div id="chartContainer5" style="height: 500px; width: 100%!important;"></div>
+              <div class="ai_dtl_head">
+                <div class="col-md-9">
+                   <div id="chartContainer5" style="height: 500px; width: 100%!important;"></div>
+                </div>
+                <div class="col-md-3">
+                   <div class="ai_dtl_head">                
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_secondary">Today’s High</h4>
+                       <h3 id="highval1y"></h3>
+                     </div>
+                     <div class="ai_dtl_head_right_bx">
+                       <h4 class="border_danger">Today’s Low</h4>
+                       <h3 id="lowval1y"></h3>
+                     </div>
+                </div>
+                </div>
+              </div>   
             </div>
         </div>
        
@@ -124,16 +214,22 @@ credits{
 <script type="text/javascript">
 
 
-
-
-  var userName =  "<%= userName %>"
-
-  var tokens = "<%= tokens %>";
+var sData = localStorage.getItem('allTokenData');
+   var storageData= JSON.parse(sData);
+ 
+   var tokens = storageData.tokendata;
   // alert(tokens);
   
-  var LoggedInId = "<%= userid %>";
+  var userName = storageData.uname;
+
+
+  var LoggedInId = storageData.uid;
 
   var symbol = "<%=stockSymbol%>";
+
+  var stockid = "<%=tipsIds%>";
+
+  document.getElementById("symbolprediction").href= "prediction?stockName=<%=stockSymbol%>&id=<%=tipsIds%>";
 
  // var newftd = "1621232672661" ;
 var date = new Date();
@@ -303,11 +399,12 @@ const a = null
                           text: symbol
                         },
                         // showScale: false,
-                        subtitles: [{
-                             text: "High Value :"+ dataakhigh 
-                            },
-                            {text: "Low Value :"+ dataaklow
-                            }
+                        subtitles: [
+                          // {
+                          //    text: "High Value :"+ dataakhigh 
+                          //   },
+                          //   {text: "Low Value :"+ dataaklow
+                          //   }
                             ],
                             // axisY: {
                             //   includeZero: false
@@ -421,17 +518,21 @@ const a = null
                             });
                           }
 
+                          $("#highval5d").text(dataakhighds);
+                        $("#lowval5d").text(dataaklowds);
+
                          var chart1 = new CanvasJS.Chart("chartContainer1", {
                         zoomEnabled: true,
                         animationEnabled: true,
                         title :{
                           text: symbol
                         },
-                        subtitles: [{
-                             text: "High Value :"+ dataakhighds 
-                            },
-                            {text: "Low Value :"+ dataaklowds
-                            }
+                        subtitles: [
+                          // {
+                          //    text: "High Value :"+ dataakhighds 
+                          //   },
+                          //   {text: "Low Value :"+ dataaklowds
+                          //   }
                             ],
                             axisX:{
                               crosshair: {
@@ -512,17 +613,21 @@ const a = null
                             });
                           }
 
+                          $("#highval1m").text(dataakhighds1m);
+                        $("#lowval1m").text(dataaklowds1m);
+
                         var chart2 = new CanvasJS.Chart("chartContainer2", {
                         zoomEnabled: true,
                         animationEnabled: true,
                         title :{
                           text: symbol
                         },
-                        subtitles: [{
-                             text: "High Value :"+ dataakhighds1m 
-                            },
-                            {text: "Low Value :"+ dataaklowds1m
-                            }
+                        subtitles: [
+                          // {
+                          //    text: "High Value :"+ dataakhighds1m 
+                          //   },
+                          //   {text: "Low Value :"+ dataaklowds1m
+                          //   }
                             ],
                             axisX:{
                               crosshair: {
@@ -602,6 +707,9 @@ const a = null
                               y: JSON.parse(arraydatak3m[j].Close)
                             });
                           }
+                          
+                        $("#highval3m").text(dataakhighds3m);
+                        $("#lowval3m").text(dataaklowds3m);
 
                         var chart3 = new CanvasJS.Chart("chartContainer3", {
                         zoomEnabled: true,
@@ -609,11 +717,12 @@ const a = null
                         title :{
                           text: symbol
                         },
-                        subtitles: [{
-                             text: "High Value :"+ dataakhighds3m 
-                            },
-                            {text: "Low Value :"+ dataaklowds3m
-                            }
+                        subtitles: [
+                          // {
+                          //    text: "High Value :"+ dataakhighds3m 
+                          //   },
+                          //   {text: "Low Value :"+ dataaklowds3m
+                          //   }
                             ],
                             axisX:{
                               crosshair: {
@@ -695,17 +804,22 @@ const a = null
                             });
                           }
 
+                          
+                         $("#highval6m").text(dataakhighds6m);
+                        $("#lowval6m").text(dataaklowds6m);
+
                         var chart4 = new CanvasJS.Chart("chartContainer4", {
                         zoomEnabled: true,
                         animationEnabled: true,
                         title :{
                           text: symbol
                         },
-                        subtitles: [{
-                             text: "High Value :"+ dataakhighds6m 
-                            },
-                            {text: "Low Value :"+ dataaklowds6m
-                            }
+                        subtitles: [
+                          // {
+                          //    text: "High Value :"+ dataakhighds6m 
+                          //   },
+                          //   {text: "Low Value :"+ dataaklowds6m
+                          //   }
                             ],
                            axisX:{
                               crosshair: {
@@ -787,17 +901,21 @@ const a = null
                             });
                           }
 
+                          $("#highval1y").text(dataakhighds1y);
+                        $("#lowval1y").text(dataaklowds1y);
+
                         var chart5 = new CanvasJS.Chart("chartContainer5", {
                         zoomEnabled: true,
                         animationEnabled: true,
                         title :{
                           text: symbol
                         },
-                        subtitles: [{
-                             text: "High Value :"+ dataakhighds1y 
-                            },
-                            {text: "Low Value :"+ dataaklowds1y
-                            }
+                        subtitles: [
+                          // {
+                          //    text: "High Value :"+ dataakhighds1y 
+                          //   },
+                          //   {text: "Low Value :"+ dataaklowds1y
+                          //   }
                             ],
                             axisX:{
                               crosshair: {
