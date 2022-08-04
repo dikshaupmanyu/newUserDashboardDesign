@@ -1,5 +1,6 @@
   <%- include partials/innerheader %>
-
+  <link href="css/confirm.css" rel="stylesheet" type="text/css">
+  <script src="/js/confirm.js"></script>
   <div class="app_main">
                   
             <%- include partials/innersidebar %>
@@ -77,8 +78,8 @@ $(document).ready(function(){
 
 
        if(dataResult.length > 0){
-         $("#login-button").style.display = "block";
-
+        //  $("#login-button").style.display = "block";
+        document.getElementById('login-button').style.display = "block";
          for(i=0; i< dataResult.length; i++){
            if(dataResult[i].read == true){
             notificationVals += '<li style="color:white;"><div class="tips_bx avoid_bg"><div class="mentor_feed"><div class="tips_bx_author author_bx"><div class="author_bx_txt"><h2>'+dataResult[i].notificationText+'</h2></div>&nbsp;&nbsp;<a onclick="deletenotification(this.id)" id="' + dataResult[i].notificationId + '" style="cursor:pointer;"><i class="fa fa-trash"></i></a></div></div></li>'; 
@@ -87,7 +88,7 @@ $(document).ready(function(){
            }
            readnotification(dataResult[i].notificationId);
          }
-        //  $("#notifyList").apppend(notificationVals);
+         $("#notifyList").apppend(notificationVals);
        }else{
          const notificationVal = document.createElement("li");
          console.log(notificationVal);
@@ -145,9 +146,13 @@ $(document).ready(function(){
 
 function deletenotification(e) {
   // alert(e);
-  var s = confirm("Are you sure to delete this Notification ?");
-  if (s == true) {
+  // var s = confirm("Are you sure to delete this Notification ?");
+  // if (s == true) {
 
+    var result =   Confirm.open({
+  title: 'Delete Confirm',
+  message: 'Are you sure to delete this Notification ?',
+    onok: () => {
    var url_string = window.location.href; 
   var urls = new URL(url_string);
  
@@ -174,18 +179,30 @@ function deletenotification(e) {
         window.location.reload();
         }
       });
-
-} else {
-  $(".successmsg").html('<span>Notification  not deleted</span>');
-  setTimeout(function(){$(".successmsg").empty()}, 5000); 
-   window.location.reload();
+      oncancel: ()=>{ 
+       $(".successmsg").html('<span>Notification  not deleted</span>');
+       setTimeout(function(){$(".successmsg").empty()}, 5000); 
+    // setTimeout(()=> { window.location.reload()},500)
+  }
 }
+
+});
+
+// } else {
+//   $(".successmsg").html('<span>Notification  not deleted</span>');
+//   setTimeout(function(){$(".successmsg").empty()}, 5000); 
+//    window.location.reload();
+// }
 }
 
 function deleteAllnotification() {
 
-  var r = confirm("Are you sure to delete all Notification ?");
-  if (r == true) {
+  // var r = confirm("Are you sure to delete all Notification ?");
+  // if (r == true) {
+    var result =   Confirm.open({
+  title: 'Delete Confirm',
+  message: 'Are you sure to delete all Notification ?',
+    onok: () => {
   var url_string = window.location.href; 
   var urls = new URL(url_string);
  
@@ -210,13 +227,21 @@ function deleteAllnotification() {
      }
 
    });
-
-} else {
-  $(".successmsg").html('<span>Notification  not deleted</span>');
-  setTimeout(function(){$(".successmsg").empty()}, 5000);   
-
-   window.location.reload();
+   oncancel: ()=>{ 
+       $(".successmsg").html('<span>Notification  not deleted</span>');
+       setTimeout(function(){$(".successmsg").empty()}, 5000); 
+    // setTimeout(()=> { window.location.reload()},500)
+  }
 }
+
+});
+
+// } else {
+//   $(".successmsg").html('<span>Notification  not deleted</span>');
+//   setTimeout(function(){$(".successmsg").empty()}, 5000);   
+
+//    window.location.reload();
+// }
 }
 
 
