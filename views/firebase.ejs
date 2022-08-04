@@ -62,7 +62,7 @@
 
           <div class="dashboard_wrapper mentordashboard1_wrapper card" style="background: #ffff;">
                 <div class="card-header text-center" style="border: none!important;">
-                    <span><b>Enter Strategy Room</b></span>
+                    <span id="room-button"><b></b></span>
                 </div>
 
                 <div class="room">
@@ -75,12 +75,12 @@
                       <ul>
                         <li><a href="/chatWindow">
            
-                          <span id="room-Button-1">Enter Strategy Room</span>
+                          <span id="room-Button-1"></span>
                           </a>
                         </li>
                         <li><a  id="notmodalcalling">
            
-                          <span id="room-Button-2">Enter @basilnsage Room</span>
+                          <span id="room-Button-2"></span>
                           </a>
                           <div class="modal fade" id="exampleModalCenterpin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -360,6 +360,19 @@ $(document).keypress(function (e) {
       var monthlies = db.collection("/openGroups").doc("demoOpenGroup1").get();
       monthlies.then((res) => {
         document.getElementById('room-Button-1').innerText = "Enter " + res.data().groupTitle + " Room";
+        console.log(res.data().groupTitle);
+  
+      });
+  
+  
+  }
+  
+  getGroupDetailroomOne();
+  function getGroupDetailroomOne() {
+  
+      var monthlies = db.collection("/openGroups").doc("demoOpenGroup1").get();
+      monthlies.then((res) => {
+        document.getElementById('room-button').innerText = res.data().groupTitle + " Room";
         console.log(res.data().groupTitle);
   
       });

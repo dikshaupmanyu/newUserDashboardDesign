@@ -1,18 +1,25 @@
 module.exports = function(app) {
 
+// To show the login page then call get function with index.ejs
    app.get('/', function(req, res) {
     res.render('index.ejs');
   });
+
+// To show the chat page then call get function with chat.ejs
 
    app.get('/chat', function(req, res) {
 
     res.render('chat.ejs');
   });
 
+// To show the profile  page then call get function with profile.ejs
+
   app.get('/profile', function(req, res) {
 
     res.render('profile.ejs');
   });
+
+// To show the stockChart page then call get function with stockChart.ejs
 
    app.get('/stockChart', function(req, res) {
 
@@ -23,6 +30,8 @@ module.exports = function(app) {
     res.render('stockChart.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
+// To show the prediction page then call get function with prediction.ejs
+
   app.get('/prediction', function(req, res) {
 
     var mentorids = req.query.id;
@@ -32,20 +41,28 @@ module.exports = function(app) {
     res.render('prediction.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
+// To show the myprofile page then call get function with follower.ejs
+
    app.get('/myprofile', function(req, res) {
 
     res.render('follower.ejs');
   });
+
+// To show the subscribe page then call get function with subscribe.ejs
 
     app.get('/subscribe', function(req, res) {
 
     res.render('subscribe.ejs');
   });
 
+// To show the notification page then call get function with notification.ejs
+
   app.get('/notification', function(req, res) {
 
     res.render('notification.ejs');
   });
+
+// To show the dashborad page then call get function with dashboard.ejs
 
   app.get('/dashboard', function(req, res) {
 
@@ -119,10 +136,14 @@ module.exports = function(app) {
 
   });
 
+// To show the chatCodee page then call get function with chatCodee.ejs
+
   app.get('/chatCodee', function(req, res) {
 
     res.render('chatCodee.ejs');
   });
+
+// To show the mentorDetails page then call get function with mentorDetails.ejs
 
    app.get('/mentorDetails', function(req, res) {
 
@@ -130,12 +151,16 @@ module.exports = function(app) {
 
     res.render('mentorDetails.ejs' , {tipsIds : mentorids});
   });
+
+// To show the serviceDetails page then call get function with serviceDetails.ejs
+
    app.get('/serviceDetails', function(req, res) {
 
     var mentorids = req.query.id;
-
     res.render('serviceDetail.ejs' , {tipsIds : mentorids});
   });
+
+// To show the aiDetails page then call get function with aiDetails.ejs
 
      app.get('/aiDetails', function(req, res) {
 
@@ -146,6 +171,7 @@ module.exports = function(app) {
     res.render('aiDetails.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
+// To show the macdDetails page then call get function with macdDetails.ejs
 
       app.get('/macdDetails', function(req, res) {
 
@@ -156,6 +182,8 @@ module.exports = function(app) {
     res.render('macdDetails.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
+// To show the macdSellDetails page then call get function with macdSellDetails.ejs
+
         app.get('/macdSellDetails', function(req, res) {
 
     var mentorids = req.query.id;
@@ -165,53 +193,70 @@ module.exports = function(app) {
     res.render('macdSellDetails.ejs' , {tipsIds : mentorids , stockSymbol : symbol});
   });
 
+// To show the Newsletter page then call get function with newsletterSerevices.ejs
 
   app.get('/Newsletter', function(req, res) {
 
     res.render('newsletterServices.ejs');
   });
 
+// To show the Livechat page then call get function with chatRoomServices.ejs
+
   app.get('/LiveChat', function(req, res) {
 
     res.render('chatRoomServices.ejs');
   });
+
+// To show the 1-1Chat page then call get function with chatVideoServices.ejs
 
   app.get('/1-1Chat', function(req, res) {
 
     res.render('chatVideoServices.ejs');
   });
   
+// To show the Webinar page then call get function with webinarServices.ejs
 
   app.get('/Webinar', function(req, res) {
 
     res.render('webinarServices.ejs');
   });
 
+// To show the MentorPhoneGroup page then call get function with mentorPhoneServices.ejs
+
    app.get('/MentorPhoneGroup', function(req, res) {
 
     res.render('mentorPhoneServices.ejs');
   });
 
+// To show the Books page then call get function with bookServices.ejs
+  
     app.get('/Books', function(req, res) {
 
     res.render('bookServices.ejs');
   });
+
+// To show the Class page then call get function with classServices.ejs
 
     app.get('/Class', function(req, res) {
 
     res.render('classServices.ejs');
   });
 
+// To show the VideoSubscription page then call get function with vedioServices.ejs
 
   app.get('/VideoSubscription', function(req, res) {
 
     res.render('videoServices.ejs');
   });
 
+// To show the services page then call get function with services.ejs
+
   app.get('/services', function(req, res) {
 
     res.render('services.ejs');
   });
+
+// To show the editService page then call get function with editService.ejs
 
    app.get('/editService', function(req, res) {
 
@@ -228,16 +273,15 @@ module.exports = function(app) {
 
   });
 
+// To show the forgetPassword page then call get function with forgetPassword.ejs
 
     app.get('/forgetPassword', function(req, res) {
-
-    
+ 
     res.render('forgetPassword.ejs');
-
-
 
   });
 
+// To show the firebase page then call get function with firebase-admin.ejs
 
   app.get('/firebase', function(req, res) {
 
@@ -269,6 +313,7 @@ module.exports = function(app) {
 
   });
 
+// To show the faq page then call get function with faq.ejs
   
 app.get('/faq', function(req, res) {
 
@@ -286,6 +331,8 @@ app.get('/faq', function(req, res) {
 //  }
  res.render('faq.ejs')
 });
+
+// To show the firebasejs page then call get function with firebase-admin.ejs
 
   app.post('/firebasejs', function(req, res) {
 
@@ -323,6 +370,8 @@ app.get('/faq', function(req, res) {
     });
 
   });
+
+// To show the home page then call get function with home.ejs
 
     app.get('/home', function(req, res) {
 
@@ -364,15 +413,21 @@ app.get('/faq', function(req, res) {
 
   });
 
+// To show the room page then call get function with room.ejs
+
     app.get('/room', function(req, res) {
 
     res.render('room.ejs');
   });
 
+// To show the tip page then call get function with tip.ejs
+
      app.get('/tip', function(req, res) {
 
     res.render('tip.ejs');
   });
+
+// To show the chatWindowAdminUser page then call get function with chatWindowAdminUser.ejs
 
   app.get('/chatWindowAdminUser', function(req, res) {
 
@@ -397,5 +452,87 @@ app.get('/faq', function(req, res) {
 
   });
 
+// if payment is succed it will be redirect in success.ejs 
+//  and if is fails it will be redirect in failure.ejs
 
+  
+  app.post('/payment', async function(req, res){
+  
+  // Moreover you can take more details from user
+  // like Address, Name, etc from form
+  
+  console.log(req.body);
+  
+   var couponId = req.body.text1;
+  
+  let months = req.body.monthYear;
+       months = months.split("/")[0];
+    // console.log(months);
+   let dates = req.body.monthYear;
+       dates = dates.split("/")[1];
+   console.log(dates);
+   // sk_test_4eC39HqLyjWDarjtT1zdp7dc
+     const stripe = require('stripe')('pk_live_7b9zLcAaGBVeu14tr9Jueznl00HCPZZOU1');
+  
+     try {
+  
+     const paymentMethod = await stripe.paymentMethods.create({
+     type: 'card',
+     card: {
+       number: req.body.cardNumber,
+       exp_month: months,
+       exp_year: dates,
+       cvc: req.body.cvv,
+     },
+     billing_details: {
+       email: req.body.emailData,
+       name: req.body.cardName
+     }
+   });
+  
+      // console.log("hiiiii data " + JSON.stringify(paymentMethod));
+  
+     var options = { method: 'POST',
+         url: 'https://apis.tradetipsapp.com/api/stripePayment/createServiceSubscriptionPayment',
+         headers: 
+          { 'postman-token': 'a1f3bad2-8aab-6d21-7162-d82350e953af',
+            'cache-control': 'no-cache'},
+            // authorization: 'Bearer '+req.body.tokendata },     
+            formData: { userName: req.body.userName,
+            paymentId: paymentMethod.id,
+            serviceSubscriptionPlanId: req.body.serviceIds,
+        couponId : req.body.text1 } };
+  
+       request(options, function (error, response, body) {
+  
+          // console.log("body data  " + JSON.stringify(response)); 
+          // console.log("error data " + error);
+         if(response){
+  
+           
+  
+           res.render("success.ejs" , {userName : req.body.userName, email : req.body.emailData ,userid : req.body.userId, tokens : req.body.tokendata, service : req.body.serviceIds , mentorName : req.body.mentorName});
+         }
+          // if (error) throw new Error(error);
+  
+         // {
+         //   res.render('incomplete.ejs');
+         // }
+         // throw new Error(error);
+  
+         // console.log(response);
+         // console.log(error);
+         // console.log(body);
+         // res.render('complete.ejs');
+       });
+  
+  
+   } catch(error) {
+  
+     console.log(error.raw.message);
+  
+     res.render("failure.ejs" , {userName : req.body.userName, email : req.body.emailData ,userid : req.body.userId, tokens : req.body.tokendata, data : error.raw.message , service : req.body.serviceIds});
+  };
+  
+  });
 };
