@@ -175,13 +175,15 @@ var config = {
     // alert(loggedInName);
   // var today = Date.now();
    //var str = today.toDateString().split(' ').slice(1).join(' ') + " at " + today.toLocaleTimeString() + " GMT+5:30";
-       
+   var logintoken = document.getElementById("tokenval").value;
+   var PNames = document.getElementById("pTag").innerHTML;
+   var editorText = CKEDITOR.instances.editor1.getData();
    if(message.value != ""){
   
     let task = {
     userName: loggedInName,
     userId : loggedInVal,
-    message: message.value,
+    message: editorText,
     messageId : loggedInVal + "_"+  Date.now(),
     messageType : "text",
     createdDate :  Date.now(),
@@ -194,6 +196,28 @@ var config = {
   return docRef
     .add(task)
     .then((ref) => {
+      $.ajax({
+        type: "POST",
+        url: "https://apis.tradetipsapp.com/api/chatNotificationActivity/sendNotificationForChat",
+        headers: {
+          // Authorization: 'Bearer '+ 'eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6Inlhc2gwMUBtYWlsaW5hdG9yLmNvbSIsInN1YiI6IjA5OTYwMDZkLTViNzEtNDVjZi1hNTJmLTI2ZjM0MTc3YjhmYSIsImlhdCI6MTY2NTgxNjEzMiwiZXhwIjoxNjY2NDIwOTMyfQ.nw-G-gdwisObYW60Fi5vLKpT-dfXwN7lDbHzEFCUmbMgOJZ8gybPvgHFo5zTQLrOZ7H5UCqpNlGCAfIPM6z-Ag',
+          Authorization: 'Bearer '+ logintoken  ,
+        },
+        data: {
+          chatRoomName : "futuresChatRoom",
+          userNames : PNames
+        },
+        success: function (data) {
+          var dataks = JSON.stringify(data);
+          var dataResults = JSON.parse(dataks);
+          console.log(dataResults[0].message);
+          // $(".successmsg").html(dataResults[0].message);
+          // setTimeout(function() {
+          //   $(".successmsg").empty();
+          // }, 3000);
+        },
+      });
+
       task.id = ref.id;
       // fullName.value = '';
       message.value  = '';
@@ -347,6 +371,20 @@ var config = {
   setTimeout(function(){$(".successmsg").empty()}, 8000);
   }
   
+  // ////////////////////////////
+
+function FunctionClick(e){
+
+  // alert(e);
+
+//  var dataID =  document.getElementById("IDData").value
+var dataIDs = document.getElementsByTagName("li")
+
+ var mm1 = document.getElementsByClassName("cke_autocomplete_selected")[0].innerText
+ console.log(mm1)
+
+ document.getElementById("pTag").innerHTML = mm1
+}
   
   // popup functions
   function popupCreate(event) {
@@ -375,7 +413,8 @@ var config = {
   // alert(loggedInName);
   var uniqueDocId = docId;
   // alert(uniqueDocId);
-  
+  var logintoken = document.getElementById("tokenval").value;
+  var PName = document.getElementById("pTag").innerHTML; 
   // const docReply = db.collection("/openGroups/demoOpenGroup1/messages/"+uniqueDocId+"/replies/"); 
   const docReply = db.collection("/basilPrivateGroup/Production/messages/"+uniqueDocId+"/replies/"); 
   // alert(docReply);
@@ -397,12 +436,39 @@ var config = {
    return docReply
      .add(taskR)
      .then((ref) => {
+
+      $.ajax({
+        type: "POST",
+        url: "https://apis.tradetipsapp.com/api/chatNotificationActivity/sendNotificationForChat",
+        headers: {
+          // Authorization: 'Bearer '+ 'eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6Inlhc2gwMUBtYWlsaW5hdG9yLmNvbSIsInN1YiI6IjA5OTYwMDZkLTViNzEtNDVjZi1hNTJmLTI2ZjM0MTc3YjhmYSIsImlhdCI6MTY2NTgxNjEzMiwiZXhwIjoxNjY2NDIwOTMyfQ.nw-G-gdwisObYW60Fi5vLKpT-dfXwN7lDbHzEFCUmbMgOJZ8gybPvgHFo5zTQLrOZ7H5UCqpNlGCAfIPM6z-Ag',
+          Authorization: 'Bearer '+ logintoken  ,
+        },
+        data: {
+          chatRoomName : "futuresChatRoom",
+          userNames : PName
+        },
+        success: function (data) {
+          var dataks = JSON.stringify(data);
+          var dataResults = JSON.parse(dataks);
+          // alert(dataResults);
+          console.log(dataResults);
+          // $(".successmsg").html(dataResults[0].message);
+          // setTimeout(function() {
+          //   $(".successmsg").empty();
+          // }, 3000);
+  
+        },
+      });
        // console.log(ref);
     // console.log("div#exampleModalCenter"+uniqueDocId);
   
     // $("div#exampleModalCenter"+uniqueDocId).css("display", "none");
   
        taskR.id = ref.id;
+
+      CKEDITOR.instances["btn-input-replymsg" + event].setData("");
+
        // fullName.value = '';
        message.value  = '';
        // console.log(message.value)
@@ -621,7 +687,82 @@ var config = {
   function replypopup(id) {
     // alert(id);
    fetchTasksReply(id);
+
+   
+  $(document).ready(function() {
+    $(".ckeditor").each(function(_, ckeditor) {
+      var formData = { appUserName: "all" };
+      $.ajax({
+        type: "POST",
+        url: "https://apistest.tradetipsapp.com/api/appUser/getAllUserDetails",
+        data: formData,
+        success: function(datan) {
+          var dataks = JSON.stringify(datan);
+          var users = JSON.parse(dataks);
+
+          CKEDITOR.replace(ckeditor, {
+            plugins:
+              "mentions,emoji,basicstyles,undo,link,wysiwygarea,toolbar, pastefromgdocs, pastefromlibreoffice, pastefromword",
+            height: "40px",
+            width: "86%",
+            toolbarLocation: "bottom",
+            toolbar: [
+              {
+                name: "document",
+                items: ["Undo", "Redo"],
+              },
+              {
+                name: "basicstyles",
+                items: ["Bold", "Italic", "Strike"],
+              },
+              {
+                name: "links",
+                items: ["EmojiPanel", "Link", "Unlink"],
+              },
+            ],
+            mentions: [
+              {
+                feed: dataFeed,
+                itemTemplate:
+                  '<li data-id="{id}" id="IDData" onclick="FunctionClick(this.id)">' +
+                  '<img class="photo" src="" />' +
+                  '<strong  class="userName">{userName}</strong>' +
+                  '<span class="fullname"></span>' +
+                  "</li>",
+                outputTemplate:
+                  '<a><b id="dataID">@{userName}<b></a><span>&nbsp;</span>',
+                minChars: 0,
+              },
+            ],
+            removeButtons: "PasteFromWord",
+          });
+
+       
+
+          function dataFeed(opts, callback) {
+
+            var userNamescs = document.getElementById("tokenval").value;
+            var matchProperty = 'userName';
+            var countdata = users.filter(function(s) { return s.userName != userNamescs });
+              data = countdata.filter(function (item) {
+                // console.log(item) 
+                return item[matchProperty].indexOf(opts.query.toLowerCase()) == 0;
   
+              });
+  
+  
+            data = data.sort(function (a, b) {
+              return a[matchProperty].localeCompare(b[matchProperty], undefined, {
+                sensitivity: 'accent'
+              });
+            });
+  
+            callback(data);
+          }
+        },
+      });
+    });
+  });
   
   }
   
@@ -834,7 +975,7 @@ var config = {
             // alert(snapshots.size);
             const tasksDOMReply = document.getElementById("tasksreply"+docId);
             var taskreply = changes.doc.data();
-            var taskId = changes.doc.id;
+            var uniqueId = changes.doc.id;
   
             if (changes.type === "added") {
                 var userIdcs     = document.getElementById('user_id');
@@ -845,13 +986,13 @@ var config = {
                     // console.log(loggedInVal);
                    var loggedInName = userNamescs.value;
                     // console.log(loggedInName);
-                    if($("li#"+taskId).size() > 0){
-                      $("li#"+taskId).remove();
+                    if($("li#"+uniqueId).size() > 0){
+                      $("li#"+uniqueId).remove();
                     }    
   
                 const elemreply = document.createElement("li");
                 elemreply.id = changes.doc.id;
-                elemreply.innerHTML = reviewTemplateReply(taskreply,loggedInVal,loggedInName,taskId,docId);
+                elemreply.innerHTML = reviewTemplateReply(taskreply,loggedInVal,loggedInName,uniqueId,docId);
                 tasksDOMReply.append(elemreply);
   
             }
@@ -1051,10 +1192,9 @@ var config = {
                    <div class="modal-footer">
                    <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                      <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                     <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
-                     <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
-                     😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
-                     </label>
+                    <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
+                     
   
                      <span class="input-group-btn">
                          <button class="Btn btn btn-primary" type="button" onClick='popupCreate(this.id)' id="${uniqueId}">
@@ -1119,7 +1259,8 @@ var config = {
                         <div class="modal-footer">
                         <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                           <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                          <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
+                         <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
                           <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
                           😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
                           </label> 
@@ -1197,7 +1338,8 @@ var config = {
                <div class="modal-footer">
                <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                  <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                 <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
+                <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
                  <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
                  😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
                  </label>
@@ -1268,7 +1410,8 @@ var config = {
                <div class="modal-footer">
                <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                  <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                 <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
+                <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
                  <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
                  😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
                  </label>
@@ -1340,7 +1483,8 @@ var config = {
                <div class="modal-footer">
                <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                  <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                 <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
+                <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
                  <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
                  😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
                  </label>
@@ -1424,10 +1568,9 @@ var config = {
                    <div class="modal-footer">
                    <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                      <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                     <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
-                     <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
-                     😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
-                     </label>
+                    <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
+                     
   
                      <span class="input-group-btn">
                          <button class=" Btn btn btn-primary" type="button" onClick='popupCreate(this.id)' id="${uniqueId}">
@@ -1513,10 +1656,9 @@ var config = {
                    <div class="modal-footer">
                    <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                      <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                     <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
-                     <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
-                     😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
-                     </label>
+                    <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
+                     
     
                      <span class="input-group-btn">
                          <button class="Btn btn btn-primary" type="button" onClick='popupCreate(this.id)' id="${uniqueId}">
@@ -1600,10 +1742,9 @@ var config = {
                    <div class="modal-footer">
                    <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                      <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                     <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
-                     <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
-                     😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
-                     </label>
+                    <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
+                     
                   
                      <span class="input-group-btn">
                          <button class="Btn btn btn-primary" type="button" onClick='popupCreate(this.id)' id="${uniqueId}">
@@ -1697,10 +1838,9 @@ var config = {
                    <div class="modal-footer">
                    <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                      <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                     <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
-                     <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
-                     😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
-                     </label>
+                    <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
+                     
                 
                      <span class="input-group-btn">
                          <button class="Btn btn btn-primary" type="button" onClick='popupCreate(this.id)' id="${uniqueId}">
@@ -1787,10 +1927,9 @@ var config = {
                    <div class="modal-footer">
                    <input type="file" class="fa fa-paperclip attachment btn btn-primary_1" id='${uniqueId}' name='inputfile' onChange='getoutput(event,this.id)' style="display:inherit"/>
                      <input id="btn-input-replyId${uniqueId}" type="hidden" class="form-control input-lg" value="${uniqueId}" placeholder="Type your message here..." />
-                     <input id="btn-input-replymsg${uniqueId}" type="text" class="form-control input-lg" value="" placeholder="Type your message here..."  autocomplete="off"/>
-                     <label for="emoji-buttons${uniqueId}" style="cursor:pointer">
-                     😊<input type="button" id="emoji-buttons${uniqueId}" dataid="${uniqueId}" onclick="emojifunction(this.value)" value="${uniqueId}" style="width:1px;  display:none;"></input>
-                     </label>
+                    <textarea id="btn-input-replymsg${uniqueId}" onkeypress="myFunction(event,this.id)" cols="50" class="ckeditor form-control" name="chapterContent[]" style="width:100%;"></textarea>
+
+                     
                 
                      <span class="input-group-btn">
                          <button class="Btn btn btn-primary" type="button" onClick='popupCreate(this.id)' id="${uniqueId}">
